@@ -6,7 +6,8 @@ const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
-
+import PhoneInput from 'react-phone-number-input'
+// import 'react-phone-number-input/style.css'
 
 export default class Onboarding extends React.Component {
   render() {
@@ -18,7 +19,9 @@ export default class Onboarding extends React.Component {
         <Block flex>
           <ImageBackground
             source={Images.Onboarding}
-            style={{ flex: 1, height: height, width, zIndex: 1 }}
+            style={{ flex: 1,
+              resizeMode: "cover",
+              justifyContent: "center" }}
           />
           <Block space="between" style={styles.padded}>
             <Block>
