@@ -47,7 +47,7 @@ class Header extends React.Component {
   };
   renderRight = () => {
     const { white, title, navigation } = this.props;
-    
+
 
     if (title === 'Title') {
       return [
@@ -115,7 +115,7 @@ class Header extends React.Component {
         style={styles.search}
         placeholder="What are you looking for?"
         placeholderTextColor={'#8898AA'}
-        onFocus={() => {Keyboard.dismiss(); navigation.navigate('Pro')}}
+        onFocus={() => { Keyboard.dismiss(); navigation.navigate('Pro') }}
         iconContent={
           <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
         }
@@ -191,6 +191,7 @@ class Header extends React.Component {
   };
   render() {
     const {
+      none,
       back,
       title,
       white,
@@ -219,7 +220,7 @@ class Header extends React.Component {
           transparent={transparent}
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center' }}
-          left={
+          left={none ? null :
             <Icon
               name={back ? 'minimal-left2x' : 'align-left-22x'}
               family="NowExtra"
@@ -251,7 +252,9 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'montserrat-regular'
+    fontFamily: 'montserrat-regular',
+    textAlign: 'center',
+    paddingLeft: 35
   },
   navbar: {
     paddingVertical: 0,

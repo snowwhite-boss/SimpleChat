@@ -123,6 +123,7 @@ function HomeStack(props) {
               options
               navigation={navigation}
               scene={scene}
+              none
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
@@ -199,7 +200,7 @@ export default function OnboardingStack(props) {
           headerTransparent: true
         }}
       />
-      <Stack.Screen name="App" component={AppStack} />
+      <Stack.Screen name="Home" component={HomeStack} />
     </Stack.Navigator>
   );
 }
