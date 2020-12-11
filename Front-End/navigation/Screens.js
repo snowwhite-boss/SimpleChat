@@ -195,7 +195,7 @@ export default function OnboardingStack(props) {
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
         name="Onboarding"
-        component={Home}
+        component={Onboarding}
         option={{
           headerTransparent: true
         }}

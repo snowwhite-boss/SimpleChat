@@ -38,6 +38,17 @@ const BasketButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
+const PlusButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+    <Icon
+      family="NowExtra"
+      size={16}
+      name="simple-add2x"
+      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+    />
+  </TouchableOpacity>
+);
+
 
 
 class Header extends React.Component {
@@ -60,7 +71,7 @@ class Header extends React.Component {
       case 'Home':
         return [
           // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          // <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          <PlusButton key="plus-home" navigation={navigation} isWhite={white} />
         ];
       case 'Deals':
         return [

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Block, theme, Text } from "galio-framework";
 
-import { Card, Button, Icon } from "../components";
+import { Card, Button, Icon, Footer } from "../components";
 import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
@@ -85,12 +85,20 @@ const ChatItem = ({ item, onPress, style }) => (
     <Block row style={{ alignItems: "center" }}>
       <Image source={Images.ItemUser} style={styles.itemUser} />
       <Block>
-        <Text style={styles.nickName}>{item.name}</Text>
+        <Text bold style={styles.nickName}>{item.name}</Text>
         <Text style={styles.itemContent}>{item.content}</Text>
       </Block>
     </Block>
   </TouchableOpacity>
 );
+const renderChatItem = ({ item }) => {
+  return (
+    <ChatItem
+      item={item}
+      onPress={() => alert(item.id)}
+    />
+  );
+};
 const ContactsItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Block row style={{ alignItems: "center" }}>
@@ -101,14 +109,7 @@ const ContactsItem = ({ item, onPress, style }) => (
 );
 
 
-const renderChatItem = ({ item }) => {
-  return (
-    <ChatItem
-      item={item}
-      onPress={() => alert(item.id)}
-    />
-  );
-};
+
 const renderContactsItem = ({ item }) => {
   return (
     <ContactsItem
@@ -132,6 +133,9 @@ const ChatRoute = () => (
 
 const ContactsRoute = () => (
   <Block style={styles.scene}>
+    <Block>
+
+    </Block>
     <SafeAreaView style={styles.container}>
       <FlatList
         data={contactsDATA}
@@ -144,51 +148,22 @@ const ContactsRoute = () => (
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-// export default class TeamReport extends React.Component {
-export default function Home() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'Chat', title: 'Chat' },
-    { key: 'Contacts', title: 'Contacts' },
-  ]);
-
-  const renderScene = SceneMap({
-    Chat: ChatRoute,
-    Contacts: ContactsRoute,
-  });
-
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: 'purple', height:5 }}
-      style={{ backgroundColor: 'white' }}
-      renderLabel={({ route, focused, color }) => (
-        <Block row middle>
-          <Icon
-            size={18}
-            name={route.title == 'Chat' ? 'chat-round2x' : 'agenda-bookmark2x'}
-            family="NowExtra"
-            style={{ paddingRight: 8 }}
-            color={nowTheme.COLORS.HEADER}
+export default class TeamReport extends React.Component {
+  //export default function Home() {
+  render() {
+    return (
+      <Block flex>
+        <ScrollView style={styles.container}>
+          <FlatList
+            data={chatDATA}
+            renderItem={renderChatItem}
+            keyExtractor={(item) => item.id}
           />
-          <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
-            {route.title}
-          </Text>
-        </Block>
-      )}
-    />
-  );
-
-  return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-      tabBarPosition={'bottom'}
-      renderTabBar={renderTabBar}
-    />
-  );
+        </ScrollView>
+        <Footer navigation={this.props.navigation} left />
+      </Block>
+    );
+  }
 }
 const styles = StyleSheet.create({
   scene: {
@@ -236,11 +211,10 @@ const styles = StyleSheet.create({
   },
   nickName: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: 'black'
   },
   itemContent: {
     fontSize: 18,
     color: 'grey'
-  }
+  },
 });
