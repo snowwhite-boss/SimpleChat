@@ -14,6 +14,8 @@ import Articles from '../screens/Articles';
 import Onboarding from '../screens/Onboarding';
 import SettingsScreen from '../screens/Settings';
 import Contacts from '../screens/Contacts';
+import Friend from '../screens/Friend';
+import Mobile from '../screens/Mobile';
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
@@ -141,6 +143,40 @@ function HomeStack(props) {
               navigation={navigation}
               scene={scene}
               none  // back button none
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      
+      <Stack.Screen
+        name="Friend"
+        component={Friend}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="New Friends"
+              search
+              navigation={navigation}
+              scene={scene}
+              back
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      
+      <Stack.Screen
+        name="Mobile"
+        component={Mobile}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Mobile Contacts"
+              search
+              navigation={navigation}
+              scene={scene}
+              back
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }

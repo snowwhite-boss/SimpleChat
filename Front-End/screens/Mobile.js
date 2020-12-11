@@ -102,17 +102,17 @@ const renderContactsItem = ({ item }) => {
   );
 };
 
-export default class Contacts extends React.Component {
+export default class Moblie extends React.Component {
   render() {
     return (
       <Block flex>
-        <TouchableOpacity onPress={() => navigation.navigate('Friend')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
           <Block row style={styles.newFriendRow}>
             <Image
-              style={styles.newFriendIcon}
-              source={Images.newFriendIcon}
+              style={styles.addPhone}
+              source={Images.addPhone}
             />
-            <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>New Friends</Text>
+            <Text bold size={20} color="orange" style={{paddingLeft:20}}>New Friends</Text>
           </Block>
         </TouchableOpacity>
         <ScrollView style={styles.container}>
@@ -122,7 +122,6 @@ export default class Contacts extends React.Component {
             keyExtractor={(item) => item.id}
           />
         </ScrollView>
-        <Footer navigation={this.props.navigation} />
       </Block>
     );
   }
@@ -135,8 +134,8 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     padding: 10,
-    borderTopColor: 'grey',
-    borderTopWidth: 1,
+    borderTopColor:'grey',
+    borderTopWidth:1,
   },
   rightCell: {
     padding: 10,
@@ -182,19 +181,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
-  newFriendIcon: {
+  addPhone:{
     width: 40,
-    height: 30,
+    height: 40,
     resizeMode: 'stretch'
   },
-  newFriendRow: {
-    paddingHorizontal: 26,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderColor: 'orange',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginHorizontal: 26,
-    marginVertical: 10
+  newFriendRow:{
+    paddingHorizontal:26,
+    paddingVertical:10,
+    alignItems:'center',
+    borderColor:'orange',
+    borderRadius:20,
+    borderWidth:2,
+    marginHorizontal:26,
+    marginVertical:10
   }
 });

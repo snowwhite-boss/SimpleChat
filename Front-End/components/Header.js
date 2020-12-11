@@ -51,10 +51,19 @@ const PlusButton = ({ isWhite, style, navigation }) => (
 );
 
 const AddUserButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Friend')}>
     <Image
       style={{width:30, height:30, resizeMode:'stretch'}}
       source={Images.addUserIcon}
+    />
+  </TouchableOpacity>
+);
+
+const AddPhoneButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Friend')}>
+    <Image
+      style={{width:30, height:30, resizeMode:'stretch'}}
+      source={Images.addPhoneIcon}
     />
   </TouchableOpacity>
 );
@@ -87,6 +96,11 @@ class Header extends React.Component {
         return [
           // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
           <AddUserButton key="plus-contacts" navigation={navigation} isWhite={white} />
+        ];
+      case 'New Friends':
+        return [
+          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
+          <AddPhoneButton key="plus-friend" navigation={navigation} isWhite={white} />
         ];
       case 'Deals':
         return [
@@ -284,9 +298,10 @@ const styles = StyleSheet.create({
   },
   navbar: {
     paddingVertical: 0,
-    paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
-    zIndex: 5
+    paddingTop: iPhoneX ? theme.SIZES.BASE / 4 : theme.SIZES.BASE,
+    zIndex: 5,
+    backgroundColor:'#ff009622',
+    alignItems:'center'
   },
   shadow: {
     backgroundColor: theme.COLORS.WHITE,

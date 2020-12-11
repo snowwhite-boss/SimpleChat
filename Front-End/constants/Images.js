@@ -15,6 +15,8 @@ const ChatIcon = require('../assets/imgs/chat.png');
 const ContactsIcon = require('../assets/imgs/contacts.png');
 const addUserIcon = require('../assets/imgs/addUser.png');
 const newFriendIcon = require('../assets/imgs/newFriend.png');
+const addPhoneIcon = require('../assets/imgs/addPhoneIcon.png');
+const addPhone = require('../assets/imgs/addPhone.png');
 
 const Viewed = [
   require('../assets/imgs/project5.jpg'),
@@ -48,5 +50,7 @@ export default {
   ChatIcon,
   ContactsIcon,
   addUserIcon,
-  newFriendIcon
+  newFriendIcon,
+  addPhoneIcon,
+  addPhone
 };
