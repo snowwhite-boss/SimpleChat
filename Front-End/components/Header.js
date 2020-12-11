@@ -1,12 +1,13 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard, Image } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
 import nowTheme from '../constants/Theme';
+import { Images } from '../constants';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -49,6 +50,15 @@ const PlusButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
+const AddUserButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+    <Image
+      style={{width:30, height:30, resizeMode:'stretch'}}
+      source={Images.addUserIcon}
+    />
+  </TouchableOpacity>
+);
+
 
 
 class Header extends React.Component {
@@ -72,6 +82,11 @@ class Header extends React.Component {
         return [
           // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
           <PlusButton key="plus-home" navigation={navigation} isWhite={white} />
+        ];
+      case 'Contacts':
+        return [
+          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
+          <AddUserButton key="plus-contacts" navigation={navigation} isWhite={white} />
         ];
       case 'Deals':
         return [

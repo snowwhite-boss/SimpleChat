@@ -129,23 +129,24 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
+      
       <Stack.Screen
         name="Contacts"
         component={Contacts}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
-              back
-              white
-              transparent
+              title="Contacts"
+              search
               navigation={navigation}
               scene={scene}
+              none  // back button none
             />
           ),
-          headerTransparent: true
+          cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
+      
     </Stack.Navigator>
   );
 }

@@ -53,32 +53,6 @@ const chatDATA = [
     content: "Hi, I am Marcelino."
   },
 ];
-const contactsDATA = [
-  {
-    id: "0",
-    name: "Zen"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-];
 
 const ChatItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -99,52 +73,8 @@ const renderChatItem = ({ item }) => {
     />
   );
 };
-const ContactsItem = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Block row style={{ alignItems: "center" }}>
-      <Image source={Images.ItemUser} style={styles.itemUser} />
-      <Text style={styles.nickName}>{item.name}</Text>
-    </Block>
-  </TouchableOpacity>
-);
 
 
-
-const renderContactsItem = ({ item }) => {
-  return (
-    <ContactsItem
-      item={item}
-      onPress={() => alert(item.id)}
-    />
-  );
-};
-
-const ChatRoute = () => (
-  <Block style={styles.scene}>
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={chatDATA}
-        renderItem={renderChatItem}
-        keyExtractor={(item) => item.id}
-      />
-    </SafeAreaView>
-  </Block>
-);
-
-const ContactsRoute = () => (
-  <Block style={styles.scene}>
-    <Block>
-
-    </Block>
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={contactsDATA}
-        renderItem={renderContactsItem}
-        keyExtractor={(item) => item.id}
-      />
-    </SafeAreaView>
-  </Block>
-);
 
 const initialLayout = { width: Dimensions.get('window').width };
 

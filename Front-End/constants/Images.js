@@ -13,6 +13,7 @@ const InvisionLogo = require('../assets/imgs/invision-white-slim.png');
 const ItemUser = require('../assets/imgs/itemUser.png');
 const ChatIcon = require('../assets/imgs/chat.png');
 const ContactsIcon = require('../assets/imgs/contacts.png');
+const addUserIcon = require('../assets/imgs/addUser.png');
 
 const Viewed = [
   require('../assets/imgs/project5.jpg'),
@@ -44,5 +45,6 @@ export default {
   InvisionLogo,
   ItemUser,
   ChatIcon,
-  ContactsIcon
+  ContactsIcon,
+  addUserIcon
 };
