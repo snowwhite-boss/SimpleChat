@@ -17,7 +17,7 @@ import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
 
-export default class AddContacts extends React.Component {
+export default class QRScan extends React.Component {
   render() {
     return (
       <Block flex style={styles.container}>

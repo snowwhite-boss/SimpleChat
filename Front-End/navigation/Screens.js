@@ -17,6 +17,7 @@ import Contacts from '../screens/Contacts';
 import Friend from '../screens/Friend';
 import Mobile from '../screens/Mobile';
 import AddContacts from '../screens/AddContacts';
+import QRScan from '../screens/QRScan';
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
@@ -184,7 +185,6 @@ function HomeStack(props) {
         }}
       />
       
-      
       <Stack.Screen
         name="AddContacts"
         component={AddContacts}
@@ -198,6 +198,24 @@ function HomeStack(props) {
               back
             />
           ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      
+      <Stack.Screen
+        name="QRScan"
+        component={QRScan}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title=""
+              search
+              navigation={navigation}
+              scene={scene}
+              back
+            />
+          ),
+          headerTransparent: true,
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
