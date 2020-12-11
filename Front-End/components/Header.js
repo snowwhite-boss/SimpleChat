@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '100%',
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: 'bold',
     fontFamily: 'montserrat-regular',
     textAlign: 'center',

@@ -42,6 +42,46 @@ const contactsDATA = [
     id: "5",
     name: "Marcelino"
   },
+  {
+    id: "1",
+    name: "Sergey"
+  },
+  {
+    id: "2",
+    name: "Boychik"
+  },
+  {
+    id: "3",
+    name: "Adalbert"
+  },
+  {
+    id: "4",
+    name: "John"
+  },
+  {
+    id: "5",
+    name: "Marcelino"
+  },
+  {
+    id: "1",
+    name: "Sergey"
+  },
+  {
+    id: "2",
+    name: "Boychik"
+  },
+  {
+    id: "3",
+    name: "Adalbert"
+  },
+  {
+    id: "4",
+    name: "John"
+  },
+  {
+    id: "5",
+    name: "Marcelino"
+  },
 ];
 
 const ContactsItem = ({ item, onPress, style }) => (
@@ -66,6 +106,15 @@ export default class Contacts extends React.Component {
   render() {
     return (
       <Block flex>
+        <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
+          <Block row style={styles.newFriendRow}>
+            <Image
+              style={styles.newFriendIcon}
+              source={Images.newFriendIcon}
+            />
+            <Text bold size={20} color="orange" style={{paddingLeft:20}}>New Friends</Text>
+          </Block>
+        </TouchableOpacity>
         <ScrollView style={styles.container}>
           <FlatList
             data={contactsDATA}
@@ -85,7 +134,9 @@ const styles = StyleSheet.create({
   },
   container: {
     width: width,
-    padding: 10
+    padding: 10,
+    borderTopColor:'grey',
+    borderTopWidth:1,
   },
   rightCell: {
     padding: 10,
@@ -131,4 +182,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
+  newFriendIcon: {
+    width: 40,
+    height: 30,
+    resizeMode: 'stretch'
+  },
+  newFriendRow:{
+    paddingHorizontal:26,
+    paddingVertical:10,
+    alignItems:'center',
+    borderColor:'orange',
+    borderRadius:20,
+    borderWidth:2,
+    marginHorizontal:26,
+    marginVertical:10
+  }
 });
