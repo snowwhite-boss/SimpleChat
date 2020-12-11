@@ -13,6 +13,7 @@ import Components from '../screens/Components';
 import Articles from '../screens/Articles';
 import Onboarding from '../screens/Onboarding';
 import SettingsScreen from '../screens/Settings';
+import Contacts from '../screens/Contacts';
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
@@ -120,18 +121,17 @@ function HomeStack(props) {
             <Header
               title="Home"
               search
-              options
               navigation={navigation}
               scene={scene}
-              none
+              none  // back button none
             />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
       <Stack.Screen
-        name="Pro"
-        component={Pro}
+        name="Contacts"
+        component={Contacts}
         options={{
           header: ({ navigation, scene }) => (
             <Header
