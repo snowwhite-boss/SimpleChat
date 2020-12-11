@@ -160,7 +160,7 @@ export default function Home() {
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: 'pink' }}
+      indicatorStyle={{ backgroundColor: 'purple', height:5 }}
       style={{ backgroundColor: 'white' }}
       renderLabel={({ route, focused, color }) => (
         <Block row middle>
