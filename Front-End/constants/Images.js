@@ -17,6 +17,9 @@ const addUserIcon = require('../assets/imgs/addUser.png');
 const newFriendIcon = require('../assets/imgs/newFriend.png');
 const addPhoneIcon = require('../assets/imgs/addPhoneIcon.png');
 const addPhone = require('../assets/imgs/addPhone.png');
+const fromAddressIcon = require('../assets/imgs/fromAddressIcon.png');
+const QRscanIcon = require('../assets/imgs/QRscanIcon.png');
+const rightArrow = require('../assets/imgs/rightArrow.png');
 
 const Viewed = [
   require('../assets/imgs/project5.jpg'),
@@ -52,5 +55,8 @@ export default {
   addUserIcon,
   newFriendIcon,
   addPhoneIcon,
-  addPhone
+  addPhone,
+  fromAddressIcon,
+  QRscanIcon,
+  rightArrow
 };
