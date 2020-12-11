@@ -16,6 +16,7 @@ import SettingsScreen from '../screens/Settings';
 import Contacts from '../screens/Contacts';
 import Friend from '../screens/Friend';
 import Mobile from '../screens/Mobile';
+import AddContacts from '../screens/AddContacts';
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
@@ -173,6 +174,24 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Mobile Contacts"
+              search
+              navigation={navigation}
+              scene={scene}
+              back
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      
+      
+      <Stack.Screen
+        name="AddContacts"
+        component={AddContacts}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Add Contacts"
               search
               navigation={navigation}
               scene={scene}

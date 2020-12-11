@@ -60,7 +60,7 @@ const AddUserButton = ({ isWhite, style, navigation }) => (
 );
 
 const AddPhoneButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Mobile')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('AddContacts')}>
     <Image
       style={{width:30, height:30, resizeMode:'stretch'}}
       source={Images.addPhoneIcon}
