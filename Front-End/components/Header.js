@@ -113,7 +113,7 @@ class Header extends React.Component {
         right
         color="black"
         style={styles.search}
-        placeholder="What are you looking for?"
+        placeholder="Who are you looking for?"
         placeholderTextColor={'#8898AA'}
         onFocus={() => { Keyboard.dismiss(); navigation.navigate('Pro') }}
         iconContent={
@@ -134,14 +134,14 @@ class Header extends React.Component {
         >
           <Block row middle>
             <Icon
-              name="bulb"
+              name="chat-round2x"
               family="NowExtra"
               size={18}
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
             <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
-              {optionLeft || 'Beauty'}
+              {optionLeft || 'Chat'}
             </Text>
           </Block>
         </Button>
@@ -149,13 +149,13 @@ class Header extends React.Component {
           <Block row middle>
             <Icon
               size={18}
-              name="bag-162x"
+              name="agenda-bookmark2x"
               family="NowExtra"
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
             <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
-              {optionRight || 'Fashion'}
+              {optionRight || 'Contacts'}
             </Text>
           </Block>
         </Button>

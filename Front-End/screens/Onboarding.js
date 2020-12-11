@@ -31,7 +31,7 @@ export default class Onboarding extends React.Component {
                   One Chat
                   </Text>
               </Block>
-              <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+              <Block >
                 <Input
                   placeholder="Nick Name"
                   shadowless
@@ -46,7 +46,7 @@ export default class Onboarding extends React.Component {
                   }
                 />
               </Block>
-              <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+              <Block >
                 <Input
                   placeholder="Phone Number"
                   shadowless
@@ -61,7 +61,7 @@ export default class Onboarding extends React.Component {
                   }
                 />
               </Block>
-              <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+              <Block >
                 <Input
                   placeholder="SMS Verification Code"
                   shadowless
@@ -113,10 +113,10 @@ const styles = StyleSheet.create({
   padded: {
     flex:1,
     justifyContent:'center',
-    paddingHorizontal: theme.SIZES.BASE * 2,
   },
   button: {
     height: theme.SIZES.BASE * 3,
+    width: width - theme.SIZES.BASE * 12,
     shadowRadius: 0,
     shadowOpacity: 0,
     borderRadius:20
