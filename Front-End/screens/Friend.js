@@ -106,7 +106,7 @@ export default class Friend extends React.Component {
   render() {
     return (
       <Block flex>
-        <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Mobile')}>
           <Block row style={styles.newFriendRow}>
             <Image
               style={styles.addPhone}

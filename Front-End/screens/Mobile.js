@@ -89,6 +89,9 @@ const ContactsItem = ({ item, onPress, style }) => (
     <Block row style={{ alignItems: "center" }}>
       <Image source={Images.ItemUser} style={styles.itemUser} />
       <Text style={styles.nickName}>{item.name}</Text>
+      <Block style={styles.addButtonItem} flex>
+        <Button textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18, textWeight: 'bold' }} style={styles.addButton}>Add</Button>
+      </Block>
     </Block>
   </TouchableOpacity>
 );
@@ -106,15 +109,6 @@ export default class Moblie extends React.Component {
   render() {
     return (
       <Block flex>
-        <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
-          <Block row style={styles.newFriendRow}>
-            <Image
-              style={styles.addPhone}
-              source={Images.addPhone}
-            />
-            <Text bold size={20} color="orange" style={{paddingLeft:20}}>New Friends</Text>
-          </Block>
-        </TouchableOpacity>
         <ScrollView style={styles.container}>
           <FlatList
             data={contactsDATA}
@@ -134,8 +128,8 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     padding: 10,
-    borderTopColor:'grey',
-    borderTopWidth:1,
+    borderTopColor: 'grey',
+    borderTopWidth: 1,
   },
   rightCell: {
     padding: 10,
@@ -181,19 +175,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
-  addPhone:{
-    width: 40,
-    height: 40,
-    resizeMode: 'stretch'
+  addButtonItem: {
+    alignItems:'flex-end'
   },
-  newFriendRow:{
-    paddingHorizontal:26,
-    paddingVertical:10,
-    alignItems:'center',
-    borderColor:'orange',
-    borderRadius:20,
-    borderWidth:2,
-    marginHorizontal:26,
-    marginVertical:10
+  addButton: {
+    backgroundColor: 'green',
+    borderRadius: 8,
+    width: 90
   }
 });
