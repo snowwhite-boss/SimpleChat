@@ -54,11 +54,26 @@ const PlusButton = (props) => {
         </TouchableOpacity>
 
       }>
-      <MenuItem onPress={() => { _menu.hide(); }}> New Chat </MenuItem>
+      <MenuItem onPress={() => { _menu.hide(); props.navigation.navigate('Contacts') }}>
+        <Icon
+          family="NowExtra"
+          size={16}
+          name="chat-round2x"
+        /> &nbsp;&nbsp;&nbsp;&nbsp;New Chat </MenuItem>
       <MenuDivider />
-      <MenuItem onPress={() => { _menu.hide(); }}> Add Contacts </MenuItem>
+      <MenuItem onPress={() => { _menu.hide(); props.navigation.navigate('AddContacts')}}>
+        <Icon
+          family="NowExtra"
+          size={16}
+          name="simple-add2x"
+        /> &nbsp;&nbsp;&nbsp;&nbsp;Add Contacts </MenuItem>
       <MenuDivider />
-      <MenuItem onPress={() => { _menu.hide(); }}> QR Scan </MenuItem>
+      <MenuItem onPress={() => { _menu.hide(); props.navigation.navigate('QRScan')}}>
+        <Icon
+          family="NowExtra"
+          size={16}
+          name="mobile2x"
+        /> &nbsp;&nbsp;&nbsp;&nbsp;QR Scan </MenuItem>
     </Menu>
     // </TouchableOpacity>
   )
