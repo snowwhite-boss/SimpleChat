@@ -18,10 +18,11 @@ import Friend from '../screens/Friend';
 import Mobile from '../screens/Mobile';
 import AddContacts from '../screens/AddContacts';
 import QRScan from '../screens/QRScan';
+import MyQR from '../screens/MyQR';
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
-import { Header, Icon} from '../components';
+import { Header, Icon } from '../components';
 import { nowTheme, tabs } from "../constants";
 
 const { width } = Dimensions.get("screen");
@@ -33,9 +34,9 @@ function ComponentsStack(props) {
   return (
     <Stack.Navigator initialRouteName="Components" mode="card" headerMode="screen">
       <Stack.Screen name="Components" component={Components} options={{
-        header:({ navigation, scene }) => (<Header title="Components" navigation={navigation} scene={scene} />),
+        header: ({ navigation, scene }) => (<Header title="Components" navigation={navigation} scene={scene} />),
         backgroundColor: "#FFFFFF"
-      }}/>
+      }} />
     </Stack.Navigator>
   );
 }
@@ -59,7 +60,7 @@ function AccountStack(props) {
         component={Register}
         options={{
           header: ({ navigation, scene }) => (
-            <Header 
+            <Header
               transparent
               title="Create Account"
               navigation={navigation}
@@ -133,7 +134,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
       <Stack.Screen
         name="Contacts"
         component={Contacts}
@@ -150,7 +151,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
       <Stack.Screen
         name="Friend"
         component={Friend}
@@ -167,7 +168,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
       <Stack.Screen
         name="Mobile"
         component={Mobile}
@@ -184,7 +185,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
       <Stack.Screen
         name="AddContacts"
         component={AddContacts}
@@ -201,25 +202,41 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
       <Stack.Screen
         name="QRScan"
         component={QRScan}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title=""
-              search
+              title="QR Scaning"
               navigation={navigation}
               scene={scene}
-              back
+              none
             />
           ),
           headerTransparent: true,
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+
+      <Stack.Screen
+        name="MyQR"
+        component={MyQR}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="My QR Code"
+              navigation={navigation}
+              scene={scene}
+              back
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+
+
     </Stack.Navigator>
   );
 }
@@ -269,7 +286,7 @@ export default function OnboardingStack(props) {
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
         name="Onboarding"
-        component={Onboarding}
+        component={MyQR}
         option={{
           headerTransparent: true
         }}

@@ -17,13 +17,13 @@ import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
 
-export default class QRScan extends React.Component {
+export default class MyQR extends React.Component {
   render() {
     return (
       <Block flex style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('MyQR')}>
-          <Image source={Images.QRscanIcon} style={styles.tip} />
-        </TouchableOpacity>
+        <Block style={styles.card}>
+        <Image source={Images.QR} style={styles.tip} />
+        </Block>
       </Block>
     );
   }
@@ -31,14 +31,20 @@ export default class QRScan extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    padding: 20,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'grey'
   },
   tip: {
-    width: 40,
-    height: 40,
+    width: 300,
+    height: 300,
     resizeMode: 'stretch',
-    marginRight: 20,
-    marginVertical: 20
+    margin:theme.SIZES.BASE*3,
   },
+  card:{
+    borderRadius:10,
+    backgroundColor:'white',
+  }
   
 });

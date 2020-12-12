@@ -21,7 +21,7 @@ export default class AddContacts extends React.Component {
   render() {
     return (
       <Block flex style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('QRScan')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('QRScan')}>
           <Block row style={styles.item}>
             <Image source={Images.QRscanIcon} style={styles.tip} />
             <Block>
@@ -36,7 +36,7 @@ export default class AddContacts extends React.Component {
           </Block>
         </TouchableOpacity>
         <Block style={styles.break} />
-        <TouchableOpacity onPress={() => navigation.navigate('Mobile')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Mobile')}>
           <Block row style={styles.item}>
             <Image source={Images.fromAddressIcon} style={styles.tip} />
             <Block>
