@@ -21,7 +21,7 @@ export default class QRScan extends React.Component {
   render() {
     return (
       <Block flex style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate('MyQR')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('MyQR')}>
           <Image source={Images.QRscanIcon} style={styles.tip} />
         </TouchableOpacity>
       </Block>
@@ -31,14 +31,13 @@ export default class QRScan extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    padding: 20,
+    justifyContent:'flex-end'
   },
   tip: {
     width: 40,
     height: 40,
     resizeMode: 'stretch',
-    marginRight: 20,
-    marginVertical: 20
   },
   
 });
