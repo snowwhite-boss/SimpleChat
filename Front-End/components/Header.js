@@ -2,7 +2,7 @@ import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard, Image } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
-
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
@@ -39,21 +39,35 @@ const BasketButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const PlusButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
-    <Icon
-      family="NowExtra"
-      size={16}
-      name="simple-add2x"
-      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
-    />
-  </TouchableOpacity>
-);
+const PlusButton = (props) => {
+  let _menu = null;
+
+  return (
+    <Menu
+      ref={(ref) => (_menu = ref)}
+      button={
+        <TouchableOpacity onPress={() => _menu.show()}>
+          <Image
+            source={{ uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/menu_icon.png', }}
+            style={{ width: 30, height: 30 }}
+          />
+        </TouchableOpacity>
+
+      }>
+      <MenuItem onPress={() => { _menu.hide(); }}> New Chat </MenuItem>
+      <MenuDivider />
+      <MenuItem onPress={() => { _menu.hide(); }}> Add Contacts </MenuItem>
+      <MenuDivider />
+      <MenuItem onPress={() => { _menu.hide(); }}> QR Scan </MenuItem>
+    </Menu>
+    // </TouchableOpacity>
+  )
+};
 
 const AddUserButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Friend')}>
     <Image
-      style={{width:30, height:30, resizeMode:'stretch'}}
+      style={{ width: 30, height: 30, resizeMode: 'stretch' }}
       source={Images.addUserIcon}
     />
   </TouchableOpacity>
@@ -62,7 +76,7 @@ const AddUserButton = ({ isWhite, style, navigation }) => (
 const AddPhoneButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('AddContacts')}>
     <Image
-      style={{width:30, height:30, resizeMode:'stretch'}}
+      style={{ width: 30, height: 30, resizeMode: 'stretch' }}
       source={Images.addPhoneIcon}
     />
   </TouchableOpacity>
@@ -300,8 +314,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     paddingTop: iPhoneX ? theme.SIZES.BASE / 4 : theme.SIZES.BASE,
     zIndex: 5,
-    backgroundColor:'#ff009622',
-    alignItems:'center'
+    backgroundColor: '#ff009622',
+    alignItems: 'center'
   },
   shadow: {
     backgroundColor: theme.COLORS.WHITE,

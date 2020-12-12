@@ -15,11 +15,6 @@ import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
 const { width } = Dimensions.get("screen");
-import {
-  TabView,
-  TabBar,
-  SceneMap
-} from 'react-native-tab-view';
 
 const chatDATA = [
   {
