@@ -27,7 +27,7 @@ exports.findAll = function (req, res) {
         } else {
             res.send(notes);
         }
-    });
+    }).sort({ updatedAt: 'desc'});
 };
 
 exports.findOne = function (req, res) {
