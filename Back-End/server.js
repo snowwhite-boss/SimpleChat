@@ -53,7 +53,7 @@ app.get('/', function(req, res){
 });
 
 require('./app/routes/users.routes.js')(app);
-require('./app/routes/location.routes.js')(app);
+require('./app/routes/notifications.routes.js')(app);
 
 http.listen(PORT, HOST, () => {
     console.log(`listening on *:${PORT}`);

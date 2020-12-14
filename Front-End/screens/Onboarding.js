@@ -25,7 +25,6 @@ export default class Onboarding extends React.Component {
     return "+70123456789";
   }
 
-
   // getting user information
   componentDidMount() {
     let phoneNumber = this.getPhoneNumber();
