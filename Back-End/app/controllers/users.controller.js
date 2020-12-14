@@ -7,7 +7,11 @@ exports.create = function (req, res) {
         return res.status(400).send({ message: "Note can not be empty..." });
     }
 
-    var user = new User({ name: req.body.name || "Untitled User", phone: req.body.phone });
+    var user = new User({ 
+        name: req.body.name || "Untitled User", 
+        phone: req.body.phone,
+        friends: req.body.friends 
+    });
 
     user.save(function (err, data) {
         if (err) {
@@ -21,6 +25,8 @@ exports.create = function (req, res) {
 
 exports.findAll = function (req, res) {
     // Retrieve and return all notes from the database.
+    
+
     User.find(function (err, notes) {
         if (err) {
             res.status(500).send({ message: "Some error occurred while retrieving notes." });

@@ -6,6 +6,11 @@ import { Asset } from 'expo-asset';
 import { Block, GalioProvider } from 'galio-framework';
 import { NavigationContainer } from '@react-navigation/native';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import userReducer from './reducer/userReducer';
+const store = createStore(userReducer);
+
 import Screens from './navigation/Screens';
 import { Images, articles, nowTheme } from './constants';
 
@@ -63,6 +68,7 @@ export default class App extends React.Component {
       );
     } else {
       return (
+        <Provider store={store}>
         <NavigationContainer>
           <GalioProvider theme={nowTheme}>
             <Block flex>
@@ -70,6 +76,7 @@ export default class App extends React.Component {
             </Block>
           </GalioProvider>
         </NavigationContainer>
+        </Provider>
       );
     }
   }

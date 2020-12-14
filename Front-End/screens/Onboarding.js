@@ -1,17 +1,17 @@
 import React from 'react';
 import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
+// connect to Redux state
+import { connect } from "react-redux";
 
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
 import PhoneInput from 'react-phone-number-input'
-// import 'react-phone-number-input/style.css'
-// Server Client
-import Client from '../api/Client';
 
-export default class Onboarding extends React.Component {
+import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
+class Onboarding extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,29 +22,24 @@ export default class Onboarding extends React.Component {
 
   // getting phone number
   getPhoneNumber() {
-    return "+70123456789";
+    return "+701234567891";
   }
 
   // getting user information
   componentDidMount() {
     let phoneNumber = this.getPhoneNumber();
-    Client.get(`users/${phoneNumber}`)
+    this.props.isExsitUser(phoneNumber)
       .then(async res => {
-        console.log(res.data.name, " login");
-        if (res.data.name != undefined)
+        this.props.setCurrentUser(res.data)
+        if(res.data)
           this.props.navigation.navigate('Home');
       })
       .catch(error => console.log("login error => ", error));
   }
 
   SignUp() {
-    Client.post(`users/`, { name: this.state.name, phone: this.state.phoneNumber })
-      .then(async res => {
-        console.log(res, " signUp");
-        if (res.status == 200)
-          this.props.navigation.navigate('Home');
-      })
-      .catch(error => console.log("login error => ", error));
+    this.props.signUp(this.state.name, this.state.phoneNumber);
+    this.props.navigation.navigate('Home');
   }
 
   render() {
@@ -164,3 +159,21 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
 });
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    signUp: (name, phoneNumber) => signUp(dispatch, name, phoneNumber),
+    setCurrentUser: (phoneNumber) => SetCurrentUser(dispatch, phoneNumber),
+    isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Onboarding);

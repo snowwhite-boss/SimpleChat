@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
     name: String,
-    phone: String
+    phone: String,
+    friends: Array
 }, {
     timestamps: true
 });

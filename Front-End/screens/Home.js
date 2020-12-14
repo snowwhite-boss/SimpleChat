@@ -50,7 +50,7 @@ const renderChatItem = ({ item }) => {
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-export default class TeamReport extends React.Component {
+class ChatHistory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -166,3 +166,21 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+    notifications: state.notifications
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getNotifications: () => GetNotifications(dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatHistory);

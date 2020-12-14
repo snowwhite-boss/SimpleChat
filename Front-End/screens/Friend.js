@@ -16,7 +16,8 @@ const { height, width } = Dimensions.get("screen");
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
-
+// Server Client
+import Client from '../api/Client';
 const contactsDATA = [
   {
     id: "0",
@@ -103,6 +104,15 @@ const renderContactsItem = ({ item }) => {
 };
 
 export default class Friend extends React.Component {
+  componentDidMount() {
+    Client.get(`notifications`)
+      .then(async res => {
+        console.log(res.data, " notifications");
+        this.setState({ notifications: res.data })
+      })
+      .catch(error => console.log("login error => ", error));
+  }
+  
   render() {
     return (
       <Block flex>
