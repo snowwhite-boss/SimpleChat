@@ -8,8 +8,21 @@ import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
 import PhoneInput from 'react-phone-number-input'
 // import 'react-phone-number-input/style.css'
+// Server Client
+import Client from '../api/Client';
 
 export default class Onboarding extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name:'',
+      phoneNumber:'',
+    };
+  }
+  SignUp() {
+    alert(this.state.name + this.state.phoneNumber);
+  }
+
   render() {
     const { navigation } = this.props;
 
@@ -44,6 +57,8 @@ export default class Onboarding extends React.Component {
                       family="NowExtra"
                     />
                   }
+                  value={this.state.name}
+                  onChangeText={text => this.setState({name:text})}
                 />
               </Block>
               <Block >
@@ -59,6 +74,8 @@ export default class Onboarding extends React.Component {
                       family="NowExtra"
                     />
                   }
+                  value={this.state.phoneNumber}
+                  onChangeText={text => this.setState({phoneNumber:text})}
                 />
               </Block>
               <Block >
@@ -88,7 +105,8 @@ export default class Onboarding extends React.Component {
                   shadowless
                   style={styles.button}
                   color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('Home')}
+                  // onPress={() => navigation.navigate('Home')}
+                  onPress={() => this.SignUp()}
                 >
                   <Text
                     style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}

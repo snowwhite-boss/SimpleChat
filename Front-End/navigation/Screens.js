@@ -24,6 +24,8 @@ import CustomDrawerContent from "./Menu";
 // header for screens
 import { Header, Icon } from '../components';
 import { nowTheme, tabs } from "../constants";
+// Server Client
+import Client from '../api/Client';
 
 const { width } = Dimensions.get("screen");
 
@@ -281,18 +283,44 @@ function AppStack(props) {
   );
 }
 
+// getting phone number
+function getPhoneNumber() {
+  return "+70123456789";
+}
+
+// getting user information
+function isSignUp() {
+  let phoneNumber = getPhoneNumber();
+  Client.get(`users?phone=${phoneNumber}`)
+    .then(async res => {
+      console.log("registered user");
+      return true;
+    })
+    .catch(error => console.log(error));
+  return false;
+}
+
 export default function OnboardingStack(props) {
-  return (
-    <Stack.Navigator mode="card" headerMode="none">
-      <Stack.Screen
-        name="Onboarding"
-        component={Onboarding}
-        option={{
-          headerTransparent: true
-        }}
-      />
-      <Stack.Screen name="Home" component={HomeStack} />
-    </Stack.Navigator>
-  );
+  if (isSignUp()) {
+    return (
+      <Stack.Navigator mode="card" headerMode="none">
+        <Stack.Screen name="Home" component={HomeStack} />
+      </Stack.Navigator>
+    );
+  } else {
+    return (
+      <Stack.Navigator mode="card" headerMode="none">
+        <Stack.Screen
+          name="Onboarding"
+          component={Onboarding}
+          option={{
+            headerTransparent: true
+          }}
+        />
+        <Stack.Screen name="Home" component={HomeStack} />
+      </Stack.Navigator>
+    );
+
+  }
 }
 
