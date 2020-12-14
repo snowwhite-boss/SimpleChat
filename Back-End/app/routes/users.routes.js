@@ -9,9 +9,6 @@ module.exports = function(app) {
     app.get('/users', users.findAll);
 
     // Retrieve a single Note with noteId
-    app.get('/users/:userId', users.findOne);
-    
-    // Retrieve a single Note with noteId
     app.get('/users/:phone', users.findOne);
 
     // Update a Note with noteId

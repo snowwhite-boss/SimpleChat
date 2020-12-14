@@ -20,7 +20,14 @@ export default class Onboarding extends React.Component {
     };
   }
   SignUp() {
-    alert(this.state.name + this.state.phoneNumber);
+      let phoneNumber = "+70123456789";
+      Client.get(`users?phone=${phoneNumber}`)
+        .then(async res => {
+          alert("registered user");
+          return true;
+        })
+        .catch(error => alert(error));
+      return false;
   }
 
   render() {

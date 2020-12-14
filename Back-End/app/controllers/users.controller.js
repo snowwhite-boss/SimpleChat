@@ -2,6 +2,7 @@ var User = require('../models/users.model.js');
 
 exports.create = function (req, res) {
     // Create and Save a new Note
+    
     if (!req.body) {
         return res.status(400).send({ message: "Note can not be empty..." });
     }
@@ -30,8 +31,8 @@ exports.findAll = function (req, res) {
 };
 
 exports.findOne = function (req, res) {
-    // Find a single note with a noteId
-    User.findById(req.params.noteId, function (err, data) {
+    // Find a single user with a phone
+    User.findOne({"phone":req.params.phone}, function (err, data) {
         if (err) {
             res.status(500).send({ message: "Could not retrieve note with id " + req.params.noteId });
         } else {

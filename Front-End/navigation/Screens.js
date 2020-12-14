@@ -293,7 +293,7 @@ function isSignUp() {
   let phoneNumber = getPhoneNumber();
   Client.get(`users?phone=${phoneNumber}`)
     .then(async res => {
-      console.log("registered user");
+      alert("registered user");
       return true;
     })
     .catch(error => console.log(error));
