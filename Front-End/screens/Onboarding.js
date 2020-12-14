@@ -15,19 +15,31 @@ export default class Onboarding extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name:'',
-      phoneNumber:'',
+      name: '',
+      phoneNumber: '',
     };
   }
+
+  // getting phone number
+  getPhoneNumber() {
+    return "+701234567891";
+  }
+
+
+  // getting user information
+  componentDidMount() {
+    let phoneNumber = this.getPhoneNumber();
+    Client.get(`users/${phoneNumber}`)
+      .then(async res => {
+        console.log(res.data.name, " login");
+        if(res.data.name != undefined)
+        this.props.navigation.navigate('Home'); 
+      })
+      .catch(error => console.log("login error => ", error));
+  }
+
   SignUp() {
-      let phoneNumber = "+70123456789";
-      Client.get(`users?phone=${phoneNumber}`)
-        .then(async res => {
-          alert("registered user");
-          return true;
-        })
-        .catch(error => alert(error));
-      return false;
+    alert(this.state.name + this.state.phoneNumber);
   }
 
   render() {
@@ -65,7 +77,7 @@ export default class Onboarding extends React.Component {
                     />
                   }
                   value={this.state.name}
-                  onChangeText={text => this.setState({name:text})}
+                  onChangeText={text => this.setState({ name: text })}
                 />
               </Block>
               <Block >
@@ -82,7 +94,7 @@ export default class Onboarding extends React.Component {
                     />
                   }
                   value={this.state.phoneNumber}
-                  onChangeText={text => this.setState({phoneNumber:text})}
+                  onChangeText={text => this.setState({ phoneNumber: text })}
                 />
               </Block>
               <Block >
@@ -136,14 +148,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE,
   },
   padded: {
-    flex:1,
-    justifyContent:'center',
+    flex: 1,
+    justifyContent: 'center',
   },
   button: {
     height: theme.SIZES.BASE * 3,
     width: width - theme.SIZES.BASE * 12,
     shadowRadius: 0,
     shadowOpacity: 0,
-    borderRadius:20
+    borderRadius: 20
   },
 });
