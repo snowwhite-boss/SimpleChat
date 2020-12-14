@@ -17,7 +17,6 @@ import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
 const { width } = Dimensions.get("screen");
-import { GetNotifications } from "../actions/userActions";
 
 const ChatItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={item.IsSticky ? styles.stickyRow : styles.unStickyRow}>

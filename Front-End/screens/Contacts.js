@@ -13,76 +13,12 @@ import { Block, Text, theme } from "galio-framework";
 
 const { height, width } = Dimensions.get("screen");
 
+// connect to Redux state
+import { connect } from "react-redux";
+
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
-
-const contactsDATA = [
-  {
-    id: "0",
-    name: "Zen"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-];
 
 const ContactsItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -102,7 +38,7 @@ const renderContactsItem = ({ item }) => {
   );
 };
 
-export default class Contacts extends React.Component {
+class Contacts extends React.Component {
   render() {
     return (
       <Block flex>
@@ -117,7 +53,7 @@ export default class Contacts extends React.Component {
         </TouchableOpacity>
         <ScrollView style={styles.container}>
           <FlatList
-            data={contactsDATA}
+            data={this.props.currentUser.friends}
             renderItem={renderContactsItem}
             keyExtractor={(item) => item.id}
           />
@@ -198,3 +134,11 @@ const styles = StyleSheet.create({
     marginVertical: 10
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(Contacts);
