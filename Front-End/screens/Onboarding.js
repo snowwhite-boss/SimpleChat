@@ -22,7 +22,7 @@ export default class Onboarding extends React.Component {
 
   // getting phone number
   getPhoneNumber() {
-    return "+701234567891";
+    return "+70123456789";
   }
 
 
@@ -32,14 +32,20 @@ export default class Onboarding extends React.Component {
     Client.get(`users/${phoneNumber}`)
       .then(async res => {
         console.log(res.data.name, " login");
-        if(res.data.name != undefined)
-        this.props.navigation.navigate('Home'); 
+        if (res.data.name != undefined)
+          this.props.navigation.navigate('Home');
       })
       .catch(error => console.log("login error => ", error));
   }
 
   SignUp() {
-    alert(this.state.name + this.state.phoneNumber);
+    Client.post(`users/`, { name: this.state.name, phone: this.state.phoneNumber })
+      .then(async res => {
+        console.log(res, " signUp");
+        if (res.status == 200)
+          this.props.navigation.navigate('Home');
+      })
+      .catch(error => console.log("login error => ", error));
   }
 
   render() {
