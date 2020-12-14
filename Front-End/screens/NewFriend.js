@@ -11,7 +11,7 @@ import {
   PermissionsAndroid,
   Platform
 } from "react-native";
-import Contacts from 'react-native-contacts';
+var Contacts = require('react-native-contacts');
 // import AddressBook from 'react-native-addressbook'
 import { Block, Text, theme } from "galio-framework";
 
@@ -43,43 +43,32 @@ const renderContactsItem = ({ item }) => {
 
 export default class NewFriend extends React.Component {
   componentDidMount() {
-    // AddressBook.getContacts( (err, contacts) => {
-    //   if(err && err.type === 'permissionDenied'){
-    //     console.log(err)
-    //   }
-    //   else{
-    //     console.log(contacts)
-    //   }
-    // })
-    if (Platform.OS === 'android') {
+    if(Platform.OS === 'ios'){
+      Contacts.getAll((err, contacts) => {
+        if (err) {
+          throw err;
+        }
+        // contacts returned
+        console.log("contacts => ", contacts);
+      })
+    }else if(Platform.OS === 'android'){
       PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-        title: 'Contacts',
-        message: 'This app would like to view your contacts.',
-      }).then(() => {
-        this.loadContacts();
-      }
-      );
-    } else {
-      this.loadContacts();
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        {
+          title: 'Contacts',
+          message: 'This app would like to view your contacts.'
+        }
+      ).then(() => {
+        Contacts.getAll((err, contacts) => {
+          if (err === 'denied'){
+            // error
+          } else {
+            // contacts returned in Array
+            console.log("contacts => ", contacts);
+          }
+        })
+      })
     }
-  }
-
-  loadContacts() {
-    Contacts.getAll((err, contacts) => {
-      contacts.sort(
-        (a, b) =>
-          a.givenName.toLowerCase() > b.givenName.toLowerCase(),
-      );
-      console.log('contacts -> ', contacts);
-      if (err === 'denied') {
-        alert('Permission to access contacts was denied');
-        console.warn('Permission to access contacts was denied');
-      } else {
-        setContacts(contacts);
-        console.log('contacts', contacts);
-      }
-    });
   }
   render() {
     return (
