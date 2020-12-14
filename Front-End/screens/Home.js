@@ -19,12 +19,20 @@ const { width } = Dimensions.get("screen");
 import Client from '../api/Client';
 
 const ChatItem = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Block row style={{ alignItems: "center" }}>
+  <TouchableOpacity onPress={onPress} style={item.IsSticky ? styles.stickyRow : styles.unStickyRow}>
+    <Block row>
       <Image source={Images.ItemUser} style={styles.itemUser} />
+      {item.count ? <Text size={16} style={item.IsNotify ? styles.notyCount : styles.nullPoint}>{item.IsNotify ? item.count : ''}</Text> : null}
       <Block>
         <Text bold style={styles.nickName}>{item.name}</Text>
         <Text style={styles.itemContent}>{item.sentence}</Text>
+      </Block>
+      <Block style={styles.timeInfo} flex>
+        <Text size={16}>{item.updatedAt}</Text>
+        {item.IsNotify ? null : <Image
+          style={{ width: 20, height: 20, resizeMode: 'stretch' }}
+          source={Images.BellOff}
+        />}
       </Block>
     </Block>
   </TouchableOpacity>
@@ -66,7 +74,7 @@ export default class TeamReport extends React.Component {
           <FlatList
             data={this.state.notifications}
             renderItem={renderChatItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
           />
         </ScrollView>
         <Footer navigation={this.props.navigation} left />
@@ -105,12 +113,19 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: nowTheme.COLORS.HEADER
   },
-  item: {
-    marginBottom: 5,
-    paddingVertical: 8,
+  stickyRow: {
+    padding: 8,
     marginHorizontal: 16,
     borderBottomColor: 'grey',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    backgroundColor: '#eeeeee'
+  },
+  unStickyRow: {
+    padding: 8,
+    marginHorizontal: 16,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    backgroundColor: '#ffffff'
   },
   itemUser: {
     width: 50,
@@ -126,4 +141,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
+  notyCount: {
+    marginLeft: -30,
+    marginRight: 10,
+    backgroundColor: 'red',
+    color: 'white',
+    textAlign: 'center',
+    borderRadius: 10,
+    width: 20,
+    height: 20
+  },
+  nullPoint: {
+    marginLeft: -20,
+    marginRight: 10,
+    backgroundColor: 'red',
+    color: 'white',
+    textAlign: 'center',
+    borderRadius: 10,
+    width: 10,
+    height: 10
+  },
+  timeInfo: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  }
 });

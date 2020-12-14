@@ -21,6 +21,7 @@ const fromAddressIcon = require('../assets/imgs/fromAddressIcon.png');
 const QRscanIcon = require('../assets/imgs/QRscanIcon.png');
 const rightArrow = require('../assets/imgs/rightArrow.png');
 const QR = require('../assets/imgs/QR.png');
+const BellOff = require('../assets/imgs/bellOff.png');
 
 const Viewed = [
   require('../assets/imgs/project5.jpg'),
@@ -60,5 +61,6 @@ export default {
   fromAddressIcon,
   QRscanIcon,
   rightArrow,
-  QR
+  QR,
+  BellOff
 };
