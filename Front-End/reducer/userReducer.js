@@ -14,6 +14,4 @@ function userReducer(state = initialState, action){
   }
 }
 
-export default combineReducers({
-  users: userReducer
-});
+export default userReducer;

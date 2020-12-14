@@ -1,5 +1,3 @@
-import { apiConfig } from '../config/config';
-const USER_API = `${apiConfig.baseUrl}users/`;
 // Server Client
 import Client from '../api/Client';
 
@@ -8,17 +6,17 @@ import Client from '../api/Client';
 // Used in LoginSignup/Signup component
 export function signUp(dispatch, name, phoneNumber, callback) {
     Client.post(`users/`, { name: name, phone: phoneNumber })
-      .then(async res => {
-          console.log("res => ", res)
-        if (res.status == 200){
-            // set user info in Redux state
-            dispatch({
-                type: "CURRENT_USER",
-                payload: res.data
-            });
-        }
-      })
-      .catch(error => console.log("login error => ", error));
+        .then(async res => {
+            console.log("res => ", res)
+            if (res.status == 200) {
+                // set user info in Redux state
+                dispatch({
+                    type: "CURRENT_USER",
+                    payload: res.data
+                });
+            }
+        })
+        .catch(error => console.log("login error => ", error));
 }
 
 
@@ -32,3 +30,16 @@ export function SetCurrentUser(dispatch, user) {
         payload: user
     });
 }
+
+// export function GetNotifications(dispatch, callback) {
+//     Client.get(`notifications/${phoneNumber}`)
+//         .then(async res => {
+//             console.log(res.data, " notifications");
+//             // set user info in Redux state
+//             dispatch({
+//                 type: "NOTIFICATIONS",
+//                 payload: res.data
+//             });
+//         })
+//         .catch(error => console.log("login error => ", error));
+// }

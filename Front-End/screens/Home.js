@@ -9,14 +9,15 @@ import {
   ScrollView
 } from "react-native";
 import { Block, theme, Text } from "galio-framework";
+// connect to Redux state
+import { connect } from "react-redux";
 
 import { Card, Button, Icon, Footer } from "../components";
 import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
 const { width } = Dimensions.get("screen");
-// Server Client
-import Client from '../api/Client';
+import { GetNotifications } from "../actions/userActions";
 
 const ChatItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={item.IsSticky ? styles.stickyRow : styles.unStickyRow}>
@@ -53,18 +54,9 @@ const initialLayout = { width: Dimensions.get('window').width };
 class ChatHistory extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      notifications: []
-    };
   }
 
   componentDidMount() {
-    Client.get(`notifications`)
-      .then(async res => {
-        console.log(res.data, " notifications");
-        this.setState({ notifications: res.data })
-      })
-      .catch(error => console.log("login error => ", error));
   }
   //export default function Home() {
   render() {
@@ -72,7 +64,7 @@ class ChatHistory extends React.Component {
       <Block flex>
         <ScrollView style={styles.container}>
           <FlatList
-            data={this.state.notifications}
+            data={this.props.currentUser.notifications}
             renderItem={renderChatItem}
             keyExtractor={(item) => item._id}
           />
@@ -170,17 +162,11 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    notifications: state.notifications
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getNotifications: () => GetNotifications(dispatch),
   };
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatHistory);
+export default connect(mapStateToProps)(ChatHistory);

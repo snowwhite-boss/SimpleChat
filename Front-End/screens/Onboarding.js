@@ -22,7 +22,7 @@ class Onboarding extends React.Component {
 
   // getting phone number
   getPhoneNumber() {
-    return "+701234567891";
+    return "+70123456789";
   }
 
   // getting user information
