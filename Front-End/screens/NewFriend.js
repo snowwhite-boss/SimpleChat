@@ -7,8 +7,12 @@ import {
   Dimensions,
   ScrollView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  PermissionsAndroid,
+  Platform
 } from "react-native";
+import Contacts from 'react-native-contacts';
+// import AddressBook from 'react-native-addressbook'
 import { Block, Text, theme } from "galio-framework";
 
 const { height, width } = Dimensions.get("screen");
@@ -16,73 +20,7 @@ const { height, width } = Dimensions.get("screen");
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
-// Server Client
-import Client from '../api/Client';
 const contactsDATA = [
-  {
-    id: "0",
-    name: "Zen"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
 ];
 
 const ContactsItem = ({ item, onPress, style }) => (
@@ -103,16 +41,46 @@ const renderContactsItem = ({ item }) => {
   );
 };
 
-export default class Friend extends React.Component {
+export default class NewFriend extends React.Component {
   componentDidMount() {
-    Client.get(`notifications`)
-      .then(async res => {
-        console.log(res.data, " notifications");
-        this.setState({ notifications: res.data })
-      })
-      .catch(error => console.log("login error => ", error));
+    // AddressBook.getContacts( (err, contacts) => {
+    //   if(err && err.type === 'permissionDenied'){
+    //     console.log(err)
+    //   }
+    //   else{
+    //     console.log(contacts)
+    //   }
+    // })
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
+        title: 'Contacts',
+        message: 'This app would like to view your contacts.',
+      }).then(() => {
+        this.loadContacts();
+      }
+      );
+    } else {
+      this.loadContacts();
+    }
   }
-  
+
+  loadContacts() {
+    Contacts.getAll((err, contacts) => {
+      contacts.sort(
+        (a, b) =>
+          a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+      );
+      console.log('contacts -> ', contacts);
+      if (err === 'denied') {
+        alert('Permission to access contacts was denied');
+        console.warn('Permission to access contacts was denied');
+      } else {
+        setContacts(contacts);
+        console.log('contacts', contacts);
+      }
+    });
+  }
   render() {
     return (
       <Block flex>

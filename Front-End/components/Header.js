@@ -80,7 +80,7 @@ const PlusButton = (props) => {
 };
 
 const AddUserButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Friend')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('NewFriend')}>
     <Image
       style={{ width: 30, height: 30, resizeMode: 'stretch' }}
       source={Images.addUserIcon}

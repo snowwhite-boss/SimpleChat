@@ -14,7 +14,7 @@ import Articles from '../screens/Articles';
 import Onboarding from '../screens/Onboarding';
 import SettingsScreen from '../screens/Settings';
 import Contacts from '../screens/Contacts';
-import Friend from '../screens/Friend';
+import NewFriend from '../screens/NewFriend';
 import Mobile from '../screens/Mobile';
 import AddContacts from '../screens/AddContacts';
 import QRScan from '../screens/QRScan';
@@ -155,8 +155,8 @@ function HomeStack(props) {
       />
 
       <Stack.Screen
-        name="Friend"
-        component={Friend}
+        name="NewFriend"
+        component={NewFriend}
         options={{
           header: ({ navigation, scene }) => (
             <Header

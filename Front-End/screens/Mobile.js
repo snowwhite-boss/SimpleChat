@@ -18,70 +18,6 @@ import Images from "../constants/Images";
 import { Button, Footer } from "../components";
 
 const contactsDATA = [
-  {
-    id: "0",
-    name: "Zen"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
-  {
-    id: "1",
-    name: "Sergey"
-  },
-  {
-    id: "2",
-    name: "Boychik"
-  },
-  {
-    id: "3",
-    name: "Adalbert"
-  },
-  {
-    id: "4",
-    name: "John"
-  },
-  {
-    id: "5",
-    name: "Marcelino"
-  },
 ];
 
 const ContactsItem = ({ item, onPress, style }) => (
@@ -106,6 +42,7 @@ const renderContactsItem = ({ item }) => {
 };
 
 export default class Moblie extends React.Component {
+  
   render() {
     return (
       <Block flex>

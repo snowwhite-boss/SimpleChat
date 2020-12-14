@@ -38,11 +38,11 @@ const renderContactsItem = ({ item }) => {
   );
 };
 
-class Contacts extends React.Component {
+class FriendContacts extends React.Component {
   render() {
     return (
       <Block flex>
-        <TouchableOpacity onPress={() => navigation.navigate('Friend')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('NewFriend')}>
           <Block row style={styles.newFriendRow}>
             <Image
               style={styles.newFriendIcon}
@@ -141,4 +141,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Contacts);
+export default connect(mapStateToProps)(FriendContacts);
