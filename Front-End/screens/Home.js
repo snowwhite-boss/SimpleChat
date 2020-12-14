@@ -15,39 +15,8 @@ import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
 const { width } = Dimensions.get("screen");
-
-const chatDATA = [
-  {
-    id: "0",
-    name: "Zen",
-    content: "Hi, I am Zen."
-  },
-  {
-    id: "1",
-    name: "Sergey",
-    content: "Hi, I am Sergey."
-  },
-  {
-    id: "2",
-    name: "Boychik",
-    content: "Hi, I am Boychik."
-  },
-  {
-    id: "3",
-    name: "Adalbert",
-    content: "Hi, I am Adalbert."
-  },
-  {
-    id: "4",
-    name: "John",
-    content: "Hi, I am John."
-  },
-  {
-    id: "5",
-    name: "Marcelino",
-    content: "Hi, I am Marcelino."
-  },
-];
+// Server Client
+import Client from '../api/Client';
 
 const ChatItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -55,7 +24,7 @@ const ChatItem = ({ item, onPress, style }) => (
       <Image source={Images.ItemUser} style={styles.itemUser} />
       <Block>
         <Text bold style={styles.nickName}>{item.name}</Text>
-        <Text style={styles.itemContent}>{item.content}</Text>
+        <Text style={styles.itemContent}>{item.sentence}</Text>
       </Block>
     </Block>
   </TouchableOpacity>
@@ -74,13 +43,28 @@ const renderChatItem = ({ item }) => {
 const initialLayout = { width: Dimensions.get('window').width };
 
 export default class TeamReport extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notifications: []
+    };
+  }
+
+  componentDidMount() {
+    Client.get(`notifications`)
+      .then(async res => {
+        console.log(res.data, " notifications");
+        this.setState({ notifications: res.data })
+      })
+      .catch(error => console.log("login error => ", error));
+  }
   //export default function Home() {
   render() {
     return (
       <Block flex>
         <ScrollView style={styles.container}>
           <FlatList
-            data={chatDATA}
+            data={this.state.notifications}
             renderItem={renderChatItem}
             keyExtractor={(item) => item.id}
           />

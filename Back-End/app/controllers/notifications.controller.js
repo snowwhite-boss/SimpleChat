@@ -7,7 +7,14 @@ exports.create = function (req, res) {
         return res.status(400).send({ message: "Note can not be empty..." });
     }
 
-    var notification = new Notification({ name: req.body.name || "Untitled Notification", phone: req.body.phone });
+    var notification = new Notification({ 
+        name: req.body.name || "Untitled Notification", 
+        phone: req.body.phone,
+        sentence: req.body.sentence,
+        count: req.body.count,
+        IsSticky: req.body.IsSticky,
+        IsNotify: req.body.IsNotify,
+    });
 
     notification.save(function (err, data) {
         if (err) {
