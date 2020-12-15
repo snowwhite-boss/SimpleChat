@@ -11,17 +11,15 @@ import {
   PermissionsAndroid,
   Platform
 } from "react-native";
-var Contacts = require('react-native-contacts');
+// import Contacts from 'react-native-contacts';
 // import AddressBook from 'react-native-addressbook'
 import { Block, Text, theme } from "galio-framework";
-
+import SectionListContacts from 'react-native-sectionlist-contacts'
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
-const contactsDATA = [
-];
 
 const ContactsItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -42,33 +40,81 @@ const renderContactsItem = ({ item }) => {
 };
 
 export default class NewFriend extends React.Component {
-  componentDidMount() {
-    if(Platform.OS === 'ios'){
-      Contacts.getAll((err, contacts) => {
-        if (err) {
-          throw err;
-        }
-        // contacts returned
-        console.log("contacts => ", contacts);
-      })
-    }else if(Platform.OS === 'android'){
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-        {
-          title: 'Contacts',
-          message: 'This app would like to view your contacts.'
-        }
-      ).then(() => {
-        Contacts.getAll((err, contacts) => {
-          if (err === 'denied'){
-            // error
-          } else {
-            // contacts returned in Array
-            console.log("contacts => ", contacts);
-          }
-        })
-      })
+  constructor(props) {
+    super(props)
+
+    //name字段必须,其他可有可无
+    let nameData = [
+      { name: '阿玛尼', id: 'amani', params: '' },
+      { name: 'OK', id: 'ok', params: '123' },
+      { name: '天津饭' },
+      { name: '%……&' },
+      { name: '周星驰' },
+      { name: '习大表哥' },
+      { name: '不要这样' },
+      { name: 'V字仇杀队' },
+      { name: '拼车' },
+      { name: '他妈跌' },
+      { name: '淫僧' },
+      { name: '钱学森' },
+      { name: '宁采臣' },
+      { name: '史泰龙' },
+      { name: '恐龙' },
+      { name: '任达华' },
+      { name: '妈咪宝贝' },
+      { name: 'ing' },
+      { name: '康麦隆' },
+      { name: '刘德华' },
+      { name: '精忠报国' },
+      { name: '黄药师' },
+      { name: '大叔皮' },
+      { name: '布达拉宫' },
+      { name: '方世玉' },
+      { name: 'ET外星人' },
+      { name: '程咬金' },
+      { name: '**&&&&' },
+    ]
+
+    this.state = {
+      dataArray: nameData,
     }
+  }
+  componentDidMount() {
+    // AddressBook.getContacts( (err, contacts) => {
+    //   if(err && err.type === 'permissionDenied'){
+    //     console.log(err)
+    //   }
+    //   else{
+    //     console.log(contacts)
+    //   }
+    // })
+    //////////////////////////////////////////////
+    // if(Platform.OS === 'ios'){
+    //   Contacts.getAll((err, contacts) => {
+    //     if (err) {
+    //       throw err;
+    //     }
+    //     // contacts returned
+    //     console.log("contacts => ", contacts);
+    //   })
+    // }else if(Platform.OS === 'android'){
+    //   PermissionsAndroid.request(
+    //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+    //     {
+    //       title: 'Contacts',
+    //       message: 'This app would like to view your contacts.'
+    //     }
+    //   ).then(() => {
+    //     Contacts.getAll((err, contacts) => {
+    //       if (err === 'denied'){
+    //         // error
+    //       } else {
+    //         // contacts returned in Array
+    //         console.log("contacts => ", contacts);
+    //       }
+    //     })
+    //   })
+    // }
   }
   render() {
     return (
@@ -79,16 +125,27 @@ export default class NewFriend extends React.Component {
               style={styles.addPhone}
               source={Images.addPhone}
             />
-            <Text bold size={20} color="orange" style={{paddingLeft:20}}>New Friends</Text>
+            <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>New Friends</Text>
           </Block>
         </TouchableOpacity>
-        <ScrollView style={styles.container}>
+        {/* <ScrollView style={styles.container}>
           <FlatList
             data={contactsDATA}
             renderItem={renderContactsItem}
             keyExtractor={(item) => item.id}
           />
-        </ScrollView>
+        </ScrollView> */}
+        <SectionListContacts
+          ref={s => this.sectionList = s}
+          sectionListData={this.state.dataArray}
+          sectionHeight={50}
+          initialNumToRender={this.state.dataArray.length}
+          showsVerticalScrollIndicator={false}
+          SectionListClickCallback={(item, index) => {
+            console.log('---SectionListClickCallback--:', item, index)
+          }}
+          otherAlphabet="#"
+        />
       </Block>
     );
   }
@@ -101,8 +158,8 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     padding: 10,
-    borderTopColor:'grey',
-    borderTopWidth:1,
+    borderTopColor: 'grey',
+    borderTopWidth: 1,
   },
   rightCell: {
     padding: 10,
@@ -148,19 +205,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'grey'
   },
-  addPhone:{
+  addPhone: {
     width: 40,
     height: 40,
     resizeMode: 'stretch'
   },
-  newFriendRow:{
-    paddingHorizontal:26,
-    paddingVertical:10,
-    alignItems:'center',
-    borderColor:'orange',
-    borderRadius:20,
-    borderWidth:2,
-    marginHorizontal:26,
-    marginVertical:10
+  newFriendRow: {
+    paddingHorizontal: 26,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderColor: 'orange',
+    borderRadius: 20,
+    borderWidth: 2,
+    marginHorizontal: 26,
+    marginVertical: 10
   }
 });

@@ -8,7 +8,6 @@ const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
-import PhoneInput from 'react-phone-number-input'
 
 import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
 class Onboarding extends React.Component {
