@@ -7,7 +7,6 @@ import Client from '../api/Client';
 export function signUp(dispatch, name, phoneNumber, callback) {
     Client.post(`users/`, { name: name, phone: phoneNumber })
         .then(async res => {
-            console.log("res => ", res)
             if (res.status == 200) {
                 // set user info in Redux state
                 dispatch({

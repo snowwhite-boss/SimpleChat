@@ -4,6 +4,7 @@ import { Block, Button, Text, theme } from 'galio-framework';
 // connect to Redux state
 import { connect } from "react-redux";
 
+// import SmsRetriever from 'react-native-sms-retriever';
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
@@ -21,7 +22,13 @@ class Onboarding extends React.Component {
 
   // getting phone number
   getPhoneNumber() {
-    return "+70123456789";
+    // try {
+    //   const phoneNumber = await SmsRetriever.requestPhoneNumber();
+    // } catch (error) {
+    //   console.log(JSON.stringify(error));
+    // }
+    // console.log('phoneNumber =====> ', phoneNumber)
+    return "+0123456789";
   }
 
   // getting user information

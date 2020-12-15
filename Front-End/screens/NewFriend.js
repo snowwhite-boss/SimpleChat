@@ -43,7 +43,6 @@ export default class NewFriend extends React.Component {
   constructor(props) {
     super(props)
 
-    //name字段必须,其他可有可无
     let nameData = [
       { name: '阿玛尼', id: 'amani', params: '' },
       { name: 'OK', id: 'ok', params: '123' },
