@@ -1,43 +1,78 @@
 import React from "react";
 import {
-  ImageBackground,
-  Image,
   StyleSheet,
-  StatusBar,
-  Dimensions,
-  ScrollView,
-  FlatList,
-  TouchableOpacity
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
+import { Block, Text, Button } from "galio-framework";
 
-const { height, width } = Dimensions.get("screen");
 
-import nowTheme from "../constants/Theme";
-import Images from "../constants/Images";
-import { Button, Footer } from "../components";
+import * as Permissions from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default class QRScan extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasCameraPermission: null,
+      scanned: false,
+    };
+  }
+
+  async componentDidMount() {
+    console.log("didmount")
+    this.getPermissionsAsync();
+  }
+
+  getPermissionsAsync = async () => {
+    const {
+      status
+    } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+      hasCameraPermission: status === 'granted'
+    });
+  };
+
+  handleBarCodeScanned = ({
+    type,
+    data
+  }) => {
+    console.log(type, data);
+    this.setState({
+      scanned: true
+    });
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
   render() {
-    return (
-      <Block flex style={styles.container}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('MyQR')}>
-          <Image source={Images.QRscanIcon} style={styles.tip} />
-        </TouchableOpacity>
-      </Block>
+    const {
+      hasCameraPermission,
+      scanned
+    } = this.state;
+
+    if (hasCameraPermission === null) {
+      return <Text> Requesting for camera permission </Text>;
+    }
+    if (hasCameraPermission === false) {
+      return <Text> No access to camera </Text>;
+    }
+    return (<Block style={
+      {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+      }
+    } >
+      <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {
+        scanned && (
+        <Button title={'Tap to Scan Again'}
+          onPress={() => this.setState({ scanned: false })}
+        />
+        )
+      }
+       </Block>
     );
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    justifyContent:'flex-end'
-  },
-  tip: {
-    width: 40,
-    height: 40,
-    resizeMode: 'stretch',
-  },
-  
-});
+}

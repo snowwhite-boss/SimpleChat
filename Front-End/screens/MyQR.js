@@ -1,21 +1,11 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
-  StatusBar,
-  Dimensions,
-  ScrollView,
-  FlatList,
-  TouchableOpacity
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
+import { Block, theme } from "galio-framework";
 
-const { height, width } = Dimensions.get("screen");
-
-import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
-import { Button, Footer } from "../components";
 
 export default class MyQR extends React.Component {
   render() {
