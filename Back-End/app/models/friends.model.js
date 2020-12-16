@@ -6,7 +6,7 @@ var FriendSchema = mongoose.Schema({
         ref: "User",
         required: true
     },
-    friend: [{
+    friends: [{
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',

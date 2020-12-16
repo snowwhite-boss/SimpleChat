@@ -11,9 +11,13 @@ var UserSchema = mongoose.Schema({
         required: true,
         unique: true,
     },
-    friend: {
+    friends: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Friend'
+    },
+    notifications: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Notification'
     }
 }, {
     timestamps: true

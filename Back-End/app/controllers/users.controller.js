@@ -1,5 +1,6 @@
 var User = require('../models/users.model.js');
 var Friend = require("../models/friends.model.js");
+var Notification = require("../models/notifications.model.js");
 
 exports.create = async function (req, res) {
     if (!req.body) {
@@ -26,7 +27,30 @@ exports.create = async function (req, res) {
     User.findOne({
             phone
         })
-        .populate('friend')
+        .populate({
+            path: 'friends',
+            select: 'friends',
+            populate: {
+                path: 'friends',
+                populate: {
+                    path: 'user',
+                    model: 'User',
+                    select: 'name phone',
+                }
+            }
+        })
+        .populate({
+            path: 'notifications',
+            select: 'notifications',
+            populate: {
+                path: 'notifications',
+                populate: {
+                    path: 'user',
+                    model: 'User',
+                    select: 'senduser count content isSticky isNotify',
+                }
+            }
+        })
         .exec(function (error, data) {
             if (error) {
                 res.status(500).send({
@@ -49,18 +73,25 @@ exports.create = async function (req, res) {
                         message: "Some error occurred while creating the User."
                     });
                 } else {
-                    friends = new Friend({
+                    let friends = new Friend({
                         user: data._id,
                         friends: []
                     });
                     friends.save();
-                    user.friend = friends;
+
+                    let notifications = new Notification({
+                        user: data._id,
+                        notifications: []
+                    });
+                    notifications.save();
+
+                    user.friends = friends;
+                    user.notifications = notifications;
                     user.save();
                     res.send(user);
                 }
             });
         });
-
 };
 
 exports.findOne = function (req, res) {

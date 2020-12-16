@@ -26,7 +26,9 @@ exports.create = async function (req, res) {
 
     let requester = await User.findOne({
         phone: requesterphone
-    }).exec();
+    })
+    .populate('friends')
+    .exec();
     if (!requester) {
         res.status(500).send({
             message: "User doesn't exist"
@@ -36,7 +38,9 @@ exports.create = async function (req, res) {
 
     let receiver = await User.findOne({
         phone: receiverphone
-    }).exec();
+    })
+    .populate('friends')
+    .exec();
     if (!receiver) {
         res.status(500).send({
             message: "User doesn't exist"
@@ -44,37 +48,33 @@ exports.create = async function (req, res) {
         return;
     }
     // waiting
-    let requester_friend = await Friend.findOne({
-        user: requester._id,
-    }).exec();
+    let requester_friend = requester.friends;
     if (!requester_friend) {
-        var friend = new Friend({
+        var friends = new Friend({
             user: requester._id,
             friends: []
         });
-        requester_friend = friend;
+        requester_friend = friends;
     }
     //view
-    let receiver_friend = await Friend.findOne({
-        user: receiver._id,
-    }).exec();
+    let receiver_friend = receiver.friends;
     if (!receiver_friend) {
-        var friend = new Friend({
+        var friends = new Friend({
             user: receiver._id,
             friends: []
         });
-        receiver_friend = friend;
+        receiver_friend = friends;
     }
 
     try {
-        let result = requester_friend.friend.find((friend) => JSON.stringify(friend.user) == JSON.stringify(receiver._id));
+        let result = requester_friend.friends.find((friend) => JSON.stringify(friend.user) == JSON.stringify(receiver._id));
         if (!result) {
-            requester_friend.friend.push({
+            requester_friend.friends.push({
                 user: receiver._id,
                 status: 'waiting'
             });
             await requester_friend.save();
-            requester.friend = requester_friend;
+            requester.friends = requester_friend;
             requester.save();
         }
     } catch (error) {
@@ -85,13 +85,13 @@ exports.create = async function (req, res) {
     }
 
     try {
-        if (!receiver_friend.friend.find((friend) => JSON.stringify(friend.user) == JSON.stringify(requester._id))) {
-            receiver_friend.friend.push({
+        if (!receiver_friend.friends.find((friend) => JSON.stringify(friend.user) == JSON.stringify(requester._id))) {
+            receiver_friend.friends.push({
                 user: requester._id,
                 status: 'view'
             })
             await receiver_friend.save();
-            receiver.friend = receiver_friend;
+            receiver.friends = receiver_friend;
             receiver.save();
         }
     } catch (error) {
@@ -171,7 +171,7 @@ exports.update = async function (req, res) {
 
     try {
         let changed = false;
-        requester_friend.friend = requester_friend.friend.map((friend) => {
+        requester_friend.friends = requester_friend.friends.map((friend) => {
             if (JSON.stringify(friend.user) == JSON.stringify(receiver._id)) {
                 changed = true;
                 friend.status = 'added'
@@ -195,7 +195,7 @@ exports.update = async function (req, res) {
 
     try {
         let changed = false;
-        receiver_friend.friend = receiver_friend.friend.map((friend) => {
+        receiver_friend.friends = receiver_friend.friends.map((friend) => {
             if (JSON.stringify(friend.user) == JSON.stringify(requester._id)) {
                 changed = true;
                 friend.status = 'added'
