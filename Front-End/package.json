@@ -36,6 +36,7 @@
     "react": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-device-info": "^7.3.1",
+    "react-native-dialog-input": "^1.0.8",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-material-menu": "^1.2.0",
     "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
