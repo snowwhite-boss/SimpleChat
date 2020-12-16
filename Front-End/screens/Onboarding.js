@@ -4,7 +4,7 @@ import { Block, Button, Text, theme } from 'galio-framework';
 // connect to Redux state
 import { connect } from "react-redux";
 
-// import SmsRetriever from 'react-native-sms-retriever';
+// import SmsRetrieverModule from 'react-native-sms-retriever';
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
@@ -23,24 +23,24 @@ class Onboarding extends React.Component {
   // getting phone number
   getPhoneNumber() {
     // try {
-    //   const phoneNumber = await SmsRetriever.requestPhoneNumber();
+    //   const phoneNumber = await SmsRetrieverModule.requestPhoneNumber();
+    //   console.log('phoneNumber =====> ', phoneNumber)
     // } catch (error) {
     //   console.log(JSON.stringify(error));
     // }
-    // console.log('phoneNumber =====> ', phoneNumber)
     return "+0123456789";
   }
 
   // getting user information
   componentDidMount() {
-    let phoneNumber = this.getPhoneNumber();
-    this.props.isExsitUser(phoneNumber)
-      .then(async res => {
-        this.props.setCurrentUser(res.data)
-        if(res.data)
-          this.props.navigation.navigate('Home');
-      })
-      .catch(error => console.log("login error => ", error));
+    // let phoneNumber = this.getPhoneNumber();
+    // this.props.isExsitUser(phoneNumber)
+    //   .then(async res => {
+    //     this.props.setCurrentUser(res.data)
+    //     if(res.data)
+    //       this.props.navigation.navigate('Home');
+    //   })
+    //   .catch(error => console.log("login error => ", error));
   }
 
   SignUp() {
