@@ -12,6 +12,7 @@ import {
 import { Block, Text, theme } from "galio-framework";
 import SectionListContacts from 'react-native-sectionlist-contacts'
 const { height, width } = Dimensions.get("screen");
+import * as Contacts from 'expo-contacts';
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
@@ -34,40 +35,23 @@ export default class Moblie extends React.Component {
   constructor(props) {
     super(props)
 
-    let nameData = [
-      { name: '阿玛尼', id: 'amani', params: '' },
-      { name: 'OK', id: 'ok', params: '123' },
-      { name: '天津饭' },
-      { name: '%……&' },
-      { name: '周星驰' },
-      { name: '习大表哥' },
-      { name: '不要这样' },
-      { name: 'V字仇杀队' },
-      { name: '拼车' },
-      { name: '他妈跌' },
-      { name: '淫僧' },
-      { name: '钱学森' },
-      { name: '宁采臣' },
-      { name: '史泰龙' },
-      { name: '恐龙' },
-      { name: '任达华' },
-      { name: '妈咪宝贝' },
-      { name: 'ing' },
-      { name: '康麦隆' },
-      { name: '刘德华' },
-      { name: '精忠报国' },
-      { name: '黄药师' },
-      { name: '大叔皮' },
-      { name: '布达拉宫' },
-      { name: '方世玉' },
-      { name: 'ET外星人' },
-      { name: '程咬金' },
-      { name: '**&&&&' },
-    ]
-
     this.state = {
-      dataArray: nameData,
+      dataArray: [],
     }
+  }
+  async componentDidMount() {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status === 'granted') {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.Emails, Contacts.Fields.ID, Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
+      });
+
+      if (data.length > 0) {
+        console.log(data);
+        this.setState({ dataArray: data });
+      }
+    }
+
   }
   render() {
     return (
@@ -144,7 +128,7 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   addButtonItem: {
-    alignItems:'flex-end'
+    alignItems: 'flex-end'
   },
   addButton: {
     backgroundColor: 'green',
