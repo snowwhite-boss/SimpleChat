@@ -34,7 +34,6 @@ export default class QRScan extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("didmount")
     this.getPermissionsAsync();
   }
 

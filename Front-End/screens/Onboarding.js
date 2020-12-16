@@ -3,7 +3,8 @@ import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform } f
 import { Block, Button, Text, theme } from 'galio-framework';
 // connect to Redux state
 import { connect } from "react-redux";
-
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase("db.db");
 // import SmsRetrieverModule from 'react-native-sms-retriever';
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
@@ -24,29 +25,6 @@ class Onboarding extends React.Component {
       min: 100000,
       max: 999999,
     };
-  }
-
-  // getting phone number
-  getPhoneNumber() {
-    // try {
-    //   const phoneNumber = await SmsRetrieverModule.requestPhoneNumber();
-    //   console.log('phoneNumber =====> ', phoneNumber)
-    // } catch (error) {
-    //   console.log(JSON.stringify(error));
-    // }
-    return "+0123456789";
-  }
-
-  // getting user information
-  componentDidMount() {
-    let phoneNumber = this.getPhoneNumber();
-    this.props.isExsitUser(phoneNumber)
-      .then(async res => {
-        this.props.setCurrentUser(res.data)
-        if(res.data)
-          this.props.navigation.navigate('Home');
-      })
-      .catch(error => console.log("login error => ", error));
   }
 
   getRandomArbitrary = () => {
@@ -72,7 +50,7 @@ class Onboarding extends React.Component {
       this.props.signUp(name, phoneNumber, () => {
         db.transaction(tx => {
           tx.executeSql(
-            `insert into me (id, name) values (1, '${name}');`, [],
+            `insert into me (id, phone) values (1, '${phoneNumber}');`, [],
             () => {
               this.props.navigation.navigate('Home');
             },
@@ -220,7 +198,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signUp: (name, phoneNumber, successcb, errorcb) => signUp(dispatch, name, phoneNumber, successcb, errorcb),
-    setCurrentUser: (phoneNumber) => SetCurrentUser(dispatch, phoneNumber),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
   };
 }

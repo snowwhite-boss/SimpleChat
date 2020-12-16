@@ -49,7 +49,8 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
     fontLoaded: false,
-    isFirst:true
+    isFirst: true,
+    phoneNumber: ''
   };
 
   // async componentDidMount() {
@@ -73,13 +74,16 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-        <NavigationContainer>
-          <GalioProvider theme={nowTheme}>
-            <Block flex>
-              <Screens isFirst={this.state.isFirst}/>
-            </Block>
-          </GalioProvider>
-        </NavigationContainer>
+          <NavigationContainer>
+            <GalioProvider theme={nowTheme}>
+              <Block flex>
+                <Screens 
+                isFirst={this.state.isFirst}
+                phoneNumber={this.state.phoneNumber}
+                 />
+              </Block>
+            </GalioProvider>
+          </NavigationContainer>
         </Provider>
       );
     }
@@ -88,7 +92,7 @@ export default class App extends React.Component {
   isFirstCheck = async () => {
     await db.transaction(tx => {
       tx.executeSql(
-        'create table if not exists me (id integer primary key not null, name text);',
+        'create table if not exists me (id integer primary key not null, phone text);',
         [],
         () => {
           tx.executeSql(
@@ -96,8 +100,9 @@ export default class App extends React.Component {
             (_, { rows: { _array } }) => {
               if (_array.length == 0) {
                 this.setState({ isFirst: true });
-              }else{
+              } else {
                 this.setState({ isFirst: false });
+                this.setState({ phoneNumber: _array[0].phone });
               }
             }
           );
@@ -107,13 +112,15 @@ export default class App extends React.Component {
     });
   }
 
+
+
   _loadResourcesAsync = async () => {
     await this.isFirstCheck();
     await Font.loadAsync({
       'montserrat-regular': require('./assets/font/Montserrat-Regular.ttf'),
       'montserrat-bold': require('./assets/font/Montserrat-Bold.ttf')
     });
-    
+
     this.setState({ fontLoaded: true });
     return Promise.all([...cacheImages(assetImages)]);
   };
