@@ -31,7 +31,7 @@ class Moblie extends React.Component {
     this.state = {
       dataArray: [],
       isDialogVisible: false,
-      selectedMan:''
+      selectedMan: ''
     }
   }
   async componentDidMount() {
@@ -53,8 +53,8 @@ class Moblie extends React.Component {
   }
 
   async addItem(name) {
-    await this.setState({selectedMan:name})
-    await this.setState({isDialogVisible:true})
+    await this.setState({ selectedMan: name })
+    await this.setState({ isDialogVisible: true })
 
   }
   _renderItem = (item, index, section) => {
@@ -74,7 +74,7 @@ class Moblie extends React.Component {
     </TouchableOpacity>
   }
 
-  sendInput(inputText) {
+  sendRequest(requestText) {
     // this.props.addFriend(name);
   };
 
@@ -97,8 +97,8 @@ class Moblie extends React.Component {
           title={this.state.selectedMan}
           message={"Send Friend Request"}
           hintInput={"Hi, I am your friend."}
-          submitInput={(inputText) => { this.sendInput(inputText) }}
-          closeDialog={() => { this.setState({isDialogVisible:false}) }}>
+          submitInput={(requestText) => { this.sendRequest(requestText) }}
+          closeDialog={() => { this.setState({ isDialogVisible: false }) }}>
         </DialogInput>
       </Block>
     );
