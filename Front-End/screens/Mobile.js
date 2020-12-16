@@ -13,25 +13,15 @@ import { Block, Text, theme } from "galio-framework";
 import SectionListContacts from 'react-native-sectionlist-contacts'
 const { height, width } = Dimensions.get("screen");
 import * as Contacts from 'expo-contacts';
+// connect to Redux state
+import { connect } from "react-redux";
+import { AddFriend } from "../actions/userActions";
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
 
-
-const ContactsItem = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Block row style={{ alignItems: "center" }}>
-      <Image source={Images.ItemUser} style={styles.itemUser} />
-      <Text style={styles.nickName}>{item.name}</Text>
-      <Block style={styles.addButtonItem} flex>
-        <Button textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18, textWeight: 'bold' }} style={styles.addButton}>Add</Button>
-      </Block>
-    </Block>
-  </TouchableOpacity>
-);
-
-export default class Moblie extends React.Component {
+class Moblie extends React.Component {
   constructor(props) {
     super(props)
 
@@ -42,20 +32,44 @@ export default class Moblie extends React.Component {
   async componentDidMount() {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
-      const { data } = await Contacts.getContactsAsync({
+      var { data } = await Contacts.getContactsAsync({
         fields: [Contacts.Fields.Emails, Contacts.Fields.ID, Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
       });
 
       if (data.length > 0) {
-        console.log(data);
+        data = data.map(el => {
+          if(this.props.currentUser.friends.find(fri => fri == el.name) > 0)
+            return Object.assign({}, el, { added: true })
+          return el
+        })
         this.setState({ dataArray: data });
       }
     }
-
   }
+
+  addItem(name) {
+    this.props.addFriend(name);
+  }
+  _renderItem = (item, index, section) => {
+    // console.log('---custom-renderItem--', item, index, section)
+    return <TouchableOpacity style={styles.item}>
+      <Block row style={{ alignItems: "center" }}>
+        <Image source={Images.ItemUser} style={styles.itemUser} />
+        <Text style={styles.nickName}>{item.name}</Text>
+        <Block style={styles.addButtonItem} flex>
+          {item.added ?
+            <Button onPress={() => this.addItem(item.name)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addedButton}>Added</Button>
+            :
+            <Button onPress={() => this.addItem(item.name)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addButton}>Add</Button>
+          }
+        </Block>
+      </Block>
+    </TouchableOpacity>
+  }
+
   render() {
     return (
-      <Block flex>
+      <Block flex style={styles.container}>
         <SectionListContacts
           ref={s => this.sectionList = s}
           sectionListData={this.state.dataArray}
@@ -63,7 +77,7 @@ export default class Moblie extends React.Component {
           initialNumToRender={this.state.dataArray.length}
           showsVerticalScrollIndicator={false}
           SectionListClickCallback={(item, index) => {
-            console.log('---SectionListClickCallback--:', item, index)
+            this.addItem(item)
           }}
           renderItem={this._renderItem}
           otherAlphabet="#"
@@ -74,14 +88,9 @@ export default class Moblie extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
   container: {
     width: width,
-    padding: 10,
-    borderTopColor: 'grey',
-    borderTopWidth: 1,
+    paddingLeft: 20,
   },
   rightCell: {
     padding: 10,
@@ -128,11 +137,32 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   addButtonItem: {
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    marginRight: 10,
+    paddingVertical: 10
   },
   addButton: {
     backgroundColor: 'green',
     borderRadius: 8,
     width: 90
+  },
+  addedButton: {
+    backgroundColor: 'grey',
+    borderRadius: 8,
+    width: 90,
+    color: 'red'
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addFriend: (name) => AddFriend(dispatch, name),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Moblie);

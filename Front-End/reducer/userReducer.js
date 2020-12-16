@@ -5,10 +5,13 @@ const initialState = {
 };
 
 // reducer with cases for Redux
-function userReducer(state = initialState, action){
+function userReducer(state = initialState, action) {
   switch (action.type) {
     case "CURRENT_USER":
       return { ...state, currentUser: action.payload };
+    case "ADD_FRIEND":
+      state.currentUser.friends.push(action.payload)
+      return { ...state, currentUser: state.currentUser };
     default:
       return state;
   }

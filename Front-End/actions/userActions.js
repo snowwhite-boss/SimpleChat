@@ -30,15 +30,9 @@ export function SetCurrentUser(dispatch, user) {
     });
 }
 
-// export function GetNotifications(dispatch, callback) {
-//     Client.get(`notifications/${phoneNumber}`)
-//         .then(async res => {
-//             console.log(res.data, " notifications");
-//             // set user info in Redux state
-//             dispatch({
-//                 type: "NOTIFICATIONS",
-//                 payload: res.data
-//             });
-//         })
-//         .catch(error => console.log("login error => ", error));
-// }
+export function AddFriend(dispatch, name) {
+    dispatch({
+        type: "ADD_FRIEND",
+        payload: name
+    });
+}

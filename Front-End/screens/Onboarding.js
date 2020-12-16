@@ -36,14 +36,14 @@ class Onboarding extends React.Component {
 
   // getting user information
   componentDidMount() {
-    // let phoneNumber = this.getPhoneNumber();
-    // this.props.isExsitUser(phoneNumber)
-    //   .then(async res => {
-    //     this.props.setCurrentUser(res.data)
-    //     if(res.data)
-    //       this.props.navigation.navigate('Home');
-    //   })
-    //   .catch(error => console.log("login error => ", error));
+    let phoneNumber = this.getPhoneNumber();
+    this.props.isExsitUser(phoneNumber)
+      .then(async res => {
+        this.props.setCurrentUser(res.data)
+        if(res.data)
+          this.props.navigation.navigate('Home');
+      })
+      .catch(error => console.log("login error => ", error));
 
     db.transaction(tx => {
       tx.executeSql(
