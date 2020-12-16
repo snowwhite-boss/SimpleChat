@@ -97,7 +97,7 @@ export default class App extends React.Component {
               if (_array.length == 0) {
                 this.setState({ isFirst: true });
               }else{
-                this.setState({ isFirst: true });
+                this.setState({ isFirst: false });
               }
             }
           );
