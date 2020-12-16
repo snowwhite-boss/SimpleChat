@@ -44,7 +44,9 @@
     "react-native-svg": "12.1.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "expo-device": "~2.3.0",
+    "expo-sqlite": "~8.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",

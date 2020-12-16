@@ -9,6 +9,9 @@ const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase("db.db");
+
 
 import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
 class Onboarding extends React.Component {
@@ -41,6 +44,18 @@ class Onboarding extends React.Component {
     //       this.props.navigation.navigate('Home');
     //   })
     //   .catch(error => console.log("login error => ", error));
+
+    db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists me (id integer primary key not null, name text, balance int);',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
+      );
+      tx.executeSql(
+        `select * from me;`, [],
+        (_, { rows: { _array } }) => {
+          console.log(_array);
+        }
+      );
+    });
   }
 
   SignUp() {
