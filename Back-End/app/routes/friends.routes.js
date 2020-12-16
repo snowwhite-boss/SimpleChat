@@ -2,10 +2,15 @@ module.exports = function (app) {
 
     var friends = require('../controllers/friends.controller.js');
 
-    // Create a new Note
+    // {
+    //     "requesterphone": "+7403434343434",
+    //     "receiverphone": "+7403434343435"
+    // }
     app.post('/friends', friends.create);
 
-    // Retrieve a single Note with noteId
-    // app.put('/friends', users.findOne);
-
+    // {
+    //     "requesterphone": "+7403434343434",
+    //     "receiverphone": "+7403434343435"
+    // }
+    app.put('/friends', friends.update);
 }
