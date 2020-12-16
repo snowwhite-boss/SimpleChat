@@ -1,19 +1,35 @@
 import React from "react";
 import {
-  StyleSheet,
+  StyleSheet, TouchableOpacity, Image, Alert
 } from "react-native";
 import { Block, Text, Button } from "galio-framework";
 
-
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-
+import Images from "../constants/Images";
+const styles = StyleSheet.create({
+ScanIcon: {
+  width: 50,
+  height: 50,
+  resizeMode: 'stretch',
+  backgroundColor:'white',
+  borderRadius:20
+},
+touchButton:{
+  position:'absolute',
+  left:50,
+  bottom:100,
+  zIndex:5
+}
+});
 export default class QRScan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       hasCameraPermission: null,
       scanned: false,
+      name:'',
+      phone:''
     };
   }
 
@@ -35,13 +51,41 @@ export default class QRScan extends React.Component {
     type,
     data
   }) => {
-    console.log(type, data);
+    let vCardData = data.split("\n");
+    let name, phone;
+    for(let i = 0; i<vCardData.length; i++){
+      if(vCardData[i].split(":")[0] == 'N')
+        {
+          name = vCardData[i].split(":")[1];
+          this.setState({name:vCardData[i].split(":")[1]});
+        }
+      if(vCardData[i].split(":")[0] == 'TEL')
+          {
+            phone = vCardData[i].split(":")[1];
+            this.setState({phone:vCardData[i].split(":")[1]});
+          }
+    }
     this.setState({
       scanned: true
     });
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    Alert.alert(
+      name,
+      phone,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Add", onPress: () => this.addNewFriend() }
+      ],
+      { cancelable: false }
+    );
   };
 
+  addNewFriend(){
+    console.log(this.state)
+  }
   render() {
     const {
       hasCameraPermission,
@@ -66,13 +110,15 @@ export default class QRScan extends React.Component {
       />
       {
         scanned && (
-        <Button title={'Tap to Scan Again'}
-          onPress={() => this.setState({ scanned: false })}
-        />
+          <TouchableOpacity onPress={() => this.setState({ scanned: false })} style={styles.touchButton}>
+          <Image source={Images.QRscanIcon} style={styles.ScanIcon} />
+        </TouchableOpacity>
         )
       }
        </Block>
     );
   }
-
 }
+{/* <TouchableOpacity onPress={() => this.setState({ scanned: false })} style={styles.touchButton}>
+          <Image source={Images.QRscanIcon} style={styles.ScanIcon} />
+        </TouchableOpacity> */}
