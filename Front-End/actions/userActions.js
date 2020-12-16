@@ -4,8 +4,11 @@ import Client from '../api/Client';
 // allows a new user to sign up for an account and returns
 // user object and token to store in state/browser
 // Used in LoginSignup/Signup component
-export function signUp(dispatch, name, phoneNumber, callback) {
-    Client.post(`users/`, { name: name, phone: phoneNumber })
+export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
+    Client.post(`users/`, {
+            name: name,
+            phone: phoneNumber
+        })
         .then(async res => {
             if (res.status == 200) {
                 // set user info in Redux state
@@ -14,8 +17,12 @@ export function signUp(dispatch, name, phoneNumber, callback) {
                     payload: res.data
                 });
             }
+            successcb();
         })
-        .catch(error => console.log("login error => ", error));
+        .catch(error => {
+            console.log("login error => ", error);
+            errorcb();
+        });
 }
 
 
