@@ -11,10 +11,12 @@ import {
   PermissionsAndroid,
   Platform
 } from "react-native";
+// connect to Redux state
+import { connect } from "react-redux";
 // import Contacts from 'react-native-contacts';
 // import AddressBook from 'react-native-addressbook'
 import { Block, Text, theme } from "galio-framework";
-import SectionListContacts from 'react-native-sectionlist-contacts'
+
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
@@ -39,7 +41,7 @@ const renderContactsItem = ({ item }) => {
   );
 };
 
-export default class NewFriend extends React.Component {
+class NewFriend extends React.Component {
   
   componentDidMount() {
     // AddressBook.getContacts( (err, contacts) => {
@@ -180,4 +182,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(FriendContacts);
+export default connect(mapStateToProps)(NewFriend);

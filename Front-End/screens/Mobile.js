@@ -10,7 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-
+import SectionListContacts from 'react-native-sectionlist-contacts'
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
