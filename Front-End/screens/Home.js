@@ -168,4 +168,4 @@ function mapDispatchToProps(dispatch) {
   return {
   };
 }
-export default connect(mapStateToProps)(ChatHistory);
+export default connect(mapStateToProps, null)(ChatHistory);

@@ -14,6 +14,9 @@ const store = createStore(userReducer);
 import Screens from './navigation/Screens';
 import { Images, articles, nowTheme } from './constants';
 
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase("db.db");
+
 // cache app images
 const assetImages = [
   Images.Onboarding,
@@ -45,7 +48,9 @@ function cacheImages(images) {
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
-    fontLoaded: false
+    fontLoaded: false,
+    isFirst: true,
+    phoneNumber: ''
   };
 
   // async componentDidMount() {
@@ -69,19 +74,48 @@ export default class App extends React.Component {
     } else {
       return (
         <Provider store={store}>
-        <NavigationContainer>
-          <GalioProvider theme={nowTheme}>
-            <Block flex>
-              <Screens />
-            </Block>
-          </GalioProvider>
-        </NavigationContainer>
+          <NavigationContainer>
+            <GalioProvider theme={nowTheme}>
+              <Block flex>
+                <Screens 
+                isFirst={this.state.isFirst}
+                phoneNumber={this.state.phoneNumber}
+                 />
+              </Block>
+            </GalioProvider>
+          </NavigationContainer>
         </Provider>
       );
     }
   }
 
+  isFirstCheck = async () => {
+    await db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists me (id integer primary key not null, phone text);',
+        [],
+        () => {
+          tx.executeSql(
+            `select * from me;`, [],
+            (_, { rows: { _array } }) => {
+              if (_array.length == 0) {
+                this.setState({ isFirst: true });
+              } else {
+                this.setState({ isFirst: false });
+                this.setState({ phoneNumber: _array[0].phone });
+              }
+            }
+          );
+        },
+        (a, b) => console.log(a, b)
+      );
+    });
+  }
+
+
+
   _loadResourcesAsync = async () => {
+    await this.isFirstCheck();
     await Font.loadAsync({
       'montserrat-regular': require('./assets/font/Montserrat-Regular.ttf'),
       'montserrat-bold': require('./assets/font/Montserrat-Bold.ttf')

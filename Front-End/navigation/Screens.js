@@ -4,6 +4,8 @@ import { Easing, Animated, Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// connect to Redux state
+import { connect } from "react-redux";
 // screens
 import Home from '../screens/Home';
 import Pro from '../screens/Pro';
@@ -24,8 +26,7 @@ import CustomDrawerContent from "./Menu";
 // header for screens
 import { Header, Icon } from '../components';
 import { nowTheme, tabs } from "../constants";
-// Server Client
-import Client from '../api/Client';
+import { SetCurrentUser, IsExsitUser } from "../actions/userActions";
 
 const { width } = Dimensions.get("screen");
 
@@ -283,20 +284,42 @@ function AppStack(props) {
   );
 }
 
-export default function OnboardingStack() {
-  
+class OnboardingStack extends React.Component {
+  // getting user information
+  componentDidMount() {
+    if (this.props.phoneNumber == '') return;
+    this.props.isExsitUser(this.props.phoneNumber)
+    .then(async res => {
+        this.props.setCurrentUser(res.data)
+      })
+      .catch(error => console.log("setCurrentUser error in OnboardingStack => ", error));
+  }
+  render() {
     return (
       <Stack.Navigator mode="card" headerMode="none">
-        <Stack.Screen
-          name="Onboarding"
-          component={Onboarding}
-          option={{
-            headerTransparent: true
-          }}
-        />
+        {this.props.isFirst ?
+          <Stack.Screen
+            name="Onboarding"
+            component={Onboarding}
+            option={{
+              headerTransparent: true
+            }}
+          />
+          : null}
         <Stack.Screen name="Home" component={HomeStack} />
       </Stack.Navigator>
     );
-
+  }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    setCurrentUser: (user) => SetCurrentUser(dispatch, user),
+    isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(OnboardingStack);

@@ -26,8 +26,11 @@
     "expo-asset": "~8.2.0",
     "expo-barcode-scanner": "~9.0.0",
     "expo-contacts": "~8.5.0",
+    "expo-device": "~2.3.0",
     "expo-font": "~8.3.0",
     "expo-permissions": "~9.3.0",
+    "expo-sms": "~8.3.1",
+    "expo-sqlite": "~8.4.0",
     "galio-framework": "^0.7.1",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
@@ -44,10 +47,7 @@
     "react-native-svg": "12.1.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5",
-    "expo-device": "~2.3.0",
-    "expo-sqlite": "~8.4.0",
-    "expo-sms": "~8.3.1"
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
