@@ -74,6 +74,8 @@ exports.create = async function (req, res) {
                 status: 'waiting'
             });
             await requester_friend.save();
+            requester.friend = requester_friend;
+            requester.save();
         }
     } catch (error) {
         res.status(500).send({
@@ -89,6 +91,8 @@ exports.create = async function (req, res) {
                 status: 'view'
             })
             await receiver_friend.save();
+            receiver.friend = receiver_friend;
+            receiver.save();
         }
     } catch (error) {
         res.status(500).send({
@@ -170,7 +174,7 @@ exports.update = async function (req, res) {
         requester_friend.friend = requester_friend.friend.map((friend) => {
             if (JSON.stringify(friend.user) == JSON.stringify(receiver._id)) {
                 changed = true;
-                friend.status = 'added'                
+                friend.status = 'added'
             };
             return friend;
         });
@@ -194,7 +198,7 @@ exports.update = async function (req, res) {
         receiver_friend.friend = receiver_friend.friend.map((friend) => {
             if (JSON.stringify(friend.user) == JSON.stringify(requester._id)) {
                 changed = true;
-                friend.status = 'added'                
+                friend.status = 'added'
             };
             return friend;
         });

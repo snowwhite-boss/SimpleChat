@@ -11,6 +11,10 @@ var UserSchema = mongoose.Schema({
         required: true,
         unique: true,
     },
+    friend: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Friend'
+    }
 }, {
     timestamps: true
 });

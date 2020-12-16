@@ -3,11 +3,13 @@ var mongoose = require('mongoose');
 var FriendSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     friend: [{
         user: {
             type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
             required: true
         },
         status: {
