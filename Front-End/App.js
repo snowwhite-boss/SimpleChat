@@ -14,6 +14,9 @@ const store = createStore(userReducer);
 import Screens from './navigation/Screens';
 import { Images, articles, nowTheme } from './constants';
 
+import * as SQLite from 'expo-sqlite';
+const db = SQLite.openDatabase("db.db");
+
 // cache app images
 const assetImages = [
   Images.Onboarding,
@@ -45,7 +48,8 @@ function cacheImages(images) {
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
-    fontLoaded: false
+    fontLoaded: false,
+    isFirst:true
   };
 
   // async componentDidMount() {
@@ -72,7 +76,7 @@ export default class App extends React.Component {
         <NavigationContainer>
           <GalioProvider theme={nowTheme}>
             <Block flex>
-              <Screens />
+              <Screens isFirst={this.state.isFirst}/>
             </Block>
           </GalioProvider>
         </NavigationContainer>
@@ -81,12 +85,37 @@ export default class App extends React.Component {
     }
   }
 
+  isFirstCheck = async () => {
+    await db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists me (id integer primary key not null, name text);',
+        [],
+        () => {
+          tx.executeSql(
+            `select * from me;`, [],
+            (_, { rows: { _array } }) => {
+              if (_array.length == 0) {
+                alert(true)
+                this.setState({ isFirst: true });
+              }else{
+                alert(false)
+                this.setState({ isFirst: false });
+              }
+            }
+          );
+        },
+        (a, b) => console.log(a, b)
+      );
+    });
+  }
+
   _loadResourcesAsync = async () => {
+    await this.isFirstCheck();
     await Font.loadAsync({
       'montserrat-regular': require('./assets/font/Montserrat-Regular.ttf'),
       'montserrat-bold': require('./assets/font/Montserrat-Bold.ttf')
     });
-
+    
     this.setState({ fontLoaded: true });
     return Promise.all([...cacheImages(assetImages)]);
   };

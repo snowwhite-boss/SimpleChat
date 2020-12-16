@@ -283,20 +283,22 @@ function AppStack(props) {
   );
 }
 
-export default function OnboardingStack() {
-  
+export default class OnboardingStack extends React.Component {
+  render() {
     return (
       <Stack.Navigator mode="card" headerMode="none">
-        <Stack.Screen
-          name="Onboarding"
-          component={Onboarding}
-          option={{
-            headerTransparent: true
-          }}
-        />
+        {this.props.isFirst ?
+          <Stack.Screen
+            name="Onboarding"
+            component={Onboarding}
+            option={{
+              headerTransparent: true
+            }}
+          />
+          : null}
         <Stack.Screen name="Home" component={HomeStack} />
       </Stack.Navigator>
     );
-
+  }
 }
 
