@@ -1,10 +1,16 @@
 var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
-    name: String,
-    phone: String,
-    friends: Array,
-    notificaions:Array,
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true,
+    },
 }, {
     timestamps: true
 });
