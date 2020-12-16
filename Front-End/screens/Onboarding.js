@@ -11,7 +11,7 @@ import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase("db.db");
-
+// import * as SMS from 'expo-sms';
 
 import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
 class Onboarding extends React.Component {
@@ -20,6 +20,10 @@ class Onboarding extends React.Component {
     this.state = {
       name: '',
       phoneNumber: '',
+      verificationcode: '',
+      checkverificationcode: '',
+      min: 100000,
+      max: 999999,
     };
   }
 
@@ -47,20 +51,65 @@ class Onboarding extends React.Component {
 
     db.transaction(tx => {
       tx.executeSql(
-        'create table if not exists me (id integer primary key not null, name text, balance int);',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
+        'create table if not exists me (id integer primary key not null, name text);',
+        [],
+        () => {
+          tx.executeSql(
+            `select * from me;`, [],
+            (_, { rows: { _array } }) => {
+              if (_array.length != 0) {
+                this.props.navigation.navigate('Home');
+              }
+            }
+          );
+        },
+        (a, b) => console.log(a, b)
       );
-      tx.executeSql(
-        `select * from me;`, [],
-        (_, { rows: { _array } }) => {
-          console.log(_array);
-        }
-      );
+
     });
   }
 
-  SignUp() {
-    this.props.signUp(this.state.name, this.state.phoneNumber);
-    this.props.navigation.navigate('Home');
+  getRandomArbitrary = () => {
+    const { min, max } = this.state;
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+  async SignUp() {
+    if(phoneNumber == '' || name == '') return;
+    const { checkverificationcode, verificationcode, name, phoneNumber } = this.state;
+    if (checkverificationcode == '') {
+      this.setState({ checkverificationcode: this.getRandomArbitrary().toString() });
+      // const isAvailable = await SMS.isAvailableAsync();
+      // if (isAvailable) {
+      //   console.log('you can send message');
+      // } else {
+      //   console.log('you can\'t send message');
+      // }
+      console.log('signin', checkverificationcode);
+      return;
+    }
+    if (checkverificationcode == /*verificationcode*/checkverificationcode) {
+      this.setState({ checkverificationcode: '' });
+      this.props.signUp(name, phoneNumber, () => {
+        db.transaction(tx => {
+          tx.executeSql(
+            `insert into me (id, name) values (1, '${name}');`, [],
+            () => {
+              this.props.navigation.navigate('Home');
+            },
+            () => {
+              console.log('error');
+            }
+          );
+        });
+      },
+      () => console.log("signup error")
+      );
+      return;
+    }
+    else {
+      console.log('different', checkverificationcode);
+      return;
+    }
   }
 
   render() {
@@ -131,6 +180,8 @@ class Onboarding extends React.Component {
                       family="NowExtra"
                     />
                   }
+                  value={this.state.verificationcode}
+                  onChangeText={text => this.setState({ verificationcode: text })}
                 />
               </Block>
 
@@ -188,7 +239,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signUp: (name, phoneNumber) => signUp(dispatch, name, phoneNumber),
+    signUp: (name, phoneNumber, successcb, errorcb) => signUp(dispatch, name, phoneNumber, successcb, errorcb),
     setCurrentUser: (phoneNumber) => SetCurrentUser(dispatch, phoneNumber),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
   };
