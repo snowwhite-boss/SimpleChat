@@ -95,11 +95,9 @@ export default class App extends React.Component {
             `select * from me;`, [],
             (_, { rows: { _array } }) => {
               if (_array.length == 0) {
-                alert(true)
                 this.setState({ isFirst: true });
               }else{
-                alert(false)
-                this.setState({ isFirst: false });
+                this.setState({ isFirst: true });
               }
             }
           );
