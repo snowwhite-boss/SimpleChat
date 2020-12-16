@@ -289,7 +289,7 @@ export default function OnboardingStack() {
       <Stack.Navigator mode="card" headerMode="none">
         <Stack.Screen
           name="Onboarding"
-          component={Onboarding}
+          component={QRScan}
           option={{
             headerTransparent: true
           }}
