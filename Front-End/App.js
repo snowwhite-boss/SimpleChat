@@ -102,13 +102,13 @@ export default class App extends React.Component {
                 this.setState({ isFirst: true });
               } else {
                 this.setState({ isFirst: false });
-                // this.setState({ user: _array[0] });
-                this.setState({
-                  user: {
-                    "name": "bbb",
-                    "phone": "456"
-                  }
-                });
+                this.setState({ user: _array[0] });
+                // this.setState({
+                //   user: {
+                //     "name": "aaa",
+                //     "phone": "123"
+                //   }
+                // });
               }
             }
           );

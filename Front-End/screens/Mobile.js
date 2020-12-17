@@ -96,7 +96,7 @@ class Moblie extends React.Component {
         <Image source={Images.ItemUser} style={styles.itemUser} />
         <Text style={styles.nickName}>{item.name}</Text>
         <Block style={styles.addButtonItem} flex>
-          <Button onPress={() => this.addItem(item.status, item.name, item.phoneNumbers[0].number, item.requestcontent)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={item.style}>{item.status}</Button>
+          <Button onPress={() => this.addItem(item.status, item.name, item.phoneNumbers[0].number, item.requestcontent)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={item.style} >{item.status}</Button>
         </Block>
       </Block>
     </TouchableOpacity>
