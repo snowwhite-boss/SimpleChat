@@ -3,6 +3,7 @@ var Notification = require("../models/notifications.model.js");
 var Chat = require("../models/chats.model.js");
 
 exports.create = async function (req, res) {
+    console.log(req.body)
     if (!req.body) {
         return res.status(400).send({
             message: "Note can not be empty..."

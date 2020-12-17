@@ -95,3 +95,27 @@ export function SetChatMan(dispatch, man) {
         payload: man
     });
 }
+export function GetMessages(dispatch,sender, receiver) {
+    Client.get(`chats/${sender}/${receiver}`)
+}
+export function SendMessage(dispatch, sender, receiver, newMessage) {
+    Client.post(`chats/`, {
+        sender: sender,
+        receiver: receiver,
+        content: newMessage[0].text,
+    })
+        .then(async res => {
+            console.log(res);
+            // if (res.status == 200) {
+            //     dispatch({
+            //         type: "SET_FRIENDS",
+            //         payload: res.data.friends.friends
+            //     });
+            //     console.log("Request Friend success")
+            //     successcb();
+            // }
+        })
+        .catch(error => {
+            console.log("RequestFriend error => ", error);
+        });
+}

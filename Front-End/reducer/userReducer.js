@@ -4,7 +4,8 @@ const initialState = {
   currentUser: {},
   friends: [],
   notifications: [],
-  chatMan: {}
+  chatMan: {},
+  messages: []
 };
 
 // reducer with cases for Redux
