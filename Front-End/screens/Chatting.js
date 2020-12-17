@@ -1,27 +1,40 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+// connect to Redux state
+import { connect } from "react-redux";
 
-export default class Chatting extends React.Component {
+class Chatting extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       messages: [
         {
-          _id: 0,
-          text: 'New room created.',
-          createdAt: new Date().getTime(),
-          system: true
-        },
-        // example of chat message
-        {
           _id: 1,
           text: 'Henlo!',
           createdAt: new Date().getTime(),
           user: {
             _id: 2,
-            name: 'Test User'
+            name: '222'
+          }
+        },
+        {
+          _id: 3,
+          text: 'Henlo!',
+          createdAt: new Date().getTime(),
+          user: {
+            _id: 1,
+            name: '111'
+          }
+        },
+        {
+          _id: 2,
+          text: 'Henlo!',
+          createdAt: new Date().getTime(),
+          user: {
+            _id: 3,
+            name: '333'
           }
         }
       ],
@@ -37,13 +50,12 @@ export default class Chatting extends React.Component {
 
   renderBubble(props) {
     return (
-      // Step 3: return the component
       <Bubble
         {...props}
         wrapperStyle={{
           right: {
             // Here is the color change
-            backgroundColor: '#6646ee'
+            backgroundColor: '#6690ee'
           }
         }}
         textStyle={{
@@ -87,3 +99,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    chatMan: state.chatMan,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    acceptFriend: (requesterphone, receiverphone, successcb) => AcceptFriend(dispatch, requesterphone, receiverphone, successcb),
+    setChatMan: (man) => SetChatMan(dispatch, man),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Chatting);
