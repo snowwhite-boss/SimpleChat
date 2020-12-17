@@ -3,43 +3,63 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  FlatList,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-
+import SectionListContacts from 'react-native-sectionlist-contacts'
 const { height, width } = Dimensions.get("screen");
-
+import * as Contacts from 'expo-contacts';
 // connect to Redux state
 import { connect } from "react-redux";
+import { RequestFriend, AcceptFriend } from "../actions/userActions";
+
+import DialogInput from 'react-native-dialog-input';
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { Button, Footer } from "../components";
 
-const ContactsItem = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Block row style={{ alignItems: "center" }}>
-      <Image source={Images.ItemUser} style={styles.itemUser} />
-      <Text style={styles.nickName}>{item.name}</Text>
-    </Block>
-  </TouchableOpacity>
-);
-
-const renderContactsItem = ({ item }) => {
-  if(item.status != 'added') return null;
-  return (
-    <ContactsItem
-      item={item}
-      onPress={() => alert(item.id)}
-    />
-  );
-};
-
 class FriendContacts extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      dataArray: [],
+      isAddDialogVisible: false,
+      isViewDialogVisible: false,
+      selectedMan: '',
+      selectedPhone: '',
+      requestcontent: '',
+    }
+  }
+
+  componentDidMount() {
+    this.getContactsData()
+  }
+
+  getContactsData() {
+    data = this.props.friends.map(fri => {
+      if(fri.status == 'added')
+        return Object.assign({}, {name:fri.user.name}, {phone:fri.user.phone});
+    })
+    this.setState({ dataArray: data });
+  }
+
+  _renderItem = (item, index, section) => {
+    return <TouchableOpacity style={styles.item} onPress={() => this.selectItem(item)}>
+      <Block row style={{ alignItems: "center" }}>
+        <Image source={Images.ItemUser} style={styles.itemUser} />
+        <Text style={styles.nickName}>{item.name}</Text>
+      </Block>
+    </TouchableOpacity>
+  }
+
+  selectItem(item){
+    console.log(item)
+  }
   render() {
     return (
-      <Block flex>
+      <Block flex style={styles.container}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('NewFriend')}>
           <Block row style={styles.newFriendRow}>
             <Image
@@ -49,14 +69,18 @@ class FriendContacts extends React.Component {
             <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>New Friends</Text>
           </Block>
         </TouchableOpacity>
-        {/* <ScrollView style={styles.container}> */}
-          <FlatList
-          style={styles.container}
-            data={this.props.friends}
-            renderItem={renderContactsItem}
-            keyExtractor={(item, index) => index}
-          />
-        {/* </ScrollView> */}
+        <SectionListContacts
+          ref={s => this.sectionList = s}
+          sectionListData={this.state.dataArray}
+          sectionHeight={50}
+          initialNumToRender={this.state.dataArray.length}
+          showsVerticalScrollIndicator={false}
+          // SectionListClickCallback={(item, index) => {
+          //   this.addItem(item)
+          // }}
+          renderItem={this._renderItem}
+          otherAlphabet="#"
+        />
         <Footer navigation={this.props.navigation} />
       </Block>
     );
@@ -64,14 +88,9 @@ class FriendContacts extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
   container: {
     width: width,
-    padding: 10,
-    borderTopColor: 'grey',
-    borderTopWidth: 1,
+    paddingLeft: 20,
   },
   rightCell: {
     padding: 10,
@@ -141,4 +160,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(FriendContacts);
+function mapDispatchToProps(dispatch) {
+  return {
+    requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
+    acceptFriend: (requesterphone, receiverphone, successcb) => AcceptFriend(dispatch, requesterphone, receiverphone, successcb),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(FriendContacts);
