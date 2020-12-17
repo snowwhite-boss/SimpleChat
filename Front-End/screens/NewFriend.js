@@ -22,13 +22,19 @@ const ContactsItem = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <Block row style={{ alignItems: "center" }}>
       <Image source={Images.ItemUser} style={styles.itemUser} />
-      <Text style={styles.nickName}>{item.name}</Text>
+      <Block style={styles.itemDetail}>
+        <Text style={styles.nickName}>{item.user.name}</Text>
+        <Text style={styles.request}>{item.requestcontent}</Text>
+      </Block>
+      <Block style={styles.flex_end} flex>
+        <Text style={styles.status}>{item.status}</Text>
+      </Block>
     </Block>
   </TouchableOpacity>
 );
 
 const renderContactsItem = ({ item }) => {
-  if(item.status != 'added') return null;
+  if (item.status != 'added') return null;
   return (
     <ContactsItem
       item={item}
@@ -38,7 +44,11 @@ const renderContactsItem = ({ item }) => {
 };
 
 class NewFriend extends React.Component {
-  
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+
   componentDidMount() {
     // AddressBook.getContacts( (err, contacts) => {
     //   if(err && err.type === 'permissionDenied'){
@@ -78,25 +88,25 @@ class NewFriend extends React.Component {
   }
   render() {
     return (
-      <Block flex>
+      <Block flex style={styles.scene}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('Mobile')}>
-          <Block row style={styles.newFriendRow}>
+          <Block style={styles.newFriendRow}>
             <Image
               style={styles.addPhone}
               source={Images.addPhone}
             />
-            <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>Mobile Contacts</Text>
+            <Text size={20} color="gray" style={{ paddingLeft: 20 }}>Mobile Contacts</Text>
           </Block>
         </TouchableOpacity>
         {/* <ScrollView style={styles.container}> */}
-          <FlatList
-            style={styles.container}
-            data={this.props.friends}
-            renderItem={renderContactsItem}
-            keyExtractor={(item, index) => index}
-          />
+        <FlatList
+          style={styles.container}
+          data={this.props.friends}
+          renderItem={renderContactsItem}
+          keyExtractor={(item, index) => index}
+        />
         {/* </ScrollView> */}
-        
+
       </Block>
     );
   }
@@ -104,13 +114,11 @@ class NewFriend extends React.Component {
 
 const styles = StyleSheet.create({
   scene: {
-    flex: 1,
+    backgroundColor: '#EEEEEE'
   },
   container: {
     width: width,
-    padding: 10,
-    borderTopColor: 'grey',
-    borderTopWidth: 1,
+    marginVertical: 20,
   },
   rightCell: {
     padding: 10,
@@ -136,11 +144,11 @@ const styles = StyleSheet.create({
     color: nowTheme.COLORS.HEADER
   },
   item: {
-    marginBottom: 5,
-    paddingVertical: 8,
-    marginHorizontal: 16,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1
+    backgroundColor: "white",
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    borderBottomColor: '#EEEEEE',
+    borderBottomWidth: 1,
   },
   itemUser: {
     width: 50,
@@ -149,8 +157,22 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   nickName: {
-    fontSize: 20,
+    fontSize: 24,
     color: 'black'
+  },
+  request: {
+    marginTop: 5,
+    fontSize: 15,
+    color: 'grey'
+  },
+  status: {
+    fontSize: 18,
+    color: 'grey',
+    paddingRight: 10
+  },
+  flex_end: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
   },
   itemContent: {
     fontSize: 18,
@@ -162,14 +184,14 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch'
   },
   newFriendRow: {
-    paddingHorizontal: 26,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     alignItems: 'center',
-    borderColor: 'orange',
-    borderRadius: 20,
-    borderWidth: 2,
-    marginHorizontal: 26,
-    marginVertical: 10
+    marginTop: 10,
+    backgroundColor: "white",
+  },
+  itemDetail: {
+    paddingStart: 15
   }
 });
 
