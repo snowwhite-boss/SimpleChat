@@ -73,8 +73,8 @@ exports.create = async function (req, res) {
         { createdAt: chat.createdAt },
         {
             user: {
-                phone: chat.from,
-                name: chat.from == sender ? senderuser.name : receiver.name
+                phone: sender,
+                name: senderuser.name
             }
         },
     )
@@ -128,7 +128,7 @@ exports.getlist = async function (req, res) {
                 {
                     user: {
                         phone: chat.from,
-                        name: chat.from == sender ? senderuser.name : receiver.name
+                        name: chat.from == sender ? senderuser.name : receiveruser.name
                     }
                 },
             )
