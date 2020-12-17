@@ -97,8 +97,6 @@ exports.getstate = async function (req, res) {
             senduser: senderuser._id,
             count: 0,
             content: "",
-            isNotify: isNotify == undefined ? true : isNotify,
-            isSticky: isSticky == undefined ? false : isSticky,
         };
         receiveruser.notifications.notifications.push(notification);
         await receiveruser.notifications.save();

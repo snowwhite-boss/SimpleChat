@@ -11,17 +11,71 @@ const { width } = Dimensions.get("screen");
 import { connect } from "react-redux";
 import Images from "../constants/Images";
 import MkSwitch from "../components/Switch";
-import { DeleteChatHistory, UpdateNotification } from "../actions/userActions";
+import { DeleteChatHistory, UpdateNotification, GetNotification } from "../actions/userActions";
 
 class Detail extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      notification: {
+        isSticky: false,
+        isNotify: true,
+      },
     }
   }
 
   componentDidMount() {
+    let myphone = this.props.currentUser.phone;
+    let otherphone = this.props.user.phone;
+    GetNotification(otherphone, myphone).then(({ data }) => {
+      this.setState({ notification: data });
+    }).catch(() => {
+      Alert.alert(
+        "Error",
+        "Can't get information.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel"
+          },
+        ],
+        { cancelable: false }
+      );
+    })
+  }
+
+  changeNotify = (val) => {
+    this.updateNotification(!val, this.state.notification.isSticky);
+  }
+
+  changeSticky = (val) => {
+    this.updateNotification(this.state.notification.isNotify, val);
+  }
+
+  updateNotification = (isNotify, isSticky) => {
+    let receiver = this.props.currentUser.phone;
+    let sender = this.props.user.phone;
+    this.setState({
+      notification: {
+        isNotify, isSticky
+      }
+    });
+    UpdateNotification(sender, receiver, isNotify, isSticky).then(() => {
+    }).catch((err) => {
+      console.log(err);
+      Alert.alert(
+        "Error",
+        "Can't update information.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel"
+          },
+        ],
+        { cancelable: false }
+      );
+    })
   }
 
   deleteHistory = () => {
@@ -57,13 +111,13 @@ class Detail extends React.Component {
           <Block row style={styles.notificationItem}>
             <Text style={styles.itemText}>Mute Notifications</Text>
             <Block style={styles.flex_end} flex>
-              <MkSwitch value={false} onValueChange={() => { }} />
+              <MkSwitch value={!this.state.notification.isNotify} onValueChange={this.changeNotify} />
             </Block>
           </Block>
           <Block row style={styles.notificationItem}>
             <Text style={styles.itemText}>Sticky on Top</Text>
             <Block style={styles.flex_end} flex>
-              <MkSwitch value={true} onValueChange={() => { }} />
+              <MkSwitch value={this.state.notification.isSticky} onValueChange={this.changeSticky} />
             </Block>
           </Block>
         </Block>

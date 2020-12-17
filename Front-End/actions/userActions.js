@@ -136,10 +136,15 @@ export function SendMessage(dispatch, sender, receiver, newMessage) {
 }
 
 export function UpdateNotification(sender, receiver, isNotify, isSticky) {
-    return Client.put("notifications", {
+    console.log(sender, receiver, isNotify, isSticky);
+    return Client.put("notifications/", {
         sender,
         receiver,
         isNotify,
         isSticky,
     })
+}
+
+export function GetNotification(sender, receiver) {
+    return Client.get(`notifications/${sender}/${receiver}`);
 }
