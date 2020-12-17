@@ -184,7 +184,7 @@ class Header extends React.Component {
         style={styles.search}
         placeholder="Who are you looking for?"
         placeholderTextColor={'#8898AA'}
-        onFocus={() => { Keyboard.dismiss(); navigation.navigate('Pro') }}
+        onFocus={() => {  }}
         iconContent={
           <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
         }
