@@ -48,14 +48,14 @@ class Onboarding extends React.Component {
   async SignUp() {
     if (phoneNumber == '' || name == '') return;
     const { checkverificationcode, verificationcode, name, phoneNumber } = this.state;
-    if (checkverificationcode == '') {
-      this.setState({ checkverificationcode: this.getRandomArbitrary().toString() });
-      this.sendVerifyCode();
-      console.log('signin', checkverificationcode);
-      return;
-    }
-    if (checkverificationcode == /*verificationcode*/checkverificationcode) {
-      this.setState({ checkverificationcode: '' });
+    // if (checkverificationcode == '') {
+    //   this.setState({ checkverificationcode: this.getRandomArbitrary().toString() });
+    //   this.sendVerifyCode();
+    //   console.log('signin', checkverificationcode);
+    //   return;
+    // }
+    // if (checkverificationcode == /*verificationcode*/checkverificationcode) {
+    //   this.setState({ checkverificationcode: '' });
       this.props.signUp(name, phoneNumber, () => {
         db.transaction(tx => {
           tx.executeSql(
@@ -72,11 +72,11 @@ class Onboarding extends React.Component {
         () => console.log("signup error")
       );
       return;
-    }
-    else {
-      console.log('different', checkverificationcode);
-      return;
-    }
+    // }
+    // else {
+    //   console.log('different', checkverificationcode);
+    //   return;
+    // }
   }
 
   render() {
@@ -134,7 +134,7 @@ class Onboarding extends React.Component {
                   onChangeText={text => this.setState({ phoneNumber: text })}
                 />
               </Block>
-              <Block >
+              {/* <Block >
                 <Input
                   placeholder="SMS Verification Code"
                   shadowless
@@ -150,7 +150,7 @@ class Onboarding extends React.Component {
                   value={this.state.verificationcode}
                   onChangeText={text => this.setState({ verificationcode: text })}
                 />
-              </Block>
+              </Block> */}
 
               <Block
                 row
