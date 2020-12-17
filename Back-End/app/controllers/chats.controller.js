@@ -68,3 +68,47 @@ exports.create = async function (req, res) {
     receiveruser.notifications.save();
     res.send(chat);
 }
+
+exports.getlist = async function (req, res) {
+    const {
+        sender,
+        receiver
+    } = req.params;
+    if (!sender || sender == "" || !receiver || receiver == "") {
+        return res.status(400).send({
+            message: "Content can't be blank"
+        });
+    }
+    let senderuser = await User.findOne({
+        phone: sender
+    }).exec();
+    let receiveruser = await User.findOne({
+        phone: receiver
+    }).exec();
+    if (!receiveruser || !senderuser) {
+        return res.status(500).send({
+            message: "User not found"
+        });
+    }
+
+    try {
+        let chats = await Chat.find({
+            $or: [{
+                    'from': sender,
+                    'to': receiver
+                },
+                {
+                    'from': receiver,
+                    'to': sender
+                },
+            ],
+        }).sort({
+            createdAt: 'desc'
+        }).exec();
+        return res.send(chats);
+    } catch (error) {
+        return res.status(500).send({
+            message: "Chat not found"
+        });
+    }
+}
