@@ -105,8 +105,8 @@ export default class App extends React.Component {
                 // this.setState({ user: _array[0] });
                 this.setState({
                   user: {
-                    "name": "aaa",
-                    "phone": "123"
+                    "name": "bbb",
+                    "phone": "456"
                   }
                 });
               }

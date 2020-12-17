@@ -16,7 +16,7 @@ const { height, width } = Dimensions.get("screen");
 import * as Contacts from 'expo-contacts';
 // connect to Redux state
 import { connect } from "react-redux";
-import { RequestFriend } from "../actions/userActions";
+import { RequestFriend, AcceptFriend } from "../actions/userActions";
 
 import DialogInput from 'react-native-dialog-input';
 
@@ -30,9 +30,11 @@ class Moblie extends React.Component {
 
     this.state = {
       dataArray: [],
-      isDialogVisible: false,
+      isAddDialogVisible: false,
+      isViewDialogVisible: false,
       selectedMan: '',
       selectedPhone: '',
+      requestcontent: '',
     }
   }
 
@@ -46,28 +48,51 @@ class Moblie extends React.Component {
       var { data } = await Contacts.getContactsAsync({
         fields: [Contacts.Fields.Emails, Contacts.Fields.ID, Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
       });
-      
+
       if (data.length > 0) {
         const addButton = { backgroundColor: 'green', borderRadius: 8, width: 90 }
-        const waitButton = { backgroundColor: '#cccccc', borderRadius: 8, width: 90 }
-        const viewButton = { backgroundColor: 'blue', borderRadius: 8, width: 90 }
-        const addedButton = { backgroundColor: '#cccccc', borderRadius: 8, width: 90 }
+        const waitButton = { backgroundColor: '#aaaaaa', borderRadius: 8, width: 90 }
+        const viewButton = { backgroundColor: '#0000aa99', borderRadius: 8, width: 90 }
+        const addedButton = { backgroundColor: '#cccccc55', borderRadius: 8, width: 90 }
         data = data.map(el => {
           let ret = this.props.friends.find(fri => fri.user.phone == el.phoneNumbers[0].number);
           if (ret) {
-            return Object.assign({}, el, { status: ret.status }, {style: waitButton})
+            if (ret.status == 'Waiting')
+            return Object.assign({}, el, { status: ret.status }, { style: waitButton }, {requestcontent: ret.requestcontent})
+            else if (ret.status == 'View')
+              return Object.assign({}, el, { status: ret.status }, { style: viewButton }, {requestcontent: ret.requestcontent})
+            else  // Added
+              return Object.assign({}, el, { status: ret.status }, { style: addedButton }, {requestcontent: ret.requestcontent})
           }
-          return Object.assign({}, el, { status: 'Add' }, {style: addButton})
+          return Object.assign({}, el, { status: 'Add' }, { style: addButton }, {requestcontent: ''})
         })
         this.setState({ dataArray: data });
       }
     }
   }
 
-  async addItem(name, phone) {
+  async addItem(status, name, phone, requestcontent) {
     await this.setState({ selectedMan: name })
     await this.setState({ selectedPhone: phone })
-    await this.setState({ isDialogVisible: true })
+    switch (status) {
+      case 'Add':
+        await this.setState({ isAddDialogVisible: true })
+        break;
+      // case 'Waiting':
+      //   await this.setState({ isDialogVisible: true })
+      //   break;
+      case 'View':
+        await this.setState({ requestcontent: requestcontent })
+        await this.setState({ isViewDialogVisible: true })
+        break;
+      // case 'Added':
+      //   await this.setState({ isDialogVisible: true })
+      //   break;
+
+      default:
+        break;
+    }
+
 
   }
   _renderItem = (item, index, section) => {
@@ -76,7 +101,7 @@ class Moblie extends React.Component {
         <Image source={Images.ItemUser} style={styles.itemUser} />
         <Text style={styles.nickName}>{item.name}</Text>
         <Block style={styles.addButtonItem} flex>
-          <Button onPress={() => this.addItem(item.name, item.phoneNumbers[0].number)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={item.style}>{item.status}</Button>
+          <Button onPress={() => this.addItem(item.status, item.name, item.phoneNumbers[0].number, item.requestcontent)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={item.style}>{item.status}</Button>
         </Block>
       </Block>
     </TouchableOpacity>
@@ -89,7 +114,15 @@ class Moblie extends React.Component {
       requestText,
       () => { this.getContactsData() }
     );
-    this.setState({ isDialogVisible: false })
+    this.setState({ isAddDialogVisible: false })
+  };
+  sendAccept(acceptText) {
+    this.props.acceptFriend(
+      this.props.currentUser.phone,
+      this.state.selectedPhone,
+      () => { this.getContactsData() }
+    );
+    this.setState({ isViewDialogVisible: false })
   };
 
   render() {
@@ -101,18 +134,27 @@ class Moblie extends React.Component {
           sectionHeight={50}
           initialNumToRender={this.state.dataArray.length}
           showsVerticalScrollIndicator={false}
-          SectionListClickCallback={(item, index) => {
-            this.addItem(item)
-          }}
+          // SectionListClickCallback={(item, index) => {
+          //   this.addItem(item)
+          // }}
           renderItem={this._renderItem}
           otherAlphabet="#"
         />
-        <DialogInput isDialogVisible={this.state.isDialogVisible}
+        <DialogInput isDialogVisible={this.state.isAddDialogVisible}
           title={this.state.selectedMan}
           message={"Send Friend Request"}
           hintInput={"Hi, I am your friend."}
           submitInput={(requestText) => { this.sendRequest(requestText) }}
-          closeDialog={() => { this.setState({ isDialogVisible: false }) }}>
+          closeDialog={() => { this.setState({ isAddDialogVisible: false }) }}>
+        </DialogInput>
+        <DialogInput isDialogVisible={this.state.isViewDialogVisible}
+          title={this.state.selectedMan}
+          message={this.state.requestcontent}
+          initValueTextInput={"Accept your request."}
+          cancelText={"Cancel"}
+          submitText={"Accept"}
+          submitInput={(acceptText) => { this.sendAccept(acceptText) }}
+          closeDialog={() => { this.setState({ isViewDialogVisible: false }) }}>
         </DialogInput>
       </Block>
     );
@@ -185,6 +227,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
+    acceptFriend: (requesterphone, receiverphone, successcb) => AcceptFriend(dispatch, requesterphone, receiverphone, successcb),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Moblie);

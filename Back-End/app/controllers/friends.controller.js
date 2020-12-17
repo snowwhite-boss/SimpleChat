@@ -229,5 +229,17 @@ exports.update = async function (req, res) {
         return;
     }
 
-    res.send("Friendship is set.");
+    await requester.populate({
+        path: 'friends',
+        select: 'friends',
+        populate: {
+            path: 'friends',
+            populate: {
+                path: 'user',
+                model: 'User',
+                select: 'name phone',
+            }
+        }
+    }).execPopulate();
+    res.send(requester);
 }
