@@ -90,7 +90,7 @@ class Chatting extends React.Component {
       <GiftedChat
         messages={this.props.messages}
         onSend={newMessage => this.handleSend(newMessage)}
-        user={{ phone: this.props.currentUser.phone }}
+        user={{ _id: this.props.currentUser.phone }}
         renderBubble={this.renderBubble}
         placeholder='Type your message here...'
         showUserAvatar
