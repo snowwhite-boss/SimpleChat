@@ -3,7 +3,9 @@ var bodyParser = require('body-parser');
 var http = require('http').createServer(app);
 const PORT = 8080;
 const HOST = '10.10.11.84';
-var io = require('socket.io')(http);
+// var io = require('socket.io')(http);
+const webSocketServer = require('websocket').server;
+
 
 var STATIC_CHANNELS = [{
     name: 'Global chat',
@@ -39,17 +41,17 @@ mongoose.connect(dbConfig.url, {
     useUnifiedTopology: true
 });
 
-mongoose.connection.on('error', function() {
+mongoose.connection.on('error', function () {
     console.log('Could not connect to the database. Exiting now...');
     process.exit();
 });
-mongoose.connection.once('open', function() {
+mongoose.connection.once('open', function () {
     console.log("Successfully connected to the database");
 })
 
 // define a simple route
-app.get('/', function(req, res){
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+app.get('/', function (req, res) {
+    res.json({ "message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes." });
 });
 
 require('./app/routes/users.routes.js')(app);
@@ -61,47 +63,47 @@ http.listen(PORT, HOST, () => {
     console.log(`listening on *:${PORT}`);
 });
 
-io.on('connection', (socket) => { // socket object may be used to send specific messages to the new connected client
-    // console.log('new client connected');
-    // socket.emit('connection', null);
-    // socket.on('channel-join', id => {
-    //     console.log('channel join', id);
-    //     STATIC_CHANNELS.forEach(c => {
-    //         if (c.id === id) {
-    //             if (c.sockets.indexOf(socket.id) == (-1)) {
-    //                 c.sockets.push(socket.id);
-    //                 c.participants++;
-    //                 io.emit('channel', c);
-    //             }
-    //         } else {
-    //             let index = c.sockets.indexOf(socket.id);
-    //             if (index != (-1)) {
-    //                 c.sockets.splice(index, 1);
-    //                 c.participants--;
-    //                 io.emit('channel', c);
-    //             }
-    //         }
-    //     });
+// io.on('connection', (socket) => { // socket object may be used to send specific messages to the new connected client
+//     // console.log('new client connected');
+//     // socket.emit('connection', null);
+//     // socket.on('channel-join', id => {
+//     //     console.log('channel join', id);
+//     //     STATIC_CHANNELS.forEach(c => {
+//     //         if (c.id === id) {
+//     //             if (c.sockets.indexOf(socket.id) == (-1)) {
+//     //                 c.sockets.push(socket.id);
+//     //                 c.participants++;
+//     //                 io.emit('channel', c);
+//     //             }
+//     //         } else {
+//     //             let index = c.sockets.indexOf(socket.id);
+//     //             if (index != (-1)) {
+//     //                 c.sockets.splice(index, 1);
+//     //                 c.participants--;
+//     //                 io.emit('channel', c);
+//     //             }
+//     //         }
+//     //     });
 
-    //     return id;
-    // });
-    socket.on('send-message', message => {
-        console.log("server message => ", message);
-        io.emit('message', message);
-    });
+//     //     return id;
+//     // });
+//     socket.on('send-message', message => {
+//         console.log("server message => ", message);
+//         io.emit('message', message);
+//     });
 
-    // socket.on('disconnect', () => {
-    //     STATIC_CHANNELS.forEach(c => {
-    //         let index = c.sockets.indexOf(socket.id);
-    //         if (index != (-1)) {
-    //             c.sockets.splice(index, 1);
-    //             c.participants--;
-    //             io.emit('channel', c);
-    //         }
-    //     });
-    // });
+//     // socket.on('disconnect', () => {
+//     //     STATIC_CHANNELS.forEach(c => {
+//     //         let index = c.sockets.indexOf(socket.id);
+//     //         if (index != (-1)) {
+//     //             c.sockets.splice(index, 1);
+//     //             c.participants--;
+//     //             io.emit('channel', c);
+//     //         }
+//     //     });
+//     // });
 
-});
+// });
 
 /**
  * @description This methos retirves the static channels
@@ -110,4 +112,26 @@ app.get('/getChannels', (req, res) => {
     res.json({
         channels: STATIC_CHANNELS
     })
+});
+
+const wsServer = new webSocketServer({
+    httpServer: http
+});
+
+wsServer.on('request', function (request) {
+    console.log('connected')
+    const connection = request.accept(null, request.origin);
+    connection.on('message', function(message) {
+        if (message.type === 'utf8') {
+            console.log('Received Message: ' + message.utf8Data);
+            connection.sendUTF(message.utf8Data);
+        }
+        else if (message.type === 'binary') {
+            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            connection.sendBytes(message.binaryData);
+        }
+    });
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    });    
 });

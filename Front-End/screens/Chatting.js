@@ -4,48 +4,68 @@ import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 // connect to Redux state
 import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
-import socketClient from "socket.io-client";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { apiConfig } from '../config/config';
+const SERVER = "ws://10.10.11.84:8080";
+
+const client = new W3CWebSocket(SERVER);
 
 class Chatting extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-    }
+    
+    // let socket = socketClient(SERVER, {
+    //   transports: ['websocket'],
+    //   reconnectionAttempts: 15
+    // });
+    // socket.connect();
+    // console.log(socket.connected)
+    // socket.on('connection', () => {
+    //   console.log("connected");
+    // });
+    
   }
-  socket;
 
   componentDidMount() {
     this.props.getMessages(
       this.props.currentUser.phone,
       this.props.chatMan.phone
     );
-    this.configureSocket();
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+    };
+    client.onmessage = (message) => {
+      console.log(message);
+    };
+    client.send("asdasdfasdadsf");
+    //this.configureSocket();
   }
 
-  configureSocket = () => {
-    var socket = socketClient("http://10.10.11.84:8080");
-    
-    socket.on('message', message => {
-      this.props.getMessages(
-        this.props.currentUser.phone,
-        this.props.chatMan.phone
-      );
-      console.log("message => ", message)
-    });
-    this.socket = socket;
-}
+  // configureSocket = () => {
+  //   const socket = SocketIOClient("http://10.10.11.84:8080");
+  //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  //   console.log(socket)
+  //   socket.connect();
+  //   socket.on('message', message => {
+  //     this.props.getMessages(
+  //       this.props.currentUser.phone,
+  //       this.props.chatMan.phone
+  //     );
+  //     console.log("message => ", message)
+  //   });
+  //   socket = socket;
+  //   socket.emit('send-message', "newMessage");
+  //  }
 
   // helper method that is sends a message
   handleSend(newMessage = []) {
     // let setMessages = GiftedChat.append(this.state.messages, newMessage);
+    // this.socket.emit('send-message', newMessage);
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,
       newMessage
     );
-    this.socket.emit('send-message', newMessage);
   }
 
   renderBubble(props) {
