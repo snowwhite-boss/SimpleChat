@@ -38,7 +38,7 @@ const renderContactsItem = ({ item }) => {
   return (
     <ContactsItem
       item={item}
-      onPress={() => alert(item.id)}
+      // onPress={() => alert(item.id)}
     />
   );
 };

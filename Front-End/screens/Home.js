@@ -14,6 +14,7 @@ import { Card, Button, Icon, Footer } from "../components";
 import { Images } from "../constants";
 import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
+import { SetChatMan } from "../actions/userActions";
 const { width } = Dimensions.get("screen");
 
 const ChatItem = ({ item, onPress, style }) => (
@@ -35,14 +36,6 @@ const ChatItem = ({ item, onPress, style }) => (
     </Block>
   </TouchableOpacity>
 );
-const renderChatItem = ({ item }) => {
-  return (
-    <ChatItem
-      item={item}
-      onPress={() => alert(item.id)}
-    />
-  );
-};
 
 
 
@@ -53,7 +46,18 @@ class ChatHistory extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
+  renderChatItem = ({ item }) => {
+    return (
+      <ChatItem
+        item={item}
+        onPress={() => this.toChat(item)}
+      />
+    );
+  };
+
+  toChat = ({senduser}) => {
+    this.props.setChatMan(senduser);
+    this.props.navigation.navigate('Chatting');
   }
   //export default function Home() {
   render() {
@@ -63,7 +67,7 @@ class ChatHistory extends React.Component {
           <FlatList
           style={styles.container}
             data={this.props.notifications}
-            renderItem={renderChatItem}
+            renderItem={this.renderChatItem}
             keyExtractor={(item, index) => index.toString()}
           />
         {/* </ScrollView> */}
@@ -166,6 +170,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    setChatMan: (man) => SetChatMan(dispatch, man),
   };
 }
-export default connect(mapStateToProps, null)(ChatHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatHistory);
