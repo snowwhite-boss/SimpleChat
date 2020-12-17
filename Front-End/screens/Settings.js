@@ -75,7 +75,7 @@ export default class Settings extends React.Component {
       >
         <FlatList
           data={recommended}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item, index) => index}
           renderItem={this.renderItem}
           ListHeaderComponent={
             <Block center style={styles.title}>
@@ -99,7 +99,7 @@ export default class Settings extends React.Component {
 
         <FlatList
           data={payment}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item, index) => index}
           renderItem={this.renderItem}
         />
 
@@ -113,7 +113,7 @@ export default class Settings extends React.Component {
         </Block>
         <FlatList
           data={privacy}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item, index) => index}
           renderItem={this.renderItem}
         />
       </ScrollView>

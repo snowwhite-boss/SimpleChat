@@ -1,11 +1,8 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
-  StatusBar,
   Dimensions,
-  ScrollView,
   FlatList,
   TouchableOpacity
 } from "react-native";
@@ -56,7 +53,7 @@ class FriendContacts extends React.Component {
           style={styles.container}
             data={this.props.friends}
             renderItem={renderContactsItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => index}
           />
         {/* </ScrollView> */}
         <Footer navigation={this.props.navigation} />

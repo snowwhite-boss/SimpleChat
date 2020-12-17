@@ -1,14 +1,9 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
-  StatusBar,
   Dimensions,
-  ScrollView,
-  FlatList,
   TouchableOpacity,
-  Alert
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import SectionListContacts from 'react-native-sectionlist-contacts'

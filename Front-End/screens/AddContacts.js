@@ -1,12 +1,8 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
-  StatusBar,
   Dimensions,
-  ScrollView,
-  FlatList,
   TouchableOpacity
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";

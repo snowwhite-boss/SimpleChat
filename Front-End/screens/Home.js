@@ -4,9 +4,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  SafeAreaView,
   Image,
-  ScrollView
 } from "react-native";
 import { Block, theme, Text } from "galio-framework";
 // connect to Redux state
@@ -66,7 +64,7 @@ class ChatHistory extends React.Component {
           style={styles.container}
             data={this.props.notifications}
             renderItem={renderChatItem}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item, index) => index}
           />
         {/* </ScrollView> */}
         <Footer navigation={this.props.navigation} left />

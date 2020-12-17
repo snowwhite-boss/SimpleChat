@@ -1,15 +1,10 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
-  StatusBar,
   Dimensions,
-  ScrollView,
   FlatList,
   TouchableOpacity,
-  PermissionsAndroid,
-  Platform
 } from "react-native";
 // connect to Redux state
 import { connect } from "react-redux";
@@ -97,7 +92,7 @@ class NewFriend extends React.Component {
             style={styles.container}
             data={this.props.friends}
             renderItem={renderContactsItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => index}
           />
         {/* </ScrollView> */}
         
