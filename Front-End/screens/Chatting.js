@@ -4,50 +4,39 @@ import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 // connect to Redux state
 import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
+import socketClient from "socket.io-client";
+import { apiConfig } from '../config/config';
 
 class Chatting extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      messages: [
-        {
-          _id: 1,
-          text: 'Henlo!',
-          createdAt: new Date().getTime(),
-          user: {
-            _id: 2,
-            name: '222'
-          }
-        },
-        {
-          _id: 3,
-          text: 'Henlo!',
-          createdAt: new Date().getTime(),
-          user: {
-            _id: 1,
-            name: '111'
-          }
-        },
-        {
-          _id: 2,
-          text: 'Henlo!2',
-          createdAt: new Date().getTime(),
-          user: {
-            _id: 3,
-            name: '333'
-          }
-        }
-      ],
     }
   }
+  socket;
 
   componentDidMount() {
     this.props.getMessages(
       this.props.currentUser.phone,
       this.props.chatMan.phone
     );
+    this.configureSocket();
   }
+
+  configureSocket = () => {
+    var socket = socketClient("http://10.10.11.84:8080");
+    
+    socket.on('message', message => {
+      this.props.getMessages(
+        this.props.currentUser.phone,
+        this.props.chatMan.phone
+      );
+      console.log("message => ", message)
+    });
+    this.socket = socket;
+}
+
   // helper method that is sends a message
   handleSend(newMessage = []) {
     // let setMessages = GiftedChat.append(this.state.messages, newMessage);
@@ -56,6 +45,7 @@ class Chatting extends React.Component {
       this.props.chatMan.phone,
       newMessage
     );
+    this.socket.emit('send-message', newMessage);
   }
 
   renderBubble(props) {
