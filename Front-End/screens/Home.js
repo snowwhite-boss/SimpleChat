@@ -64,7 +64,7 @@ class ChatHistory extends React.Component {
           style={styles.container}
             data={this.props.notifications}
             renderItem={renderChatItem}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
           />
         {/* </ScrollView> */}
         <Footer navigation={this.props.navigation} left />

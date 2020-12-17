@@ -103,7 +103,7 @@ class NewFriend extends React.Component {
           style={styles.container}
           data={this.props.friends}
           renderItem={renderContactsItem}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
         />
         {/* </ScrollView> */}
 
