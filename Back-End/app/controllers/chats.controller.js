@@ -3,7 +3,6 @@ var Notification = require("../models/notifications.model.js");
 var Chat = require("../models/chats.model.js");
 
 exports.create = async function (req, res) {
-    console.log(req.body)
     if (!req.body) {
         return res.status(400).send({
             message: "Note can not be empty..."
@@ -23,8 +22,8 @@ exports.create = async function (req, res) {
         phone: sender
     });
     let receiveruser = await User.findOne({
-            phone: receiver
-        })
+        phone: receiver
+    })
         .populate('notifications')
         .exec();
     if (!receiveruser || !senderuser) {
@@ -67,7 +66,20 @@ exports.create = async function (req, res) {
         receiveruser.notifications.notifications[index].content = content;
     }
     receiveruser.notifications.save();
-    res.send(chat);
+    let formattedChats = Object.assign(
+        {},
+        { _id: chat._id },
+        { text: chat.content },
+        { createdAt: chat.createdAt },
+        {
+            user: {
+                phone: chat.from,
+                name: chat.from == sender ? senderuser.name : receiver.name
+            }
+        },
+    )
+
+    return res.send(formattedChats);
 }
 
 exports.getlist = async function (req, res) {
@@ -95,38 +107,31 @@ exports.getlist = async function (req, res) {
     try {
         let chats = await Chat.find({
             $or: [{
-                    'from': sender,
-                    'to': receiver
-                },
-                {
-                    'from': receiver,
-                    'to': sender
-                },
+                'from': sender,
+                'to': receiver
+            },
+            {
+                'from': receiver,
+                'to': sender
+            },
             ],
         }).sort({
             createdAt: 'desc'
         })
-        .exec();
-        // {
-        //     _id: 2,
-        //     text: 'Henlo!2',
-        //     createdAt: new Date().getTime(),
-        //     user: {
-        //       _id: 3,
-        //       name: '333'
-        //     }
-        //   }
-        let formattedChats = chats.map(chat =>{
+            .exec();
+        let formattedChats = chats.map(chat => {
             return Object.assign(
                 {},
-                {_id: chat._id},
-                {text: chat.content},
-                {createdAt: chat.createdAt},
-                {user: {
-                    phone: chat.from,
-                    name: chat.from == sender ? senderuser.name : receiver.name
-                }},
-                )
+                { _id: chat._id },
+                { text: chat.content },
+                { createdAt: chat.createdAt },
+                {
+                    user: {
+                        phone: chat.from,
+                        name: chat.from == sender ? senderuser.name : receiver.name
+                    }
+                },
+            )
         })
         return res.send(formattedChats);
     } catch (error) {

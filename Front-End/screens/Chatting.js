@@ -43,7 +43,6 @@ class Chatting extends React.Component {
   }
 
   componentDidMount() {
-    console.log("currentUser => ", this.props.currentUser)
     this.props.getMessages(
       this.props.currentUser.phone,
       this.props.chatMan.phone
@@ -91,7 +90,7 @@ class Chatting extends React.Component {
       <GiftedChat
         messages={this.props.messages}
         onSend={newMessage => this.handleSend(newMessage)}
-        user={{ _id: 1 }}
+        user={{ phone: this.props.currentUser.phone }}
         renderBubble={this.renderBubble}
         placeholder='Type your message here...'
         showUserAvatar

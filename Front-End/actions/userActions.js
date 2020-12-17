@@ -95,8 +95,19 @@ export function SetChatMan(dispatch, man) {
         payload: man
     });
 }
-export function GetMessages(dispatch,sender, receiver) {
+export function GetMessages(dispatch, sender, receiver) {
     Client.get(`chats/${sender}/${receiver}`)
+        .then(async res => {
+            if (res.status == 200) {
+                dispatch({
+                    type: "SET_MESSAGES",
+                    payload: res.data
+                });
+            }
+        })
+        .catch(error => {
+            console.log("GetMessages error => ", error);
+        });
 }
 export function SendMessage(dispatch, sender, receiver, newMessage) {
     Client.post(`chats/`, {
@@ -105,17 +116,14 @@ export function SendMessage(dispatch, sender, receiver, newMessage) {
         content: newMessage[0].text,
     })
         .then(async res => {
-            console.log(res);
-            // if (res.status == 200) {
-            //     dispatch({
-            //         type: "SET_FRIENDS",
-            //         payload: res.data.friends.friends
-            //     });
-            //     console.log("Request Friend success")
-            //     successcb();
-            // }
+            if (res.status == 200) {
+                dispatch({
+                    type: "APPEND_MESSAGE",
+                    payload: res.data
+                });
+            }
         })
         .catch(error => {
-            console.log("RequestFriend error => ", error);
+            console.log("SendMessage error => ", error);
         });
 }
