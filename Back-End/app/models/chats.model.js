@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 
 var ChatSchema = mongoose.Schema({
     from: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true
     },
     to: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true
     },
     content: {

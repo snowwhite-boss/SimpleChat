@@ -12,17 +12,10 @@ exports.create = async function (req, res) {
         name,
         phone
     } = req.body;
-    if (!name || name == '') {
-        res.status(400).send({
+    if (!name || name == '' || !phone || phone == '') {
+        return res.status(400).send({
             message: "User Name is required"
         });
-        return;
-    }
-    if (!phone || phone == '') {
-        res.status(400).send({
-            message: "Phone Number is required"
-        });
-        return;
     }
     User.findOne({
             phone
