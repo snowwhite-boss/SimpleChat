@@ -50,7 +50,7 @@ export default class App extends React.Component {
     isLoadingComplete: false,
     fontLoaded: false,
     isFirst: true,
-    phoneNumber: ''
+    user: {}
   };
 
   // async componentDidMount() {
@@ -77,10 +77,10 @@ export default class App extends React.Component {
           <NavigationContainer>
             <GalioProvider theme={nowTheme}>
               <Block flex>
-                <Screens 
-                isFirst={this.state.isFirst}
-                phoneNumber={this.state.phoneNumber}
-                 />
+                <Screens
+                  isFirst={this.state.isFirst}
+                  user={this.state.user}
+                />
               </Block>
             </GalioProvider>
           </NavigationContainer>
@@ -92,7 +92,7 @@ export default class App extends React.Component {
   isFirstCheck = async () => {
     await db.transaction(tx => {
       tx.executeSql(
-        'create table if not exists me (id integer primary key not null, phone text);',
+        'create table if not exists me (id integer primary key not null, name text, phone text);',
         [],
         () => {
           tx.executeSql(
@@ -102,7 +102,13 @@ export default class App extends React.Component {
                 this.setState({ isFirst: true });
               } else {
                 this.setState({ isFirst: false });
-                this.setState({ phoneNumber: _array[0].phone });
+                this.setState({ user: _array[0] });
+                // this.setState({
+                //   user: {
+                //     "name": "aaa",
+                //     "phone": "123"
+                //   }
+                // });
               }
             }
           );

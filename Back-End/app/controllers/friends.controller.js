@@ -28,8 +28,8 @@ exports.create = async function (req, res) {
     let requester = await User.findOne({
         phone: requesterphone
     })
-    .populate('friends')
-    .exec();
+        .populate('friends')
+        .exec();
     if (!requester) {
         res.status(500).send({
             message: "User doesn't exist"
@@ -39,9 +39,7 @@ exports.create = async function (req, res) {
 
     let receiver = await User.findOne({
         phone: receiverphone
-    })
-    .populate('friends')
-    .exec();
+    }).populate('friends').exec();
     if (!receiver) {
         res.status(500).send({
             message: "User doesn't exist"
@@ -72,7 +70,7 @@ exports.create = async function (req, res) {
         if (!result) {
             requester_friend.friends.push({
                 user: receiver._id,
-                status: 'waiting',
+                status: 'Waiting',
                 requestcontent: requestcontent ? requestcontent : ""
             });
             await requester_friend.save();
@@ -90,7 +88,7 @@ exports.create = async function (req, res) {
         if (!receiver_friend.friends.find((friend) => JSON.stringify(friend.user) == JSON.stringify(requester._id))) {
             receiver_friend.friends.push({
                 user: requester._id,
-                status: 'view',
+                status: 'View',
                 requestcontent: requestcontent ? requestcontent : ""
             })
             await receiver_friend.save();
@@ -103,8 +101,19 @@ exports.create = async function (req, res) {
         });
         return;
     }
-
-    res.send("Successfully added");
+    await requester.populate({
+        path: 'friends',
+        select: 'friends',
+        populate: {
+            path: 'friends',
+            populate: {
+                path: 'user',
+                model: 'User',
+                select: 'name phone',
+            }
+        }
+    }).execPopulate();
+    res.send(requester);
 };
 
 exports.update = async function (req, res) {

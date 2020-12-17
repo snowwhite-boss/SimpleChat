@@ -27,7 +27,7 @@ import CustomDrawerContent from "./Menu";
 // header for screens
 import { Header, Icon } from '../components';
 import { nowTheme, tabs } from "../constants";
-import { SetCurrentUser, IsExsitUser } from "../actions/userActions";
+import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
 
 const { width } = Dimensions.get("screen");
 
@@ -304,12 +304,8 @@ function AppStack(props) {
 class OnboardingStack extends React.Component {
   // getting user information
   componentDidMount() {
-    if (this.props.phoneNumber == '') return;
-    this.props.isExsitUser(this.props.phoneNumber)
-    .then(async res => {
-        this.props.setCurrentUser(res.data)
-      })
-      .catch(error => console.log("setCurrentUser error in OnboardingStack => ", error));
+    if (this.props.user)
+      this.props.signUp(this.props.user.name, this.props.user.phone, null, null)
   }
   render() {
     return (
@@ -331,6 +327,7 @@ class OnboardingStack extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
+    signUp: (name, phoneNumber, successcb, errorcb) => signUp(dispatch, name, phoneNumber, successcb, errorcb),
     setCurrentUser: (user) => SetCurrentUser(dispatch, user),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
   };
