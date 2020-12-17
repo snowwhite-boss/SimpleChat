@@ -10,6 +10,35 @@ class Chatting extends React.Component {
     super(props)
 
     this.state = {
+      messages: [
+        {
+          _id: 1,
+          text: 'Henlo!',
+          createdAt: new Date().getTime(),
+          user: {
+            _id: 2,
+            name: '222'
+          }
+        },
+        {
+          _id: 3,
+          text: 'Henlo!',
+          createdAt: new Date().getTime(),
+          user: {
+            _id: 1,
+            name: '111'
+          }
+        },
+        {
+          _id: 2,
+          text: 'Henlo!2',
+          createdAt: new Date().getTime(),
+          user: {
+            _id: 3,
+            name: '333'
+          }
+        }
+      ],
     }
   }
 
@@ -61,7 +90,7 @@ class Chatting extends React.Component {
       <GiftedChat
         messages={this.props.messages}
         onSend={newMessage => this.handleSend(newMessage)}
-        user={{ phone: this.props.currentUser.phone }}
+        user={{ _id: this.props.currentUser.phone }}
         renderBubble={this.renderBubble}
         placeholder='Type your message here...'
         showUserAvatar

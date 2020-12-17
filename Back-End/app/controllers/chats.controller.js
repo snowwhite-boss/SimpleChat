@@ -73,7 +73,7 @@ exports.create = async function (req, res) {
         { createdAt: chat.createdAt },
         {
             user: {
-                phone: sender,
+                _id: sender,
                 name: senderuser.name
             }
         },
@@ -127,7 +127,7 @@ exports.getlist = async function (req, res) {
                 { createdAt: chat.createdAt },
                 {
                     user: {
-                        phone: chat.from,
+                        _id: chat.from,
                         name: chat.from == sender ? senderuser.name : receiveruser.name
                     }
                 },
@@ -142,21 +142,20 @@ exports.getlist = async function (req, res) {
 }
 
 exports.delete = function (req, res) {
-    if (!req.body) {
+    if (!req.params) {
         return res.status(500).send({
-            message: "Body can't be blank."
+            message: "Params can't be blank."
         });
     }
     const {
         myphone,
         otherphone
-    } = req.body;
+    } = req.params;
     if (!myphone || myphone == "" || !otherphone || otherphone == "") {
         return res.status(500).send({
             message: "Phone number can't be blank."
         });
     }
-
     Chat.deleteMany({
         $or: [{
                 'from': myphone,
@@ -169,6 +168,7 @@ exports.delete = function (req, res) {
         ],
     }, {}, (error) => {
         if (error) {
+            console.log("delete error");
             return res.status(500).send({
                 message: "Phone number can't be blank."
             });

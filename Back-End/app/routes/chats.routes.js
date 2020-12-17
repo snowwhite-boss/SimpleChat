@@ -14,5 +14,5 @@ module.exports = function (app) {
     //     "myphone": "123",
     //     "otherphone": "456"
     // }
-    app.delete("/chats", chats.delete);
+    app.delete("/chats/:myphone/:otherphone", chats.delete);
 }
