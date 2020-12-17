@@ -38,7 +38,7 @@ class FriendContacts extends React.Component {
   }
 
   getContactsData() {
-    data = this.props.friends.map(fri => {
+    let data = this.props.friends.map(fri => {
       if(fri.status == 'added')
         return Object.assign({}, {name:fri.user.name}, {phone:fri.user.phone});
     })
