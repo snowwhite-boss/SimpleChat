@@ -15,6 +15,10 @@ var FriendSchema = mongoose.Schema({
         status: {
             type: String,
             required: true
+        },
+        requestcontent: {
+            type:String,
+            required: false,
         }
     }]
 }, {

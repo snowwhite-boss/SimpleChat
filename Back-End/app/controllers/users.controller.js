@@ -37,10 +37,10 @@ exports.create = async function (req, res) {
             select: 'notifications',
             populate: {
                 path: 'notifications',
+                select: 'count content isSticky isNotify',
                 populate: {
-                    path: 'user',
-                    model: 'User',
-                    select: 'senduser count content isSticky isNotify',
+                    path: 'senduser',
+                    select: "name phone"
                 }
             }
         })

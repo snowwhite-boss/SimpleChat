@@ -9,7 +9,8 @@ exports.create = async function (req, res) {
     }
     const {
         requesterphone,
-        receiverphone
+        receiverphone,
+        requestcontent
     } = req.body;
     if (!requesterphone || requesterphone == '') {
         res.status(400).send({
@@ -52,7 +53,7 @@ exports.create = async function (req, res) {
     if (!requester_friend) {
         var friends = new Friend({
             user: requester._id,
-            friends: []
+            friends: [],
         });
         requester_friend = friends;
     }
@@ -61,7 +62,7 @@ exports.create = async function (req, res) {
     if (!receiver_friend) {
         var friends = new Friend({
             user: receiver._id,
-            friends: []
+            friends: [],
         });
         receiver_friend = friends;
     }
@@ -71,7 +72,8 @@ exports.create = async function (req, res) {
         if (!result) {
             requester_friend.friends.push({
                 user: receiver._id,
-                status: 'waiting'
+                status: 'waiting',
+                requestcontent: requestcontent ? requestcontent : ""
             });
             await requester_friend.save();
             requester.friends = requester_friend;
@@ -88,7 +90,8 @@ exports.create = async function (req, res) {
         if (!receiver_friend.friends.find((friend) => JSON.stringify(friend.user) == JSON.stringify(requester._id))) {
             receiver_friend.friends.push({
                 user: requester._id,
-                status: 'view'
+                status: 'view',
+                requestcontent: requestcontent ? requestcontent : ""
             })
             await receiver_friend.save();
             receiver.friends = receiver_friend;

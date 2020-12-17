@@ -4,7 +4,8 @@ module.exports = function (app) {
 
     // {
     //     "requesterphone": "+7403434343434",
-    //     "receiverphone": "+7403434343435"
+    //     "receiverphone": "+7403434343435",
+    //     "requestcontent": "content"
     // }
     app.post('/friends', friends.create);
 

@@ -27,11 +27,9 @@ exports.create = async function (req, res) {
         .populate('notifications')
         .exec();
     if (!receiveruser || !senderuser) {
-        if (!chat) {
-            return res.status(500).send({
-                message: "Can't create chat"
-            });
-        }
+        return res.status(500).send({
+            message: "User not found"
+        });
     }
 
     let chat = new Chat({
@@ -45,7 +43,7 @@ exports.create = async function (req, res) {
             message: "Can't create chat"
         });
     }
-    if(!receiveruser.notifications) {
+    if (!receiveruser.notifications) {
         let notifications = new Notification({
             user: receiveruser._id,
             notifications: []
