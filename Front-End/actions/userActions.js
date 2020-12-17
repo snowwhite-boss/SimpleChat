@@ -6,9 +6,9 @@ import Client from '../api/Client';
 // Used in LoginSignup/Signup component
 export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
     Client.post(`users/`, {
-            name: name,
-            phone: phoneNumber
-        })
+        name: name,
+        phone: phoneNumber
+    })
         .then(async res => {
             if (res.status == 200) {
                 // set user info in Redux state
@@ -51,10 +51,10 @@ export function SetCurrentUser(dispatch, user) {
 
 export function RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb) {
     Client.post(`friends/`, {
-            requesterphone: requesterphone,
-            receiverphone: receiverphone,
-            requestcontent: requestcontent,
-        })
+        requesterphone: requesterphone,
+        receiverphone: receiverphone,
+        requestcontent: requestcontent,
+    })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
@@ -72,9 +72,9 @@ export function RequestFriend(dispatch, requesterphone, receiverphone, requestco
 
 export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb) {
     Client.put(`friends/`, {
-            requesterphone: requesterphone,
-            receiverphone: receiverphone,
-        })
+        requesterphone: requesterphone,
+        receiverphone: receiverphone,
+    })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
@@ -88,4 +88,10 @@ export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb)
         .catch(error => {
             console.log("RequestFriend error => ", error);
         });
+}
+export function SetChatMan(dispatch, man) {
+    dispatch({
+        type: "SET_CHAT_MAN",
+        payload: man
+    });
 }

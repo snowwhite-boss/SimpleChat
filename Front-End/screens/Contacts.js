@@ -11,7 +11,7 @@ const { height, width } = Dimensions.get("screen");
 import * as Contacts from 'expo-contacts';
 // connect to Redux state
 import { connect } from "react-redux";
-import { RequestFriend, AcceptFriend } from "../actions/userActions";
+import { RequestFriend, AcceptFriend, SetChatMan } from "../actions/userActions";
 
 import DialogInput from 'react-native-dialog-input';
 
@@ -58,7 +58,8 @@ class FriendContacts extends React.Component {
   }
 
   toChat(item){
-    console.log(item)
+    this.props.setChatMan(item);
+    this.props.navigation.navigate('Chatting');
   }
 
   toDetail(item){
@@ -176,6 +177,7 @@ function mapDispatchToProps(dispatch) {
   return {
     requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
     acceptFriend: (requesterphone, receiverphone, successcb) => AcceptFriend(dispatch, requesterphone, receiverphone, successcb),
+    setChatMan: (man) => SetChatMan(dispatch, man),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FriendContacts);

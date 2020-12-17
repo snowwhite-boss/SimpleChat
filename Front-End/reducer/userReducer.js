@@ -3,7 +3,8 @@ import { combineReducers } from 'redux';
 const initialState = {
   currentUser: {},
   friends: [],
-  notifications: []
+  notifications: [],
+  chatMan: {}
 };
 
 // reducer with cases for Redux
@@ -15,6 +16,8 @@ function userReducer(state = initialState, action) {
       return { ...state, friends: action.payload };
     case "SET_NOTIFICATIONS":
       return { ...state, notifications: action.payload };
+    case "SET_CHAT_MAN":
+      return { ...state, chatMan: action.payload };
     default:
       return state;
   }
