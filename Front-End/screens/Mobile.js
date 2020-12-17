@@ -48,12 +48,16 @@ class Moblie extends React.Component {
       });
       
       if (data.length > 0) {
+        const addButton = { backgroundColor: 'green', borderRadius: 8, width: 90 }
+        const waitButton = { backgroundColor: '#cccccc', borderRadius: 8, width: 90 }
+        const viewButton = { backgroundColor: 'blue', borderRadius: 8, width: 90 }
+        const addedButton = { backgroundColor: '#cccccc', borderRadius: 8, width: 90 }
         data = data.map(el => {
-          // console.log(this.props.friends)
-          if (this.props.friends.find(fri => fri.user.phone == el.phoneNumbers[0].number) >= 0) {
-            return Object.assign({}, el, { status: fri.status })
+          let ret = this.props.friends.find(fri => fri.user.phone == el.phoneNumbers[0].number);
+          if (ret) {
+            return Object.assign({}, el, { status: ret.status }, {style: waitButton})
           }
-          return Object.assign({}, el, { status: 'Add' })
+          return Object.assign({}, el, { status: 'Add' }, {style: addButton})
         })
         this.setState({ dataArray: data });
       }
@@ -72,7 +76,7 @@ class Moblie extends React.Component {
         <Image source={Images.ItemUser} style={styles.itemUser} />
         <Text style={styles.nickName}>{item.name}</Text>
         <Block style={styles.addButtonItem} flex>
-          <Button onPress={() => this.addItem(item.name, item.phoneNumbers[0].number)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addButton}>{item.status}</Button>
+          <Button onPress={() => this.addItem(item.name, item.phoneNumbers[0].number)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={item.style}>{item.status}</Button>
         </Block>
       </Block>
     </TouchableOpacity>
@@ -168,17 +172,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: 10,
     paddingVertical: 10
-  },
-  addButton: {
-    backgroundColor: 'green',
-    borderRadius: 8,
-    width: 90
-  },
-  addedButton: {
-    backgroundColor: 'grey',
-    borderRadius: 8,
-    width: 90,
-    color: 'red'
   }
 });
 

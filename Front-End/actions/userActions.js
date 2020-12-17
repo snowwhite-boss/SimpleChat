@@ -25,11 +25,11 @@ export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
                     payload: res.data.notifications.notifications
                 });
             }
-            successcb();
+            if(successcb) successcb();
         })
         .catch(error => {
             console.log("login error => ", error);
-            errorcb();
+            if(errorcb) errorcb();
         });
 }
 
