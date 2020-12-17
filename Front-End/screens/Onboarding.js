@@ -11,7 +11,7 @@ import { Images, nowTheme } from '../constants/';
 import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
 
-// import * as SMS from 'expo-sms';
+import * as SMS from 'expo-sms';
 
 import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
 class Onboarding extends React.Component {
@@ -27,21 +27,30 @@ class Onboarding extends React.Component {
     };
   }
 
+  async sendVerifyCode() {
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+      const { result } = await SMS.sendSMSAsync(
+        [this.state.phoneNumber],
+        this.state.checkverificationcode,
+        {
+        }
+      );
+    } else {
+      console.log("there's no SMS available on this device");
+    }
+  }
+
   getRandomArbitrary = () => {
     const { min, max } = this.state;
     return Math.floor(Math.random() * (max - min) + min);
   }
   async SignUp() {
-    if(phoneNumber == '' || name == '') return;
+    if (phoneNumber == '' || name == '') return;
     const { checkverificationcode, verificationcode, name, phoneNumber } = this.state;
     if (checkverificationcode == '') {
       this.setState({ checkverificationcode: this.getRandomArbitrary().toString() });
-      // const isAvailable = await SMS.isAvailableAsync();
-      // if (isAvailable) {
-      //   console.log('you can send message');
-      // } else {
-      //   console.log('you can\'t send message');
-      // }
+      this.sendVerifyCode();
       console.log('signin', checkverificationcode);
       return;
     }
@@ -60,7 +69,7 @@ class Onboarding extends React.Component {
           );
         });
       },
-      () => console.log("signup error")
+        () => console.log("signup error")
       );
       return;
     }
