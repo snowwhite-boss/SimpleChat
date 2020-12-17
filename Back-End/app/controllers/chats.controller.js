@@ -105,8 +105,30 @@ exports.getlist = async function (req, res) {
             ],
         }).sort({
             createdAt: 'desc'
-        }).exec();
-        return res.send(chats);
+        })
+        .exec();
+        // {
+        //     _id: 2,
+        //     text: 'Henlo!2',
+        //     createdAt: new Date().getTime(),
+        //     user: {
+        //       _id: 3,
+        //       name: '333'
+        //     }
+        //   }
+        let formattedChats = chats.map(chat =>{
+            return Object.assign(
+                {},
+                {_id: chat._id},
+                {text: chat.content},
+                {createdAt: chat.createdAt},
+                {user: {
+                    phone: chat.from,
+                    name: chat.from == sender ? senderuser.name : receiver.name
+                }},
+                )
+        })
+        return res.send(formattedChats);
     } catch (error) {
         return res.status(500).send({
             message: "Chat not found"
