@@ -46,15 +46,22 @@ class FriendContacts extends React.Component {
   }
 
   _renderItem = (item, index, section) => {
-    return <TouchableOpacity style={styles.item} onPress={() => this.selectItem(item)}>
+    return <TouchableOpacity style={styles.item} onPress={() => this.toChat(item)}>
       <Block row style={{ alignItems: "center" }}>
         <Image source={Images.ItemUser} style={styles.itemUser} />
         <Text style={styles.nickName}>{item.name}</Text>
+        <Block style={styles.detailButtonItem} flex>
+          <Button onPress={() => this.toDetail(item)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={{ backgroundColor: 'green', borderRadius: 8, width: 90 }} >Detail</Button>
+        </Block>
       </Block>
     </TouchableOpacity>
   }
 
-  selectItem(item){
+  toChat(item){
+    console.log(item)
+  }
+
+  toDetail(item){
     console.log(item)
   }
   render() {
@@ -150,6 +157,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 26,
     marginVertical: 10
+  },
+  detailButtonItem: {
+    alignItems: 'flex-end',
+    marginRight: 10,
+    paddingVertical: 10
   }
 });
 
