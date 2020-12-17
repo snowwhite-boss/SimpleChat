@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Now UI React Native",
-    "slug": "now-ui-react-native",
+    "name": "Simple Chat App",
+    "slug": "simple-chat-app",
     "privacy": "public",
     "sdkVersion": "39.0.0",
     "platforms": [
@@ -23,8 +23,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.one.chat"
     },
-    "description": "Now UI React Native, based on Now UI Design System. Coded by Creative Tim"
+    "description": "Simple Chat App, based on Now UI Design System. Coded by Sergey & Dzhamil",
+    "android": {
+      "package": "com.one.chat"
+    }
   }
 }
