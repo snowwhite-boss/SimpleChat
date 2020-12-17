@@ -91,10 +91,13 @@ export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb)
 }
 
 export function DeleteChatHistory(myphone, otherphone) {
-    Client.delete('chats/', {
-        myphone,
-        otherphone
-    })
+    Client.delete('chats', {
+            myphone,
+            otherphone
+        }).then(() => {})
+        .catch((error) => {
+            console.log("Error");
+        })
 }
 export function SetChatMan(dispatch, man) {
     dispatch({
