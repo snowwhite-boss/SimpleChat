@@ -69,3 +69,23 @@ export function RequestFriend(dispatch, requesterphone, receiverphone, requestco
             console.log("RequestFriend error => ", error);
         });
 }
+
+export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb) {
+    Client.put(`friends/`, {
+            requesterphone: requesterphone,
+            receiverphone: receiverphone,
+        })
+        .then(async res => {
+            if (res.status == 200) {
+                dispatch({
+                    type: "SET_FRIENDS",
+                    payload: res.data.friends.friends
+                });
+                console.log("Request Friend success")
+                successcb();
+            }
+        })
+        .catch(error => {
+            console.log("RequestFriend error => ", error);
+        });
+}
