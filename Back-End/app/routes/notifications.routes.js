@@ -2,7 +2,12 @@ module.exports = function(app) {
 
     var notifications = require('../controllers/notifications.controller.js');
 
-    app.get('/notifications/:phone', notifications.findOne);
-    app.put('/notifications/:phone', notifications.update);
+    // {
+    //     "receiver": "+9899990",
+    //     "sender": "+9889898",
+    //     "isNotify": true, //optional
+    //     "isSticky": false, //optional
+    // }
+    app.put('/notifications', notifications.update);
 
 }

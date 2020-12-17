@@ -5,8 +5,9 @@ module.exports = function (app) {
     // app.get('/chats/:sender/:receiver', chats.getlist);
 
     // {
-    //     "requesterphone": "+7403434343434",
-    //     "receiverphone": "+7403434343435"
+    //     "sender": "+7403434343434",
+    //     "receiver": "+7403434343435",
+    //     "content": "Chat Content"
     // }
     app.post('/chats', chats.create);
 }
