@@ -45,9 +45,23 @@ export function SetCurrentUser(dispatch, user) {
     });
 }
 
-export function AddFriend(dispatch, name) {
-    dispatch({
-        type: "ADD_FRIEND",
-        payload: name
-    });
+export function RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb) {
+    Client.post(`friends/`, {
+        requesterphone: requesterphone,
+        receiverphone: receiverphone,
+        requestcontent: requestcontent,
+    })
+        .then(async res => {
+            if (res.status == 200) {
+                dispatch({
+                    type: "SET_FRIENDS",
+                    payload: res.data.friends.friends
+                });
+                console.log("Request Friend success")
+                successcb();
+            }
+        })
+        .catch(error => {
+            console.log("RequestFriend error => ", error);
+        });
 }

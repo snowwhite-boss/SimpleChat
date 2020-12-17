@@ -53,7 +53,7 @@ class FriendContacts extends React.Component {
         </TouchableOpacity>
         <ScrollView style={styles.container}>
           <FlatList
-            data={this.props.currentUser.friends}
+            data={this.props.friends}
             renderItem={renderContactsItem}
             keyExtractor={(item) => item.id}
           />
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
+    friends: state.friends,
   };
 }
 

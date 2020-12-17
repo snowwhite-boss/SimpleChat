@@ -63,7 +63,7 @@ class ChatHistory extends React.Component {
       <Block flex>
         <ScrollView style={styles.container}>
           <FlatList
-            data={this.props.currentUser.notifications}
+            data={this.props.notifications}
             renderItem={renderChatItem}
             keyExtractor={(item) => item._id}
           />
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
+    notifications: state.notifications,
   };
 }
 

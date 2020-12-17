@@ -16,7 +16,7 @@ const { height, width } = Dimensions.get("screen");
 import * as Contacts from 'expo-contacts';
 // connect to Redux state
 import { connect } from "react-redux";
-import { AddFriend } from "../actions/userActions";
+import { RequestFriend } from "../actions/userActions";
 
 import DialogInput from 'react-native-dialog-input';
 
@@ -31,51 +31,61 @@ class Moblie extends React.Component {
     this.state = {
       dataArray: [],
       isDialogVisible: false,
-      selectedMan: ''
+      selectedMan: '',
+      selectedPhone: '',
     }
   }
-  async componentDidMount() {
+
+  componentDidMount() {
+    this.getContactsData()
+  }
+
+  async getContactsData() {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
       var { data } = await Contacts.getContactsAsync({
         fields: [Contacts.Fields.Emails, Contacts.Fields.ID, Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
       });
-
+      
       if (data.length > 0) {
         data = data.map(el => {
-          if (this.props.currentUser.friends.find(fri => fri == el.name) > 0)
-            return Object.assign({}, el, { added: true })
-          return el
+          // console.log(this.props.friends)
+          if (this.props.friends.find(fri => fri.user.phone == el.phoneNumbers[0].number) >= 0) {
+            return Object.assign({}, el, { status: fri.status })
+          }
+          return Object.assign({}, el, { status: 'Add' })
         })
         this.setState({ dataArray: data });
       }
     }
   }
 
-  async addItem(name) {
+  async addItem(name, phone) {
     await this.setState({ selectedMan: name })
+    await this.setState({ selectedPhone: phone })
     await this.setState({ isDialogVisible: true })
 
   }
   _renderItem = (item, index, section) => {
-    // console.log('---custom-renderItem--', item, index, section)
     return <TouchableOpacity style={styles.item}>
       <Block row style={{ alignItems: "center" }}>
         <Image source={Images.ItemUser} style={styles.itemUser} />
         <Text style={styles.nickName}>{item.name}</Text>
         <Block style={styles.addButtonItem} flex>
-          {item.added ?
-            <Button onPress={() => this.addItem(item.name)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addedButton}>Added</Button>
-            :
-            <Button onPress={() => this.addItem(item.name)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addButton}>Add</Button>
-          }
+          <Button onPress={() => this.addItem(item.name, item.phoneNumbers[0].number)} textStyle={{ fontFamily: 'montserrat-regular', fontSize: 18 }} style={styles.addButton}>{item.status}</Button>
         </Block>
       </Block>
     </TouchableOpacity>
   }
 
   sendRequest(requestText) {
-    // this.props.addFriend(name);
+    this.props.requestFriend(
+      this.props.currentUser.phone,
+      this.state.selectedPhone,
+      requestText,
+      () => { this.getContactsData() }
+    );
+    this.setState({ isDialogVisible: false })
   };
 
   render() {
@@ -175,12 +185,13 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
+    friends: state.friends,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addFriend: (name) => AddFriend(dispatch, name),
+    requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Moblie);

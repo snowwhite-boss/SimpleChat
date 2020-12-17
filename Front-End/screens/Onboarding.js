@@ -59,7 +59,7 @@ class Onboarding extends React.Component {
       this.props.signUp(name, phoneNumber, () => {
         db.transaction(tx => {
           tx.executeSql(
-            `insert into me (id, phone) values (1, '${phoneNumber}');`, [],
+            `insert into me (id, name, phone) values (1, '${name}', '${phoneNumber}');`, [],
             () => {
               this.props.navigation.navigate('Home');
             },
@@ -67,6 +67,7 @@ class Onboarding extends React.Component {
               console.log('error');
             }
           );
+          
         });
       },
         () => console.log("signup error")
