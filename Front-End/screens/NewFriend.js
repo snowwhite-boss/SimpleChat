@@ -33,6 +33,7 @@ const ContactsItem = ({ item, onPress, style }) => (
 );
 
 const renderContactsItem = ({ item }) => {
+  if(item.status != 'added') return null;
   return (
     <ContactsItem
       item={item}
@@ -89,7 +90,7 @@ class NewFriend extends React.Component {
               style={styles.addPhone}
               source={Images.addPhone}
             />
-            <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>New Friends</Text>
+            <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>Mobile Contacts</Text>
           </Block>
         </TouchableOpacity>
         {/* <ScrollView style={styles.container}> */}

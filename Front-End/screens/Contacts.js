@@ -30,6 +30,7 @@ const ContactsItem = ({ item, onPress, style }) => (
 );
 
 const renderContactsItem = ({ item }) => {
+  if(item.status != 'added') return null;
   return (
     <ContactsItem
       item={item}
