@@ -89,3 +89,9 @@ export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb)
             console.log("RequestFriend error => ", error);
         });
 }
+
+export function DeleteChatHistory(myphone, otherphone) {
+    Client.delete('chats/', {
+        myphone, otherphone
+    })
+}

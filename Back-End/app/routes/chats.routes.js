@@ -10,4 +10,9 @@ module.exports = function (app) {
     //     "content": "Chat Content"
     // }
     app.post('/chats', chats.create);
+    // {
+    //     "myphone": "123",
+    //     "otherphone": "456"
+    // }
+    app.delete("/chats", chats.delete);
 }

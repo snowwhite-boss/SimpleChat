@@ -22,6 +22,7 @@ import AddContacts from '../screens/AddContacts';
 import QRScan from '../screens/QRScan';
 import MyQR from '../screens/MyQR';
 import Chatting from '../screens/Chatting';
+import Detail from "../screens/Detail";
 // drawer
 import CustomDrawerContent from "./Menu";
 // header for screens
@@ -247,6 +248,22 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Chatting"
+              navigation={navigation}
+              scene={scene}
+              back
+            />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Details"
               navigation={navigation}
               scene={scene}
               back

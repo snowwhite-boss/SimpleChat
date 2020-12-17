@@ -5,15 +5,12 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
+import { Block, Text } from "galio-framework";
 import SectionListContacts from 'react-native-sectionlist-contacts'
-const { height, width } = Dimensions.get("screen");
-import * as Contacts from 'expo-contacts';
+const { width } = Dimensions.get("screen");
 // connect to Redux state
 import { connect } from "react-redux";
 import { RequestFriend, AcceptFriend } from "../actions/userActions";
-
-import DialogInput from 'react-native-dialog-input';
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
@@ -39,8 +36,8 @@ class FriendContacts extends React.Component {
 
   getContactsData() {
     let data = this.props.friends.map(fri => {
-      if(fri.status == 'added')
-        return Object.assign({}, {name:fri.user.name}, {phone:fri.user.phone});
+      if (fri.status == 'added')
+        return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
     })
     this.setState({ dataArray: data });
   }
@@ -57,12 +54,13 @@ class FriendContacts extends React.Component {
     </TouchableOpacity>
   }
 
-  toChat(item){
+  toChat(item) {
     console.log(item)
   }
 
-  toDetail(item){
-    console.log(item)
+  toDetail(item) {
+    this.props.setUserDetail(item);
+    this.props.navigation.navigate('Detail')
   }
   render() {
     return (
@@ -176,6 +174,10 @@ function mapDispatchToProps(dispatch) {
   return {
     requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
     acceptFriend: (requesterphone, receiverphone, successcb) => AcceptFriend(dispatch, requesterphone, receiverphone, successcb),
+    setUserDetail: (user) => dispatch({
+      type: "SET_USERDETAIL",
+      payload: user
+    })
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FriendContacts);

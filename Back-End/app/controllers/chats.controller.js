@@ -112,3 +112,39 @@ exports.getlist = async function (req, res) {
         });
     }
 }
+
+exports.delete = function (req, res) {
+    if (!req.body) {
+        return res.status(500).send({
+            message: "Body can't be blank."
+        });
+    }
+    const {
+        myphone,
+        otherphone
+    } = req.body;
+    if (!myphone || myphone == "" || !otherphone || otherphone == "") {
+        return res.status(500).send({
+            message: "Phone number can't be blank."
+        });
+    }
+
+    Chat.deleteMany({
+        $or: [{
+                'from': myphone,
+                'to': otherphone
+            },
+            {
+                'from': otherphone,
+                'to': myphone
+            }
+        ],
+    }, {}, (error) => {
+        if (error) {
+            return res.status(500).send({
+                message: "Phone number can't be blank."
+            });
+        }
+        return res.send("Chat history deleted.");
+    })
+}
