@@ -7,7 +7,8 @@ import {
   Dimensions,
   ScrollView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import SectionListContacts from 'react-native-sectionlist-contacts'
@@ -16,6 +17,8 @@ import * as Contacts from 'expo-contacts';
 // connect to Redux state
 import { connect } from "react-redux";
 import { AddFriend } from "../actions/userActions";
+
+import DialogInput from 'react-native-dialog-input';
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
@@ -27,6 +30,8 @@ class Moblie extends React.Component {
 
     this.state = {
       dataArray: [],
+      isDialogVisible: false,
+      selectedMan: ''
     }
   }
   async componentDidMount() {
@@ -38,7 +43,7 @@ class Moblie extends React.Component {
 
       if (data.length > 0) {
         data = data.map(el => {
-          if(this.props.currentUser.friends.find(fri => fri == el.name) > 0)
+          if (this.props.currentUser.friends.find(fri => fri == el.name) > 0)
             return Object.assign({}, el, { added: true })
           return el
         })
@@ -47,8 +52,10 @@ class Moblie extends React.Component {
     }
   }
 
-  addItem(name) {
-    this.props.addFriend(name);
+  async addItem(name) {
+    await this.setState({ selectedMan: name })
+    await this.setState({ isDialogVisible: true })
+
   }
   _renderItem = (item, index, section) => {
     // console.log('---custom-renderItem--', item, index, section)
@@ -67,6 +74,10 @@ class Moblie extends React.Component {
     </TouchableOpacity>
   }
 
+  sendRequest(requestText) {
+    // this.props.addFriend(name);
+  };
+
   render() {
     return (
       <Block flex style={styles.container}>
@@ -82,6 +93,13 @@ class Moblie extends React.Component {
           renderItem={this._renderItem}
           otherAlphabet="#"
         />
+        <DialogInput isDialogVisible={this.state.isDialogVisible}
+          title={this.state.selectedMan}
+          message={"Send Friend Request"}
+          hintInput={"Hi, I am your friend."}
+          submitInput={(requestText) => { this.sendRequest(requestText) }}
+          closeDialog={() => { this.setState({ isDialogVisible: false }) }}>
+        </DialogInput>
       </Block>
     );
   }
