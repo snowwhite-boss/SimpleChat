@@ -10,7 +10,7 @@ import SectionListContacts from 'react-native-sectionlist-contacts'
 const { width } = Dimensions.get("screen");
 // connect to Redux state
 import { connect } from "react-redux";
-import { RequestFriend, AcceptFriend } from "../actions/userActions";
+import { RequestFriend, AcceptFriend, SetChatMan } from "../actions/userActions";
 
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
@@ -55,7 +55,8 @@ class FriendContacts extends React.Component {
   }
 
   toChat(item) {
-    console.log(item)
+    this.props.setChatMan(item);
+    this.props.navigation.navigate('Chatting');
   }
 
   toDetail(item) {
@@ -177,7 +178,8 @@ function mapDispatchToProps(dispatch) {
     setUserDetail: (user) => dispatch({
       type: "SET_USERDETAIL",
       payload: user
-    })
+    }),
+    setChatMan: (man) => SetChatMan(dispatch, man),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(FriendContacts);

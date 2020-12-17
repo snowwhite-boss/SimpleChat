@@ -7,6 +7,8 @@ const initialState = {
   friends: [],
   notifications: [],
   userDetail: {},
+  chatMan: {},
+  messages: []
 };
 
 // reducer with cases for Redux
@@ -27,6 +29,19 @@ function userReducer(state = initialState, action) {
     case "SET_USERDETAIL":
       return {
         ...state, userDetail: action.payload
+      };
+    case "SET_CHAT_MAN":
+      return {
+        ...state, chatMan: action.payload
+      };
+    case "SET_MESSAGES":
+      return {
+        ...state, messages: action.payload
+      };
+    case "APPEND_MESSAGE":
+      let mess = [action.payload].concat(state.messages);
+      return {
+        ...state, messages: mess
       };
     default:
       return state;
