@@ -70,7 +70,7 @@ class Onboarding extends React.Component {
           
         });
       },
-        () => console.log("signup error")
+      () => console.log("signup error")
       );
       return;
     // }

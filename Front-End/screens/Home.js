@@ -61,13 +61,14 @@ class ChatHistory extends React.Component {
   render() {
     return (
       <Block flex>
-        <ScrollView style={styles.container}>
+        {/* <ScrollView style={styles.container}> */}
           <FlatList
+          style={styles.container}
             data={this.props.notifications}
             renderItem={renderChatItem}
             keyExtractor={(item) => item._id}
           />
-        </ScrollView>
+        {/* </ScrollView> */}
         <Footer navigation={this.props.navigation} left />
       </Block>
     );

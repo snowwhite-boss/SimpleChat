@@ -92,13 +92,14 @@ class NewFriend extends React.Component {
             <Text bold size={20} color="orange" style={{ paddingLeft: 20 }}>New Friends</Text>
           </Block>
         </TouchableOpacity>
-        <ScrollView style={styles.container}>
+        {/* <ScrollView style={styles.container}> */}
           <FlatList
+            style={styles.container}
             data={this.props.friends}
             renderItem={renderContactsItem}
             keyExtractor={(item) => item.id}
           />
-        </ScrollView>
+        {/* </ScrollView> */}
         
       </Block>
     );

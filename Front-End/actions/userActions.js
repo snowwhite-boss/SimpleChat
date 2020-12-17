@@ -6,15 +6,19 @@ import Client from '../api/Client';
 // Used in LoginSignup/Signup component
 export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
     Client.post(`users/`, {
-        name: name,
-        phone: phoneNumber
-    })
+            name: name,
+            phone: phoneNumber
+        })
         .then(async res => {
             if (res.status == 200) {
                 // set user info in Redux state
                 dispatch({
                     type: "CURRENT_USER",
-                    payload: Object.assign({}, { name: res.data.name }, { phone: res.data.phone })
+                    payload: Object.assign({}, {
+                        name: res.data.name
+                    }, {
+                        phone: res.data.phone
+                    })
                 });
                 dispatch({
                     type: "SET_FRIENDS",
@@ -25,11 +29,11 @@ export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
                     payload: res.data.notifications.notifications
                 });
             }
-            successcb();
+            if (successcb) successcb();
         })
         .catch(error => {
             console.log("login error => ", error);
-            errorcb();
+            if (errorcb) errorcb();
         });
 }
 
@@ -47,10 +51,10 @@ export function SetCurrentUser(dispatch, user) {
 
 export function RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb) {
     Client.post(`friends/`, {
-        requesterphone: requesterphone,
-        receiverphone: receiverphone,
-        requestcontent: requestcontent,
-    })
+            requesterphone: requesterphone,
+            receiverphone: receiverphone,
+            requestcontent: requestcontent,
+        })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
