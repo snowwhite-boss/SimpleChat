@@ -10,4 +10,6 @@ module.exports = function(app) {
     // }
     app.put('/notifications', notifications.update);
 
+    app.get('/notifications/:sender/:receiver', notifications.getstate);
+
 }

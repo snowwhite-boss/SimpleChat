@@ -11,7 +11,7 @@ const { width } = Dimensions.get("screen");
 import { connect } from "react-redux";
 import Images from "../constants/Images";
 import MkSwitch from "../components/Switch";
-import { DeleteChatHistory } from "../actions/userActions";
+import { DeleteChatHistory, UpdateNotification } from "../actions/userActions";
 
 class Detail extends React.Component {
   constructor(props) {

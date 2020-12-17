@@ -91,10 +91,7 @@ export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb)
 }
 
 export function DeleteChatHistory(myphone, otherphone) {
-    Client.delete('chats', {
-            myphone,
-            otherphone
-        }).then(() => {})
+    Client.delete(`chats/${myphone}/${otherphone}`).then(() => {})
         .catch((error) => {
             console.log("Error");
         })
@@ -136,4 +133,13 @@ export function SendMessage(dispatch, sender, receiver, newMessage) {
         .catch(error => {
             console.log("SendMessage error => ", error);
         });
+}
+
+export function UpdateNotification(sender, receiver, isNotify, isSticky) {
+    return Client.put("notifications", {
+        sender,
+        receiver,
+        isNotify,
+        isSticky,
+    })
 }

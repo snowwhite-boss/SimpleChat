@@ -61,5 +61,49 @@ exports.update = async function (req, res) {
             isSticky == undefined ? receiveruser.notifications.notifications[index].isSticky : isSticky;
     }
     receiveruser.notifications.save();
-    res.send("Notificaion updated");;
+    res.send("Notificaion updated");
 };
+
+exports.getstate = async function (req, res) {
+    const {
+        sender,
+        receiver
+    } = req.params;
+    if (!sender || !receiver) {
+        return res.status(500).send({
+            message: "User not found"
+        });
+    }
+
+    let senderuser = await User.findOne({
+        phone: sender
+    });
+    let receiveruser = await User.findOne({
+            phone: receiver
+        })
+        .populate('notifications')
+        .exec();
+    if (!receiveruser || !senderuser) {
+        return res.status(500).send({
+            message: "User not found"
+        });
+    }
+
+    let index = receiveruser.notifications.notifications.findIndex((notification) => (
+        JSON.stringify(notification.senduser) == JSON.stringify(senderuser._id)
+    ));
+    if (index == -1) {
+        let notification = {
+            senduser: senderuser._id,
+            count: 0,
+            content: "",
+            isNotify: isNotify == undefined ? true : isNotify,
+            isSticky: isSticky == undefined ? false : isSticky,
+        };
+        receiveruser.notifications.notifications.push(notification);
+        await receiveruser.notifications.save();
+        res.send(notification);
+    } else {
+        res.send(receiveruser.notifications.notifications[index]);
+    }
+}
