@@ -28,7 +28,7 @@ import CustomDrawerContent from "./Menu";
 // header for screens
 import { Header, Icon } from '../components';
 import { nowTheme, tabs } from "../constants";
-import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
+import { signUp, SetCurrentUser, IsExsitUser, SetFilterText } from "../actions/userActions";
 
 const { width } = Dimensions.get("screen");
 
@@ -122,7 +122,7 @@ function ProfileStack(props) {
 
 function HomeStack(props) {
   const filterVal = (filterText) =>{
-    console.log("filterText => ", filterText)
+    this.props.setFilterText(filterText);
   }
   return (
     <Stack.Navigator mode="card" headerMode="screen">
@@ -351,6 +351,7 @@ function mapDispatchToProps(dispatch) {
     signUp: (name, phoneNumber, successcb, errorcb) => signUp(dispatch, name, phoneNumber, successcb, errorcb),
     setCurrentUser: (user) => SetCurrentUser(dispatch, user),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
+    setFilterText: (filterText) => SetFilterText(dispatch, filterText),
   };
 }
 

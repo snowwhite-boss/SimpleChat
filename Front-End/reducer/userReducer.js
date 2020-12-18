@@ -43,6 +43,11 @@ function userReducer(state = initialState, action) {
       return {
         ...state, messages: mess
       };
+    case "SET_FILTER":
+      let notify = state.notifications.filter(notification => notification.senduser.name.search(action.payload) >= 0);
+      return {
+        ...state, notifications: notify
+      };
     default:
       return state;
   }
