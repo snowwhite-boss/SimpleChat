@@ -52,6 +52,7 @@ function HomeStack(props) {
             <Header
               title="Contacts"
               search
+              onChange={filterVal}
               navigation={navigation}
               scene={scene}
               none  // back button none
