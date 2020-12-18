@@ -40,6 +40,7 @@ class FriendContacts extends React.Component {
         return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
     })
     this.setState({ dataArray: data });
+    console.log(data, "<<,")
   }
 
   _renderItem = (item, index, section) => {
@@ -77,9 +78,9 @@ class FriendContacts extends React.Component {
         </TouchableOpacity>
         <SectionListContacts
           ref={s => this.sectionList = s}
-          sectionListData={this.state.dataArray}
+          sectionListData={this.props.contactFriends()}
           sectionHeight={50}
-          initialNumToRender={this.state.dataArray.length}
+          initialNumToRender={this.props.contactFriends().length}
           showsVerticalScrollIndicator={false}
           // SectionListClickCallback={(item, index) => {
           //   this.addItem(item)
@@ -167,10 +168,9 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    friends: () =>{
-      let fri= state.friends.filter(friend => friend.user.name.search(state.filterKey) >= 0);
-      console.log(fri);
-      return fri
+    friends: state.friends,
+    contactFriends: () => {
+      return state.contactFriends.filter(friend => friend.name.search(state.filterKey) >= 0);
     },
   };
 }

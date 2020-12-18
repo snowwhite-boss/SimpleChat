@@ -5,6 +5,7 @@ import {
 const initialState = {
   currentUser: {},
   friends: [],
+  contactFriends: [],
   notifications: [],
   userDetail: {},
   chatMan: {},
@@ -20,8 +21,12 @@ function userReducer(state = initialState, action) {
         ...state, currentUser: action.payload
       };
     case "SET_FRIENDS":
+      let conFriends = action.payload.map(fri => {
+        if (fri.status == 'added')
+          return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
+      })
       return {
-        ...state, friends: action.payload
+        ...state, friends: action.payload, contactFriends: conFriends
       };
     case "SET_NOTIFICATIONS":
       return {
