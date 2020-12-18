@@ -66,7 +66,7 @@ class ChatHistory extends React.Component {
         {/* <ScrollView style={styles.container}> */}
           <FlatList
           style={styles.container}
-            data={this.props.notifications}
+            data={this.props.notifications()}
             renderItem={this.renderChatItem}
             keyExtractor={(item, index) => index.toString()}
           />
@@ -164,7 +164,9 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    notifications: state.notifications,
+    notifications: () => {
+      return state.notifications.filter(notification => notification.senduser.name.search(state.filterKey) >= 0);
+    },
   };
 }
 

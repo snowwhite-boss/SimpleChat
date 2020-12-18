@@ -8,7 +8,8 @@ const initialState = {
   notifications: [],
   userDetail: {},
   chatMan: {},
-  messages: []
+  messages: [],
+  filterKey: "",
 };
 
 // reducer with cases for Redux
@@ -44,9 +45,8 @@ function userReducer(state = initialState, action) {
         ...state, messages: mess
       };
     case "SET_FILTER":
-      let notify = state.notifications.filter(notification => notification.senduser.name.search(action.payload) >= 0);
       return {
-        ...state, notifications: notify
+        ...state, filterKey: action.payload
       };
     default:
       return state;
