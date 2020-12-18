@@ -68,12 +68,20 @@ wsServer.on('request', function (request) {
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
             // connection.sendUTF(message.utf8Data);
-            console.log(message.utf8Data);
+            let messageObject = JSON.parse(message.utf8Data);
+            if (users[messageObject.receiver]) {
+                users[messageObject.receiver].sendUTF(message);
+                console.log(messageObject);
+            }
+            else {
+                console.log("user doesn't exist");
+            }
         } else if (message.type === 'binary') {
             // connection.sendBytes(message.binaryData);
         }
     });
     connection.on('close', function (reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        console.log((new Date()) + ' ' + connection.remoteAddress + ' disconnected.');
+        delete users[phone];
     });
 });

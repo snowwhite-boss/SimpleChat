@@ -23,20 +23,22 @@ class Chatting extends React.Component {
       console.log('WebSocket Client Connected');
     };
     this.client.onmessage = (message) => {
-      console.log(">>> ",message);
+      console.log(">>> ", message.data);
     };
   }
-  
+
   // helper method that is sends a message
   handleSend(newMessage = []) {
-    this.client.send(JSON.stringify(this.props.currentUser));
-    // let setMessages = GiftedChat.append(this.state.messages, newMessage);
-    // this.socket.emit('send-message', newMessage);
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,
       newMessage
     );
+    this.client.send(JSON.stringify({
+      sender: this.props.currentUser.phone,
+      receiver: this.props.chatMan.phone,
+      newMessage
+    }));
   }
 
   renderBubble(props) {
