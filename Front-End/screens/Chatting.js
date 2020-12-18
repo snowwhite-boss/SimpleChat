@@ -1,29 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-// connect to Redux state
 import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { apiConfig } from '../config/config';
-const SERVER = "ws://10.10.11.84:8080";
+import { w3cwebsocket as W3CWebSocket, connection } from "websocket";
 
-const client = new W3CWebSocket(SERVER);
+const SERVER = "ws://10.10.11.84:8080";
+const client = new W3CWebSocket(SERVER, '[ws]');
 
 class Chatting extends React.Component {
   constructor(props) {
     super(props)
-    
-    // let socket = socketClient(SERVER, {
-    //   transports: ['websocket'],
-    //   reconnectionAttempts: 15
-    // });
-    // socket.connect();
-    // console.log(socket.connected)
-    // socket.on('connection', () => {
-    //   console.log("connected");
-    // });
-    
+  }
+
+  componentWillUnmount() {
+    console.log("chatting close");
+    client.close();
   }
 
   componentDidMount() {
@@ -38,29 +30,9 @@ class Chatting extends React.Component {
       console.log(message);
     };
     client.send("asdasdfasdadsf");
-    //this.configureSocket();
   }
-
-  // configureSocket = () => {
-  //   const socket = SocketIOClient("http://10.10.11.84:8080");
-  //   console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-  //   console.log(socket)
-  //   socket.connect();
-  //   socket.on('message', message => {
-  //     this.props.getMessages(
-  //       this.props.currentUser.phone,
-  //       this.props.chatMan.phone
-  //     );
-  //     console.log("message => ", message)
-  //   });
-  //   socket = socket;
-  //   socket.emit('send-message', "newMessage");
-  //  }
-
   // helper method that is sends a message
   handleSend(newMessage = []) {
-    // let setMessages = GiftedChat.append(this.state.messages, newMessage);
-    // this.socket.emit('send-message', newMessage);
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,
@@ -74,7 +46,6 @@ class Chatting extends React.Component {
         {...props}
         wrapperStyle={{
           right: {
-            // Here is the color change
             backgroundColor: '#6690ee'
           }
         }}
