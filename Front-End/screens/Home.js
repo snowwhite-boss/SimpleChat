@@ -6,44 +6,46 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { Block, theme, Text } from "galio-framework";
+import { Block, Text } from "galio-framework";
 // connect to Redux state
 import { connect } from "react-redux";
 
-import { Card, Button, Icon, Footer } from "../components";
+import { Footer } from "../components";
 import { Images } from "../constants";
-import articles from "../constants/articles";
 import nowTheme from '../constants/Theme';
 import { SetChatMan } from "../actions/userActions";
 const { width } = Dimensions.get("screen");
+import { apiConfig } from "../config/config";
 
-const ChatItem = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={item.IsSticky ? styles.stickyRow : styles.unStickyRow}>
-    <Block row>
-      <Image source={Images.ItemUser} style={styles.itemUser} />
-      {item.count ? <Text size={16} style={item.IsNotify ? styles.notyCount : styles.nullPoint}>{item.IsNotify ? item.count : ''}</Text> : null}
-      <Block>
-        <Text bold style={styles.nickName}>{item.name}</Text>
-        <Text style={styles.itemContent}>{item.sentence}</Text>
+const ChatItem = ({ item, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={item.isSticky ? styles.stickyRow : styles.unStickyRow}>
+      <Block row>
+        <Image source={Images.ItemUser} style={styles.itemUser} />
+        {item.count ? <Text size={12} style={item.isNotify ? styles.notyCount : styles.nullPoint}>{item.isNotify ? item.count : ''}</Text> : null}
+        <Block>
+          <Text bold style={styles.nickName}>{item.senduser.name}</Text>
+          <Text style={styles.itemContent}>{item.content}</Text>
+        </Block>
+        <Block style={styles.timeInfo} flex>
+          <Text size={16}>{item.updatedAt}</Text>
+          {item.isNotify ? null : <Image
+            style={{ width: 20, height: 20, resizeMode: 'stretch' }}
+            source={Images.BellOff}
+          />}
+        </Block>
       </Block>
-      <Block style={styles.timeInfo} flex>
-        <Text size={16}>{item.updatedAt}</Text>
-        {item.IsNotify ? null : <Image
-          style={{ width: 20, height: 20, resizeMode: 'stretch' }}
-          source={Images.BellOff}
-        />}
-      </Block>
-    </Block>
-  </TouchableOpacity>
-);
-
-
-
-const initialLayout = { width: Dimensions.get('window').width };
+    </TouchableOpacity>
+  );
+}
 
 class ChatHistory extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    
   }
 
   renderChatItem = ({ item }) => {
@@ -55,22 +57,20 @@ class ChatHistory extends React.Component {
     );
   };
 
-  toChat = ({senduser}) => {
+  toChat = ({ senduser }) => {
     this.props.setChatMan(senduser);
     this.props.navigation.navigate('Chatting');
   }
   //export default function Home() {
   render() {
     return (
-      <Block flex>
-        {/* <ScrollView style={styles.container}> */}
-          <FlatList
+      <Block flex style={styles.scene}>
+        <FlatList
           style={styles.container}
-            data={this.props.notifications()}
-            renderItem={this.renderChatItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        {/* </ScrollView> */}
+          data={this.props.notifications()}
+          renderItem={this.renderChatItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
         <Footer navigation={this.props.navigation} left />
       </Block>
     );
@@ -79,10 +79,11 @@ class ChatHistory extends React.Component {
 const styles = StyleSheet.create({
   scene: {
     flex: 1,
+    backgroundColor: '#DEDEDE'
   },
   container: {
     width: width,
-    padding: 10
+    paddingTop: 10
   },
   rightCell: {
     padding: 10,
@@ -108,15 +109,13 @@ const styles = StyleSheet.create({
     color: nowTheme.COLORS.HEADER
   },
   stickyRow: {
-    padding: 8,
-    marginHorizontal: 16,
+    padding: 15,
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     backgroundColor: '#eeeeee'
   },
   unStickyRow: {
-    padding: 8,
-    marginHorizontal: 16,
+    padding: 15,
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     backgroundColor: '#ffffff'
@@ -125,7 +124,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     resizeMode: 'stretch',
-    marginRight: 10
   },
   nickName: {
     fontSize: 20,
@@ -136,11 +134,13 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   notyCount: {
-    marginLeft: -30,
+    marginLeft: -10,
     marginRight: 10,
+    marginTop: -10,
     backgroundColor: 'red',
     color: 'white',
     textAlign: 'center',
+    textAlignVertical: 'center',
     borderRadius: 10,
     width: 20,
     height: 20

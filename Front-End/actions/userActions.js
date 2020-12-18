@@ -1,4 +1,5 @@
 // Server Client
+import { Message } from 'react-native-gifted-chat';
 import Client from '../api/Client';
 
 // allows a new user to sign up for an account and returns
@@ -62,7 +63,7 @@ export function RequestFriend(dispatch, requesterphone, receiverphone, requestco
                     payload: res.data.friends.friends
                 });
                 console.log("Request Friend success")
-                if(successcb) successcb();
+                if (successcb) successcb();
             }
         })
         .catch(error => {
@@ -128,7 +129,12 @@ export function SendMessage(dispatch, sender, receiver, newMessage, client) {
                     type: "APPEND_MESSAGE",
                     payload: res.data
                 });
-                client.send(JSON.stringify({...{}, ...res.data, receiver}));
+                client.send(JSON.stringify({
+                    ...{},
+                    type: "message",
+                    data: res.data,
+                    receiver
+                }));
             }
             return res
         })
@@ -138,7 +144,6 @@ export function SendMessage(dispatch, sender, receiver, newMessage, client) {
 }
 
 export function UpdateNotification(sender, receiver, isNotify, isSticky) {
-    console.log(sender, receiver, isNotify, isSticky);
     return Client.put("notifications/", {
         sender,
         receiver,

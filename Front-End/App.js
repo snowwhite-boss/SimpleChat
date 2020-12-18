@@ -13,7 +13,6 @@ const store = createStore(userReducer);
 
 import Screens from './navigation/Screens';
 import { Images, articles, nowTheme } from './constants';
-
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase("db.db");
 
@@ -50,17 +49,8 @@ export default class App extends React.Component {
     isLoadingComplete: false,
     fontLoaded: false,
     isFirst: true,
-    user: {}
+    user: null
   };
-
-  // async componentDidMount() {
-  //   Font.loadAsync({
-  //     'montserrat-regular': require('./assets/font/Montserrat-Regular.ttf'),
-  //     'montserrat-bold': require('./assets/font/Montserrat-Bold.ttf')
-  //   });
-
-  //   this.setState({ fontLoaded: true });
-  // }
 
   render() {
     if (!this.state.isLoadingComplete) {
@@ -90,32 +80,39 @@ export default class App extends React.Component {
   }
 
   isFirstCheck = async () => {
-    await db.transaction(tx => {
-      tx.executeSql(
-        'create table if not exists me (id integer primary key not null, name text, phone text);',
-        [],
-        () => {
+    await (async () => {
+      return new Promise((resolve, reject) => {
+        db.transaction(tx => {
           tx.executeSql(
-            `select * from me;`, [],
-            (_, { rows: { _array } }) => {
-              if (_array.length == 0) {
-                this.setState({ isFirst: true });
-              } else {
-                this.setState({ isFirst: false });
-                this.setState({ user: _array[0] });
-                // this.setState({
-                //   user: {
-                //     "name": "aaa",
-                //     "phone": "123"
-                //   }
-                // });
-              }
+            'create table if not exists me (id integer primary key not null, name text, phone text);',
+            [],
+            () => {
+              console.log("create table")
+              tx.executeSql(
+                `select * from me;`, [],
+                async (_, { rows: { _array } }) => {
+                  if (_array.length == 0) {
+                    await this.setState({ isFirst: true });
+                    resolve();
+                  } else {
+                    await this.setState({ isFirst: false, user: _array[0] });
+                    resolve();
+                  }
+                },
+                () => {
+                  console.log("error");
+                  return reject();
+                }
+              );
+            },
+            (a, b) => {
+              console.log(a, b);
+              return reject();
             }
           );
-        },
-        (a, b) => console.log(a, b)
-      );
-    });
+        });
+      })
+    })();
   }
 
 

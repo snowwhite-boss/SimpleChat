@@ -48,13 +48,11 @@ exports.update = async function (req, res) {
         receiveruser.notifications.notifications.push({
             senduser: senderuser._id,
             count: 0,
-            content: "",
             isNotify: isNotify == undefined ? true : isNotify,
             isSticky: isSticky == undefined ? false : isSticky,
         });
     } else {
         receiveruser.notifications.notifications[index].count = 0;
-        receiveruser.notifications.notifications[index].content = "";
         receiveruser.notifications.notifications[index].isNotify =
             isNotify == undefined ? receiveruser.notifications.notifications[index].isNotify : isNotify;
         receiveruser.notifications.notifications[index].isSticky =

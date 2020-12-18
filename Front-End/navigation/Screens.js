@@ -14,9 +14,10 @@ import Chatting from '../screens/Chatting';
 import Detail from "../screens/Detail";
 import Onboarding from "../screens/Onboarding";
 // header for screens
-import { Header, Icon } from '../components';
+import { Header } from '../components';
 import { signUp, SetCurrentUser, IsExsitUser, SetFilterText } from "../actions/userActions";
-
+import { apiConfig } from "../config/config";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ function HomeStack(props) {
       <Stack.Screen
         name="Home"
         component={Home}
+        client={props.client}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -64,6 +66,7 @@ function HomeStack(props) {
 
       <Stack.Screen
         name="NewFriend"
+        client={props.client}
         component={NewFriend}
         options={{
           header: ({ navigation, scene }) => (
@@ -151,6 +154,7 @@ function HomeStack(props) {
       <Stack.Screen
         name="Chatting"
         component={Chatting}
+        client={props.client}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -187,29 +191,74 @@ function HomeStack(props) {
 class OnboardingStack extends React.Component {
   // getting user information
   componentDidMount() {
-    if (this.props.user)
+    if (this.props.user) {
       this.props.signUp(this.props.user.name, this.props.user.phone, null, null)
+      if(this.client) this.client.close();
+      this.client = new W3CWebSocket(apiConfig.socketUrl, this.props.user.phone);
+      this.client.onopen = () => {
+        console.log('WebSocket Client Connected');
+      };
+      this.client.onmessage = (message) => {
+        this.handleSocket(message.data);
+      };
+
+    }
   }
+
+  componentWillUnmount() {
+    if (this.client)
+      this.client.close();
+  }
+
+  signUp = (name, phoneNumber, successcb, errorcb) => {
+    console.log("Screen");
+    this.props.signUp(name, phoneNumber, () => {
+      console.log("success")
+      if (successcb) successcb();
+      this.client = new W3CWebSocket(apiConfig.socketUrl, phoneNumber);
+      this.client.onopen = () => {
+        console.log('WebSocket Client Connected');
+      };
+      this.client.onmessage = (message) => {
+        this.handleSocket(message.data);
+      };
+    }, errorcb);
+  }
+
+  handleSocket = (message) => {
+    let messageObject = JSON.parse(message);
+    console.log(messageObject);
+  }
+
   render() {
     return (
       <Stack.Navigator mode="card" headerMode="none">
         {this.props.isFirst ?
           <Stack.Screen
             name="Onboarding"
-            component={Onboarding}
             option={{
               headerTransparent: true
             }}
-          />
+          >
+            {(props) => (
+              <Onboarding signUp={this.signUp} {...props} />
+            )}
+          </Stack.Screen>
           : null}
         <Stack.Screen name="Home" >
           {() => (
-            <HomeStack setFilterText={this.props.setFilterText}/>
+            <HomeStack setFilterText={this.props.setFilterText} client={this.client} />
           )}
-          </Stack.Screen>
+        </Stack.Screen>
       </Stack.Navigator>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -222,6 +271,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(OnboardingStack);

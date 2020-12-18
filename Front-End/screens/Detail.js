@@ -62,6 +62,7 @@ class Detail extends React.Component {
       }
     });
     UpdateNotification(sender, receiver, isNotify, isSticky).then(() => {
+      this.props.changeNotifications({ sender, receiver, isNotify, isSticky });
     }).catch((err) => {
       console.log(err);
       Alert.alert(
@@ -185,7 +186,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    changeNotifications: (data) => dispatch({ type: "UPDATE_NOTIFICATION", payload: data }),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Detail);

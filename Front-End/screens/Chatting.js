@@ -4,9 +4,6 @@ import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 // connect to Redux state
 import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
-
-const SERVER = "ws://10.10.11.84:8080";
 
 class Chatting extends React.Component {
   constructor(props) {
@@ -14,26 +11,19 @@ class Chatting extends React.Component {
   }
 
   componentDidMount() {
-    this.client = new W3CWebSocket(SERVER, this.props.currentUser.phone);
     this.props.getMessages(
       this.props.currentUser.phone,
       this.props.chatMan.phone
     );
-    this.client.onopen = () => {
-      console.log('WebSocket Client Connected');
-    };
-    this.client.onmessage = (message) => {
-      this.props.addMessage(JSON.parse(message.data));
-    };
   }
-
+  
   // helper method that is sends a message
   handleSend(newMessage = []) {
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,
       newMessage,
-      this.client
+      this.props.client
     )
   }
 
@@ -105,7 +95,7 @@ function mapDispatchToProps(dispatch) {
       dispatch({
         type: "APPEND_MESSAGE",
         payload: data
-    })
+      });
     }
   };
 }

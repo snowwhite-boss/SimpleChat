@@ -23,7 +23,11 @@ function userReducer(state = initialState, action) {
     case "SET_FRIENDS":
       let conFriends = action.payload.map(fri => {
         if (fri.status == 'added')
-          return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
+          return Object.assign({}, {
+            name: fri.user.name
+          }, {
+            phone: fri.user.phone
+          });
       })
       return {
         ...state, friends: action.payload, contactFriends: conFriends
@@ -53,8 +57,26 @@ function userReducer(state = initialState, action) {
       return {
         ...state, filterKey: action.payload
       };
-    default:
-      return state;
+    case "UPDATE_NOTIFICATION":
+      const {
+        sender, isNotify, isSticky
+      } = action.payload;
+      let notifications = state.notifications.map(notification => {
+        if (notification.senduser.phone == sender)
+          return {
+            ...{},
+            ...notification,
+            isNotify,
+            isSticky
+          };
+        return notification;
+      })
+      return {
+        ...state,
+        notifications
+      }
+      default:
+        return state;
   }
 }
 

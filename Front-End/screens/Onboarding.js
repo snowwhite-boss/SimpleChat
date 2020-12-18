@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions } from 'react-native';
 import { Block, Button, Text, theme } from 'galio-framework';
 // connect to Redux state
 import { connect } from "react-redux";
@@ -8,12 +8,11 @@ const db = SQLite.openDatabase("db.db");
 // import SmsRetrieverModule from 'react-native-sms-retriever';
 const { height, width } = Dimensions.get('screen');
 import { Images, nowTheme } from '../constants/';
-import { HeaderHeight } from '../constants/utils';
 import { Input, Icon } from '../components';
 
 import * as SMS from 'expo-sms';
 
-import { signUp, SetCurrentUser, IsExsitUser } from "../actions/userActions";
+import { IsExsitUser } from "../actions/userActions";
 class Onboarding extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +23,11 @@ class Onboarding extends React.Component {
       checkverificationcode: '',
       min: 100000,
       max: 999999,
+      isDisabled: false,
     };
   }
 
-  async sendVerifyCode() {
+  sendVerifyCode = async () => {
     const isAvailable = await SMS.isAvailableAsync();
     if (isAvailable) {
       const { result } = await SMS.sendSMSAsync(
@@ -45,9 +45,9 @@ class Onboarding extends React.Component {
     const { min, max } = this.state;
     return Math.floor(Math.random() * (max - min) + min);
   }
-  async SignUp() {
-    if (phoneNumber == '' || name == '') return;
+  SignUp = () => {
     const { checkverificationcode, verificationcode, name, phoneNumber } = this.state;
+    if (phoneNumber == '' || name == '') return;
     // if (checkverificationcode == '') {
     //   this.setState({ checkverificationcode: this.getRandomArbitrary().toString() });
     //   this.sendVerifyCode();
@@ -56,23 +56,29 @@ class Onboarding extends React.Component {
     // }
     // if (checkverificationcode == /*verificationcode*/checkverificationcode) {
     //   this.setState({ checkverificationcode: '' });
-      this.props.signUp(name, phoneNumber, () => {
-        db.transaction(tx => {
-          tx.executeSql(
-            `insert into me (id, name, phone) values (1, '${name}', '${phoneNumber}');`, [],
-            () => {
-              this.props.navigation.navigate('Home');
-            },
-            () => {
-              console.log('error');
-            }
-          );
-          
-        });
-      },
-      () => console.log("signup error")
-      );
-      return;
+    this.setState({ isDisabled: true });
+    this.props.signUp(name, phoneNumber, () => {
+      this.setState({ isDisabled: false });
+      db.transaction(tx => {
+        tx.executeSql(
+          `insert into me (id, name, phone) values (1, '${name}', '${phoneNumber}');`, [],
+          () => {
+            console.log('navigate')
+            this.props.navigation.navigate('Home');
+          },
+          () => {
+            console.log('insert error');
+          }
+        );
+
+      });
+    },
+      () => {
+        this.setState({ isDisabled: false });
+        console.log("signup error")
+      }
+    );
+    return;
     // }
     // else {
     //   console.log('different', checkverificationcode);
@@ -163,9 +169,9 @@ class Onboarding extends React.Component {
                 <Button
                   shadowless
                   style={styles.button}
-                  color={nowTheme.COLORS.PRIMARY}
-                  // onPress={() => navigation.navigate('Home')}
-                  onPress={() => this.SignUp()}
+                  color={this.state.isDisabled ? nowTheme.COLORS.SECONDARY : nowTheme.COLORS.PRIMARY}
+                  disabled={this.state.isDisabled}
+                  onPress={this.SignUp}
                 >
                   <Text
                     style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}
@@ -207,7 +213,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signUp: (name, phoneNumber, successcb, errorcb) => signUp(dispatch, name, phoneNumber, successcb, errorcb),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
   };
 }
