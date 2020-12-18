@@ -15,7 +15,7 @@ import Detail from "../screens/Detail";
 import Onboarding from "../screens/Onboarding";
 // header for screens
 import { Header } from '../components';
-import { signUp, SetCurrentUser, IsExsitUser, SetFilterText, AddMessage } from "../actions/userActions";
+import { signUp, SetCurrentUser, IsExsitUser, SetFilterText, AddMessage, AddNotification } from "../actions/userActions";
 import { apiConfig } from "../config/config";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -86,7 +86,6 @@ function HomeStack(props) {
 
       <Stack.Screen
         name="Mobile"
-        component={Mobile}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -100,7 +99,11 @@ function HomeStack(props) {
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
-      />
+      >
+        {(props) => {
+          return <Mobile client={client} {...props}/>
+        }}
+        </Stack.Screen>
 
       <Stack.Screen
         name="AddContacts"
@@ -214,9 +217,7 @@ class OnboardingStack extends React.Component {
   }
 
   signUp = (name, phoneNumber, successcb, errorcb) => {
-    console.log("Screen");
     this.props.signUp(name, phoneNumber, () => {
-      console.log("success")
       if (successcb) successcb();
       this.client = new W3CWebSocket(apiConfig.socketUrl, phoneNumber);
       this.client.onopen = () => {
@@ -234,6 +235,8 @@ class OnboardingStack extends React.Component {
     switch (messageObject.type) {
       case "message":
         this.props.addMessage(messageObject.data, messageObject.receiver);
+        break;
+      case "friend":
         break;
       default: break;
     }
@@ -276,7 +279,8 @@ function mapDispatchToProps(dispatch) {
     setCurrentUser: (user) => SetCurrentUser(dispatch, user),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
     setFilterText: (filterText) => SetFilterText(dispatch, filterText),
-    addMessage: (data, receiver) => AddMessage(dispatch, data, receiver)
+    addMessage: (data, receiver) => AddMessage(dispatch, data, receiver),
+    addNotification: (sender, receiver) => AddNotification(dispatch, sender, receiver),
   };
 }
 

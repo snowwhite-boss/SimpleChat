@@ -45,7 +45,7 @@ class Moblie extends React.Component {
   }
 
   componentDidUpdate() {
-    
+
   }
 
   async getContactsData() {
@@ -64,13 +64,13 @@ class Moblie extends React.Component {
           let ret = this.props.friends.find(fri => fri.user.phone == el.phoneNumbers[0].number);
           if (ret) {
             if (ret.status == 'Waiting')
-            return Object.assign({}, el, { status: ret.status }, { style: waitButton }, {requestcontent: ret.requestcontent})
+              return Object.assign({}, el, { status: ret.status }, { style: waitButton }, { requestcontent: ret.requestcontent })
             else if (ret.status == 'View')
-              return Object.assign({}, el, { status: ret.status }, { style: viewButton }, {requestcontent: ret.requestcontent})
+              return Object.assign({}, el, { status: ret.status }, { style: viewButton }, { requestcontent: ret.requestcontent })
             else  // Added
-              return Object.assign({}, el, { status: ret.status }, { style: addedButton }, {requestcontent: ret.requestcontent})
+              return Object.assign({}, el, { status: ret.status }, { style: addedButton }, { requestcontent: ret.requestcontent })
           }
-          return Object.assign({}, el, { status: 'Add' }, { style: addButton }, {requestcontent: ''})
+          return Object.assign({}, el, { status: 'Add' }, { style: addButton }, { requestcontent: '' })
         }).filter(el => el.name.toLowerCase().search(this.props.filterKey.toLowerCase()) >= 0);
         this.setState({ dataArray: data });
       }
@@ -78,8 +78,7 @@ class Moblie extends React.Component {
   }
 
   async addItem(status, name, phone, requestcontent) {
-    await this.setState({ selectedMan: name })
-    await this.setState({ selectedPhone: phone })
+    await this.setState({ selectedMan: name, selectedPhone: phone })
     switch (status) {
       case 'Add':
         await this.setState({ isAddDialogVisible: true })
@@ -118,7 +117,15 @@ class Moblie extends React.Component {
       this.props.currentUser.phone,
       this.state.selectedPhone,
       requestText,
-      () => { this.getContactsData() }
+      () => {
+        this.getContactsData();
+        this.props.client.send(JSON.stringify({
+          ...{},
+          type: "friends",
+          receiver: this.state.selectedPhone,
+          sender: this.props.currentUser.phone,
+      }));
+      }
     );
     this.setState({ isAddDialogVisible: false })
   };

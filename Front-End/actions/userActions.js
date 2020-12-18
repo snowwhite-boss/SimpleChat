@@ -181,3 +181,12 @@ export function AddMessage(dispatch, _data, receiver) {
         })
     })
 }
+
+export function AddNotification(dispatch, sender, receiver) {
+    GetNotification(sender, receiver).then(({ data }) => {
+        dispatch({
+            type: "APPEND_NOTIFICATION",
+            payload: data
+        })
+    })
+}

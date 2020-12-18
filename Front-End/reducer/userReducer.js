@@ -99,6 +99,10 @@ function userReducer(state = initialState, action) {
         notifications
       }
     }
+    case "APPEND_NOTIFICATION": {
+      state.notifications.push(action.payload);
+      return state;
+    }
     default:
       return state;
   }
