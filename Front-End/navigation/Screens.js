@@ -121,6 +121,9 @@ function ProfileStack(props) {
 }
 
 function HomeStack(props) {
+  const filterVal = (filterText) =>{
+    console.log("filterText => ", filterText)
+  }
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -131,6 +134,7 @@ function HomeStack(props) {
             <Header
               title="Home"
               search
+              onChange={filterVal}
               navigation={navigation}
               scene={scene}
               none  // back button none
