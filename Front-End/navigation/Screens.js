@@ -25,6 +25,7 @@ function HomeStack(props) {
   const filterVal = (filterText) => {
     props.setFilterText(filterText);
   }
+  let client = props.client;
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -153,8 +154,6 @@ function HomeStack(props) {
 
       <Stack.Screen
         name="Chatting"
-        component={Chatting}
-        client={props.client}
         options={{
           header: ({ navigation, scene }) => (
             <Header
@@ -166,7 +165,11 @@ function HomeStack(props) {
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
-      />
+      >
+        {(props) => {
+          return <Chatting client={client} {...props}/>
+        }}
+        </Stack.Screen>
 
       <Stack.Screen
         name="Detail"
