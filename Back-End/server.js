@@ -71,7 +71,6 @@ wsServer.on('request', function (request) {
             let messageObject = JSON.parse(message.utf8Data);
             if (users[messageObject.receiver]) {
                 users[messageObject.receiver].sendUTF(message.utf8Data);
-                console.log(messageObject);
             }
             else {
                 console.log("user doesn't exist");

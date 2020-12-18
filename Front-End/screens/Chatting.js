@@ -23,7 +23,7 @@ class Chatting extends React.Component {
       console.log('WebSocket Client Connected');
     };
     this.client.onmessage = (message) => {
-      console.log(">>> ", JSON.parse(message.data));
+      this.props.addMessage(JSON.parse(message.data));
     };
   }
 
