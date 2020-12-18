@@ -23,7 +23,7 @@ class Chatting extends React.Component {
       console.log('WebSocket Client Connected');
     };
     this.client.onmessage = (message) => {
-      console.log(">>> ", message.data);
+      console.log(">>> ", JSON.parse(message.data));
     };
   }
 
@@ -32,13 +32,9 @@ class Chatting extends React.Component {
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,
-      newMessage
-    );
-    this.client.send(JSON.stringify({
-      sender: this.props.currentUser.phone,
-      receiver: this.props.chatMan.phone,
-      newMessage
-    }));
+      newMessage,
+      this.client
+    )
   }
 
   renderBubble(props) {
@@ -104,7 +100,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getMessages: (sender, receiver) => GetMessages(dispatch, sender, receiver),
-    sendMessage: (sender, receiver, newMessage) => SendMessage(dispatch, sender, receiver, newMessage),
+    sendMessage: (sender, receiver, newMessage, client) => SendMessage(dispatch, sender, receiver, newMessage, client),
+    addMessage: (data) => {
+      dispatch({
+        type: "APPEND_MESSAGE",
+        payload: data
+    })
+    }
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Chatting);

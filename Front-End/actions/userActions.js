@@ -116,8 +116,8 @@ export function GetMessages(dispatch, sender, receiver) {
             console.log("GetMessages error => ", error);
         });
 }
-export function SendMessage(dispatch, sender, receiver, newMessage) {
-    Client.post(`chats/`, {
+export function SendMessage(dispatch, sender, receiver, newMessage, client) {
+    return Client.post(`chats/`, {
             sender: sender,
             receiver: receiver,
             content: newMessage[0].text,
@@ -128,7 +128,9 @@ export function SendMessage(dispatch, sender, receiver, newMessage) {
                     type: "APPEND_MESSAGE",
                     payload: res.data
                 });
+                client.send(JSON.stringify({...{}, ...res.data, receiver}));
             }
+            return res
         })
         .catch(error => {
             console.log("SendMessage error => ", error);

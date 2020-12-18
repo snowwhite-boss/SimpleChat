@@ -70,7 +70,7 @@ wsServer.on('request', function (request) {
             // connection.sendUTF(message.utf8Data);
             let messageObject = JSON.parse(message.utf8Data);
             if (users[messageObject.receiver]) {
-                users[messageObject.receiver].sendUTF(message);
+                users[messageObject.receiver].sendUTF(message.utf8Data);
                 console.log(messageObject);
             }
             else {
