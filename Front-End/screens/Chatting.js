@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+// connect to Redux state
 import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
-import { w3cwebsocket as W3CWebSocket, connection } from "websocket";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
+const SERVER = "ws://10.10.11.84:8080";
 
 class Chatting extends React.Component {
   constructor(props) {
@@ -43,6 +45,7 @@ class Chatting extends React.Component {
         {...props}
         wrapperStyle={{
           right: {
+            // Here is the color change
             backgroundColor: '#6690ee'
           }
         }}
