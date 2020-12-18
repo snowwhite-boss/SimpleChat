@@ -9,9 +9,9 @@ import Client from '../api/Client';
 // Used in LoginSignup/Signup component
 export function signUp(dispatch, name, phoneNumber, successcb, errorcb) {
     Client.post(`users/`, {
-            name: name,
-            phone: phoneNumber
-        })
+        name: name,
+        phone: phoneNumber
+    })
         .then(async res => {
             if (res.status == 200) {
                 // set user info in Redux state
@@ -54,10 +54,10 @@ export function SetCurrentUser(dispatch, user) {
 
 export function RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb) {
     Client.post(`friends/`, {
-            requesterphone: requesterphone,
-            receiverphone: receiverphone,
-            requestcontent: requestcontent,
-        })
+        requesterphone: requesterphone,
+        receiverphone: receiverphone,
+        requestcontent: requestcontent,
+    })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
@@ -75,9 +75,9 @@ export function RequestFriend(dispatch, requesterphone, receiverphone, requestco
 
 export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb) {
     Client.put(`friends/`, {
-            requesterphone: requesterphone,
-            receiverphone: receiverphone,
-        })
+        requesterphone: requesterphone,
+        receiverphone: receiverphone,
+    })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
@@ -94,7 +94,7 @@ export function AcceptFriend(dispatch, requesterphone, receiverphone, successcb)
 }
 
 export function DeleteChatHistory(myphone, otherphone) {
-    Client.delete(`chats/${myphone}/${otherphone}`).then(() => {})
+    Client.delete(`chats/${myphone}/${otherphone}`).then(() => { })
         .catch((error) => {
             console.log("Error");
         })
@@ -121,10 +121,10 @@ export function GetMessages(dispatch, sender, receiver) {
 }
 export function SendMessage(dispatch, sender, receiver, newMessage, client) {
     return Client.post(`chats/`, {
-            sender: sender,
-            receiver: receiver,
-            content: newMessage[0].text,
-        })
+        sender: sender,
+        receiver: receiver,
+        content: newMessage[0].text,
+    })
         .then(async res => {
             if (res.status == 200) {
                 dispatch({
@@ -146,12 +146,18 @@ export function SendMessage(dispatch, sender, receiver, newMessage, client) {
 }
 
 export function UpdateNotification(sender, receiver, isNotify, isSticky) {
-    return Client.put("notifications/", {
+    let noti = {
         sender,
         receiver,
-        isNotify,
         isSticky,
-    })
+    }
+    if (isNotify != undefined) {
+        noti = Object.assign({}, noti, { isNotify });
+    }
+    if (isSticky != undefined) {
+        noti = Object.assign({}, noti, { isSticky });
+    }
+    return Client.put("notifications/", noti)
 }
 
 export function GetNotification(sender, receiver) {
@@ -182,7 +188,7 @@ export function AddMessage(dispatch, _data, receiver) {
     })
 }
 
-export function AddNotification(dispatch, sender, receiver) {
+export function AddFriend(dispatch, sender, receiver) {
     GetNotification(sender, receiver).then(({ data }) => {
         dispatch({
             type: "APPEND_NOTIFICATION",

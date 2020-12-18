@@ -15,7 +15,7 @@ import Detail from "../screens/Detail";
 import Onboarding from "../screens/Onboarding";
 // header for screens
 import { Header } from '../components';
-import { signUp, SetCurrentUser, IsExsitUser, SetFilterText, AddMessage, AddNotification } from "../actions/userActions";
+import { signUp, SetCurrentUser, IsExsitUser, SetFilterText, AddMessage, AddFriend } from "../actions/userActions";
 import { apiConfig } from "../config/config";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -236,7 +236,8 @@ class OnboardingStack extends React.Component {
       case "message":
         this.props.addMessage(messageObject.data, messageObject.receiver);
         break;
-      case "friend":
+      case "friend_add":
+        this.props.addFriend(messageObject.sender, messageObject.receiver);
         break;
       default: break;
     }
@@ -280,7 +281,7 @@ function mapDispatchToProps(dispatch) {
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
     setFilterText: (filterText) => SetFilterText(dispatch, filterText),
     addMessage: (data, receiver) => AddMessage(dispatch, data, receiver),
-    addNotification: (sender, receiver) => AddNotification(dispatch, sender, receiver),
+    addFriend: (sender, receiver) => AddFriend(dispatch, sender, receiver),
   };
 }
 

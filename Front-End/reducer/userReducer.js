@@ -84,19 +84,25 @@ function userReducer(state = initialState, action) {
         count,
         content
       } = action.payload;
-      let notifications = state.notifications.map(notification => {
-        if (notification.senduser.phone == sender)
-          return {
-            ...{},
-            ...notification,
-            count,
-            content
-          };
-        return notification;
-      })
-      return {
-        ...state,
-        notifications
+      if(state.notifications.find(notification => notification.senduser.phone == sender)){
+        let notifications = state.notifications.map(notification => {
+          if (notification.senduser.phone == sender)
+            return {
+              ...{},
+              ...notification,
+              count,
+              content
+            };
+          return notification;
+        })
+        return {
+          ...state,
+          notifications
+        }
+      }
+      else {
+        state.notifications.push(action.payload);
+        return state;
       }
     }
     case "APPEND_NOTIFICATION": {

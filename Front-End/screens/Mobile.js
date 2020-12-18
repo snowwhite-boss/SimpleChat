@@ -121,7 +121,7 @@ class Moblie extends React.Component {
         this.getContactsData();
         this.props.client.send(JSON.stringify({
           ...{},
-          type: "friends",
+          type: "friend_add",
           receiver: this.state.selectedPhone,
           sender: this.props.currentUser.phone,
       }));
@@ -133,7 +133,9 @@ class Moblie extends React.Component {
     this.props.acceptFriend(
       this.props.currentUser.phone,
       this.state.selectedPhone,
-      () => { this.getContactsData() }
+      () => { 
+        this.getContactsData();
+       }
     );
     this.setState({ isViewDialogVisible: false })
   };

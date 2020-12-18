@@ -3,7 +3,7 @@ import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 // connect to Redux state
 import { connect } from "react-redux";
-import { GetMessages, SendMessage } from "../actions/userActions";
+import { GetMessages, SendMessage, UpdateNotification } from "../actions/userActions";
 
 class Chatting extends React.Component {
   constructor(props) {
@@ -17,6 +17,13 @@ class Chatting extends React.Component {
     );
   }
   
+  componentDidUpdate() {
+    this.props.updateNotification(this.props.chatMan.phone, this.props.currentUser.phone)
+    .then(() => {
+      this.props.changeNotifications({ sender, receiver, count: 0 });
+    })
+  }
+
   // helper method that is sends a message
   handleSend(newMessage = []) {
     this.props.sendMessage(
@@ -91,6 +98,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getMessages: (sender, receiver) => GetMessages(dispatch, sender, receiver),
     sendMessage: (sender, receiver, newMessage, client) => SendMessage(dispatch, sender, receiver, newMessage, client),
+    updateNotification: (sender, receiver) => UpdateNotification(sender, receiver),
+    changeNotifications: (data) => dispatch({ type: "UPDATE_NOTIFICATION", payload: data }),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Chatting);
