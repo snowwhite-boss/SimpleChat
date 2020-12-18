@@ -150,3 +150,10 @@ export function UpdateNotification(sender, receiver, isNotify, isSticky) {
 export function GetNotification(sender, receiver) {
     return Client.get(`notifications/${sender}/${receiver}`);
 }
+
+export function SetFilterText(dispatch, filterText) {
+    dispatch({
+        type: "SET_FILTER",
+        payload: filterText
+    });
+}
