@@ -37,6 +37,13 @@ class Moblie extends React.Component {
     this.getContactsData()
   }
 
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    if (prevProps.filterKey !== this.propsfilterKey) {
+      this.getContactsData();
+    }
+    return null;
+  }
+
   async getContactsData() {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {
@@ -60,7 +67,7 @@ class Moblie extends React.Component {
               return Object.assign({}, el, { status: ret.status }, { style: addedButton }, {requestcontent: ret.requestcontent})
           }
           return Object.assign({}, el, { status: 'Add' }, { style: addButton }, {requestcontent: ''})
-        })
+        }).filter(el => el.name.toLowerCase().search(this.props.filterKey.toLowerCase()) >= 0);
         this.setState({ dataArray: data });
       }
     }
@@ -216,6 +223,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
     friends: state.friends,
+    filterKey: state.filterKey,
   };
 }
 

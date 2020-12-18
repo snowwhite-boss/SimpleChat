@@ -50,41 +50,6 @@ class NewFriend extends React.Component {
   }
 
   componentDidMount() {
-    // AddressBook.getContacts( (err, contacts) => {
-    //   if(err && err.type === 'permissionDenied'){
-    //     console.log(err)
-    //   }
-    //   else{
-    //     console.log(contacts)
-    //   }
-    // })
-    //////////////////////////////////////////////
-    // if(Platform.OS === 'ios'){
-    //   Contacts.getAll((err, contacts) => {
-    //     if (err) {
-    //       throw err;
-    //     }
-    //     // contacts returned
-    //     console.log("contacts => ", contacts);
-    //   })
-    // }else if(Platform.OS === 'android'){
-    //   PermissionsAndroid.request(
-    //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-    //     {
-    //       title: 'Contacts',
-    //       message: 'This app would like to view your contacts.'
-    //     }
-    //   ).then(() => {
-    //     Contacts.getAll((err, contacts) => {
-    //       if (err === 'denied'){
-    //         // error
-    //       } else {
-    //         // contacts returned in Array
-    //         console.log("contacts => ", contacts);
-    //       }
-    //     })
-    //   })
-    // }
   }
   render() {
     return (
@@ -101,7 +66,7 @@ class NewFriend extends React.Component {
         {/* <ScrollView style={styles.container}> */}
         <FlatList
           style={styles.container}
-          data={this.props.friends}
+          data={this.props.friends()}
           renderItem={renderContactsItem}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -198,7 +163,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    friends: state.friends,
+    friends: () => state.friends.filter(friend => friend.user.name.search(state.filterKey) >= 0),
+    
   };
 }
 

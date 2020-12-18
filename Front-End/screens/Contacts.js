@@ -35,7 +35,7 @@ class FriendContacts extends React.Component {
   }
 
   getContactsData() {
-    let data = this.props.friends.map(fri => {
+    let data = this.props.friends().map(fri => {
       if (fri.status == 'added')
         return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
     })
@@ -167,7 +167,11 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
-    friends: state.friends,
+    friends: () =>{
+      let fri= state.friends.filter(friend => friend.user.name.search(state.filterKey) >= 0);
+      console.log(fri);
+      return fri
+    },
   };
 }
 

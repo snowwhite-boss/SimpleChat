@@ -52,6 +52,7 @@ function HomeStack(props) {
             <Header
               title="Contacts"
               search
+              onChange={filterVal}
               navigation={navigation}
               scene={scene}
               none  // back button none
@@ -70,6 +71,7 @@ function HomeStack(props) {
               title="New Friends"
               search
               navigation={navigation}
+              onChange={filterVal}
               scene={scene}
               back
             />
@@ -87,6 +89,7 @@ function HomeStack(props) {
               title="Mobile Contacts"
               search
               navigation={navigation}
+              onChange={filterVal}
               scene={scene}
               back
             />
