@@ -3,6 +3,9 @@ import {
   StyleSheet, TouchableOpacity, Image, Alert
 } from "react-native";
 import { Block, Text, Button } from "galio-framework";
+// connect to Redux state
+import { connect } from "react-redux";
+import { RequestFriend } from "../actions/userActions";
 
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -22,7 +25,7 @@ touchButton:{
   zIndex:5
 }
 });
-export default class QRScan extends React.Component {
+class QRScan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,7 +86,12 @@ export default class QRScan extends React.Component {
   };
 
   addNewFriend(){
-    console.log(this.state)
+    this.props.requestFriend(
+      this.props.currentUser.phone,
+      this.state.phone,
+      "",
+      null
+    );
   }
   render() {
     const {
@@ -118,6 +126,15 @@ export default class QRScan extends React.Component {
     );
   }
 }
-{/* <TouchableOpacity onPress={() => this.setState({ scanned: false })} style={styles.touchButton}>
-          <Image source={Images.QRscanIcon} style={styles.ScanIcon} />
-        </TouchableOpacity> */}
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    requestFriend: (requesterphone, receiverphone, requestcontent, successcb) => RequestFriend(dispatch, requesterphone, receiverphone, requestcontent, successcb),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(QRScan);
