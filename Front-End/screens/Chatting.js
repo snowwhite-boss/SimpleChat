@@ -91,12 +91,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getMessages: (sender, receiver) => GetMessages(dispatch, sender, receiver),
     sendMessage: (sender, receiver, newMessage, client) => SendMessage(dispatch, sender, receiver, newMessage, client),
-    addMessage: (data) => {
-      dispatch({
-        type: "APPEND_MESSAGE",
-        payload: data
-      });
-    }
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Chatting);

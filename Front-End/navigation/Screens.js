@@ -15,7 +15,7 @@ import Detail from "../screens/Detail";
 import Onboarding from "../screens/Onboarding";
 // header for screens
 import { Header } from '../components';
-import { signUp, SetCurrentUser, IsExsitUser, SetFilterText } from "../actions/userActions";
+import { signUp, SetCurrentUser, IsExsitUser, SetFilterText, AddMessage } from "../actions/userActions";
 import { apiConfig } from "../config/config";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -193,7 +193,7 @@ class OnboardingStack extends React.Component {
   componentDidMount() {
     if (this.props.user) {
       this.props.signUp(this.props.user.name, this.props.user.phone, null, null)
-      if(this.client) this.client.close();
+      if (this.client) this.client.close();
       this.client = new W3CWebSocket(apiConfig.socketUrl, this.props.user.phone);
       this.client.onopen = () => {
         console.log('WebSocket Client Connected');
@@ -228,6 +228,12 @@ class OnboardingStack extends React.Component {
   handleSocket = (message) => {
     let messageObject = JSON.parse(message);
     console.log(messageObject);
+    switch (messageObject.type) {
+      case "message":
+        this.props.addMessage(messageObject.data, messageObject.receiver);
+        break;
+      default: break;
+    }
   }
 
   render() {
@@ -267,6 +273,7 @@ function mapDispatchToProps(dispatch) {
     setCurrentUser: (user) => SetCurrentUser(dispatch, user),
     isExsitUser: (phoneNumber) => IsExsitUser(phoneNumber),
     setFilterText: (filterText) => SetFilterText(dispatch, filterText),
+    addMessage: (data, receiver) => AddMessage(dispatch, data, receiver)
   };
 }
 

@@ -57,9 +57,11 @@ function userReducer(state = initialState, action) {
       return {
         ...state, filterKey: action.payload
       };
-    case "UPDATE_NOTIFICATION":
+    case "UPDATE_NOTIFICATION": {
       const {
-        sender, isNotify, isSticky
+        sender,
+        isNotify,
+        isSticky
       } = action.payload;
       let notifications = state.notifications.map(notification => {
         if (notification.senduser.phone == sender)
@@ -75,8 +77,30 @@ function userReducer(state = initialState, action) {
         ...state,
         notifications
       }
-      default:
-        return state;
+    }
+    case "UPDATE_NOTIFICATION_CONTENT": {
+      const {
+        sender,
+        count,
+        content
+      } = action.payload;
+      let notifications = state.notifications.map(notification => {
+        if (notification.senduser.phone == sender)
+          return {
+            ...{},
+            ...notification,
+            count,
+            content
+          };
+        return notification;
+      })
+      return {
+        ...state,
+        notifications
+      }
+    }
+    default:
+      return state;
   }
 }
 

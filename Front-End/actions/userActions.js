@@ -1,5 +1,7 @@
 // Server Client
-import { Message } from 'react-native-gifted-chat';
+import {
+    Message
+} from 'react-native-gifted-chat';
 import Client from '../api/Client';
 
 // allows a new user to sign up for an account and returns
@@ -161,4 +163,21 @@ export function SetFilterText(dispatch, filterText) {
         type: "SET_FILTER",
         payload: filterText
     });
+}
+
+export function AddMessage(dispatch, _data, receiver) {
+    dispatch({
+        type: "APPEND_MESSAGE",
+        payload: _data
+    });
+    GetNotification(_data.user._id, receiver).then(({ data }) => {
+        dispatch({
+            type: "UPDATE_NOTIFICATION_CONTENT",
+            payload: {
+                sender: _data.user._id,
+                count: data.count,
+                content: data.content,
+            }
+        })
+    })
 }
