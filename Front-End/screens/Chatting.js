@@ -5,34 +5,31 @@ import { connect } from "react-redux";
 import { GetMessages, SendMessage } from "../actions/userActions";
 import { w3cwebsocket as W3CWebSocket, connection } from "websocket";
 
-const SERVER = "ws://10.10.11.84:8080";
-const client = new W3CWebSocket(SERVER, '[ws]');
 
 class Chatting extends React.Component {
   constructor(props) {
     super(props)
   }
 
-  componentWillUnmount() {
-    console.log("chatting close");
-    client.close();
-  }
-
   componentDidMount() {
+    this.client = new W3CWebSocket(SERVER, this.props.currentUser.phone);
     this.props.getMessages(
       this.props.currentUser.phone,
       this.props.chatMan.phone
     );
-    client.onopen = () => {
+    this.client.onopen = () => {
       console.log('WebSocket Client Connected');
     };
-    client.onmessage = (message) => {
-      console.log(message);
+    this.client.onmessage = (message) => {
+      console.log(">>> ",message);
     };
-    client.send("asdasdfasdadsf");
   }
+  
   // helper method that is sends a message
   handleSend(newMessage = []) {
+    this.client.send(JSON.stringify(this.props.currentUser));
+    // let setMessages = GiftedChat.append(this.state.messages, newMessage);
+    // this.socket.emit('send-message', newMessage);
     this.props.sendMessage(
       this.props.currentUser.phone,
       this.props.chatMan.phone,

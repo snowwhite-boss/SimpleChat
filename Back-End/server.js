@@ -54,6 +54,18 @@ http.listen(PORT, HOST, () => {
     console.log(`listening on *:${PORT}`);
 });
 
+<<<<<<< HEAD
+=======
+/**
+ * @description This methos retirves the static channels
+ */
+app.get('/getChannels', (req, res) => {
+    res.json({
+        channels: STATIC_CHANNELS
+    })
+});
+
+>>>>>>> tolstov
 const wsServer = new webSocketServer({
     httpServer: http
 });
@@ -61,7 +73,7 @@ const wsServer = new webSocketServer({
 let users = {};
 
 wsServer.on('request', function (request) {
-    console.log('connected')
+    console.log('connected ', request.requestedProtocols)
     const connection = request.accept(null, request.origin);
     connection.on('message', function (message) {
         if (message.type === 'utf8') {

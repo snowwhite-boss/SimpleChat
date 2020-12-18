@@ -176,7 +176,7 @@ class Header extends React.Component {
     }
   };
   renderSearch = () => {
-    const { navigation } = this.props;
+    const { navigation, onChange } = this.props;
     return (
       <Input
         right
@@ -184,7 +184,7 @@ class Header extends React.Component {
         style={styles.search}
         placeholder="Who are you looking for?"
         placeholderTextColor={'#8898AA'}
-        onFocus={() => {  }}
+        onChangeText={text => onChange(text)}
         iconContent={
           <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
         }
@@ -269,6 +269,7 @@ class Header extends React.Component {
       iconColor,
       titleColor,
       navigation,
+      onChange,
       ...props
     } = this.props;
 
