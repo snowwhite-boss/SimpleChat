@@ -44,6 +44,10 @@ class Moblie extends React.Component {
     return null;
   }
 
+  componentDidUpdate() {
+    
+  }
+
   async getContactsData() {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status === 'granted') {

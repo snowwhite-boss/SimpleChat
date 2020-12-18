@@ -35,12 +35,11 @@ class FriendContacts extends React.Component {
   }
 
   getContactsData() {
-    let data = this.props.friends().map(fri => {
+    let data = this.props.friends.map(fri => {
       if (fri.status == 'added')
         return Object.assign({}, { name: fri.user.name }, { phone: fri.user.phone });
     })
     this.setState({ dataArray: data });
-    console.log(data, "<<,")
   }
 
   _renderItem = (item, index, section) => {
