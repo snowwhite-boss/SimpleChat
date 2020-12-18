@@ -62,7 +62,7 @@ export function RequestFriend(dispatch, requesterphone, receiverphone, requestco
                     payload: res.data.friends.friends
                 });
                 console.log("Request Friend success")
-                successcb();
+                if(successcb) successcb();
             }
         })
         .catch(error => {
